@@ -1,0 +1,182 @@
+{
+    "notes": [
+        {
+            "uid": 2,
+            "id": 2,
+            "judul_note": "Note 2",
+            "tgl_note": "2022-01-06",
+            "isi_note": "Tes note 2"
+        },
+        {
+            "uid": 2,
+            "id": 3,
+            "judul_note": "Note 3",
+            "tgl_note": "2022-01-06",
+            "isi_note": "tes note 3"
+        },
+        {
+            "uid": 1,
+            "id": 1648111359600,
+            "judul_note": "puji",
+            "tgl_note": "2022-03-25",
+            "isi_note": "puji puji pujii"
+        },
+        {
+            "uid": 1,
+            "id": 1648114862365,
+            "judul_note": "jasdasdsafas",
+            "tgl_note": "2022-03-25",
+            "isi_note": "asdasfas sdasfasf"
+        }
+    ],
+    "schedule": [
+        {
+            "id_schedule": 1,
+            "uid": 2,
+            "hari": "Senin",
+            "waktu_mulai": "07:00:00",
+            "waktu_berakhir": "09:00:00",
+            "nama_schedule": "Struktur data"
+        },
+        {
+            "id_schedule": 2,
+            "uid": 2,
+            "hari": "Senin",
+            "waktu_mulai": "09:00:00",
+            "waktu_berakhir": "11:00:00",
+            "nama_schedule": "Matematika Diskrit"
+        }
+    ],
+    "task": [
+        {
+            "id": 1649654699576,
+            "uid": 1,
+            "jenis": "Assignment",
+            "tgl_ddline": "2022-04-14",
+            "detail_task": "Laporan WEB Redux"
+          },
+          {
+            "id": 1649654730599,
+            "uid": 1,
+            "jenis": "Quiz",
+            "tgl_ddline": "2022-04-16",
+            "detail_task": "Tugas kewirausahaan ide bisnis"
+          }
+    ],
+    "jenis_task": [
+        {
+            "id_jenis": 1,
+            "nama_jenis_task": "tugas"
+        },
+        {
+            "id_jenis": 2,
+            "nama_jenis_task": "quiz"
+        }
+    ],
+    "todolist": [
+        {
+            "id": 1,
+            "uid": 1,
+            "nama_todo": "Edit profil mobile app",
+            "status": 0
+        },
+        {
+            "id": 1648857353637,
+            "uid": 1,
+            "nama_todo": "Finishing page todolist reactjs",
+            "status": 0
+        },
+        {
+            "id": 1648857389299,
+            "uid": 1,
+            "nama_todo": "Read atomics habits 15 page",
+            "status": 0
+        },
+        {
+            "id": 1648857523707,
+            "uid": 1,
+            "nama_todo": "Try new hobby",
+            "status": 0
+        }
+    ],
+    "profile": [
+        {
+            "uid": 1,
+            "email": "satchy@mail.co",
+            "password": "satchy123",
+            "nama_lengkap": "Satchy New",
+            "no_hp": "085899766680",
+            "profile_img": "/img/profil/default.jpg"
+        }
+    ],
+    "pemasukan": [
+        {
+            "id_pemasukan": 1,
+            "uid": 1,
+            "pemasukan": 50000,
+            "kategori_pemasukan": 1,
+            "tgl_pemasukan": "2022-03-25",
+            "catatan": "Dapat uang jajan untuk bulan maret",
+            "saldo": 50000
+        }
+    ],
+    "kategori_pemasukan": [
+        {
+            "id_kategori_pemasukan": 1,
+            "nama_kategori_pemasukan": "orang tua"
+        },
+        {
+            "id_kategori_pemasukan": 2,
+            "nama_kategori_pemasukan": "hadiah"
+        },
+        {
+            "id_kategori_pemasukan": 3,
+            "nama_kategori_pemasukan": "gaji"
+        },
+        {
+            "id_kategori_pemasukan": 4,
+            "nama_kategori_pemasukan": "investasi"
+        },
+        {
+            "id_kategori_pemasukan": 5,
+            "nama_kategori_pemasukan": "lain-lain"
+        }
+    ],
+    "pengeluaran": [
+        {
+            "id_pengeluaran": 1,
+            "uid": 1,
+            "pengeluaran": 20000,
+            "kategori_pengeluaran": 6,
+            "tgl_pengeluaran": "2022-03-25",
+            "catatan": "Beli tiket kereta",
+            "saldo": 30000
+        }
+    ],
+    "kategori_pengeluaran": [
+        {
+            "id_kategori_pengeluaran": 1,
+            "nama_kategori_pengeluaran": "makan"
+        },
+        {
+            "id_kategori_pengeluaran": 2,
+            "nama_kategori_pengeluaran": "kecantikan"
+        },
+        {
+            "id_kategori_pengeluaran": 3,
+            "nama_kategori_pengeluaran": "gaya hidup"
+        },
+        {
+            "id_kategori_pengeluaran": 4,
+            "nama_kategori_pengeluaran": "kebutuhan rumah"
+        },
+        {
+            "id_kategori_pengeluaran": 5,
+            "nama_kategori_pengeluaran": "kesehatan"
+        },
+        {
+            "id_kategori_pengeluaran": 6,
+            "nama_kategori_pengeluaran": "lain-lain"
+        }
+    ]
+}

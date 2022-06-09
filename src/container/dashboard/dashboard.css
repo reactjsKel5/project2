@@ -1,0 +1,85 @@
+* {
+    font-family: 'Poppins';
+}
+
+.dashboard .card {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+    border-radius: 22px;
+}
+
+.dashboard h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #FB4F4F;
+}
+
+.task h3,
+.schedule h3 {
+    font-size: 24px;
+    color: #464646;
+    font-weight: 600;
+}
+
+.schedule h4 {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #FB4F4F;
+}
+.task button,
+.schedule button {
+    background: #FB4F4F;
+    border-radius: 50%;
+    font-size: 25px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+}
+
+.form-check-input {
+    border-radius: 50% !important;
+    width: 27px;
+    height: 27px;
+    /* margin-top: -2.5px; */
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+    border: 2px solid #9F9F9F;
+}
+
+.form-check-input:checked {
+    border-color: #D7B1D7;
+    background-color: #FB4F4F;
+}
+
+.task-item label {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.task-item p {
+    font-weight: 300;
+    font-size: 13px;
+    color: #736D71
+}
+
+.todolist label {
+    color: #464646;
+}
+
+.dashboard .btn-danger {
+    background: #FB4F4F;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+    height: 25px;
+    width: 100%;
+    padding: 0;
+}
+
+hr {
+    border: 1px solid #E8E8E8;
+}

@@ -1,0 +1,90 @@
+.title-schedule {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+}
+
+.form-input {
+    padding-right: 20px;
+    width: 100%;
+}
+
+.form-data-schedule {
+    padding-right: 15px;
+}
+
+.judul {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+
+    color: #FB4F4F;
+}
+
+.form-control,
+.form-select,
+.input {
+    padding: 15px;
+    background: #FFFFFF;
+    border: 1px solid rgba(196, 196, 196, 0.71);
+    box-sizing: border-box;
+    border-radius: 11px;
+}
+
+.card-schedule {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    border-radius: 22px;
+}
+
+.card-schedule .btn-tambah {
+    background: #FB4F4F;
+    border: 1px solid rgba(196, 196, 196, 0.71);
+    box-sizing: border-box;
+    border-radius: 6px;
+    width: 100px;
+    height: 30px;
+    left: 1205px;
+    top: 413px;
+    
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    
+    color: #FFFFFF;
+}
+
+
+
+.schedule-txt {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 42px;
+    /* identical to box height */
+    color: #FB4F4F;
+
+    margin-bottom: 15px;
+}
+
+.active {
+    color: var(--color-primary) !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    margin-top: -3px;
+    border-bottom: 2px solid #FB4F4F;
+}
+
+.nav-link {
+
+    color: var(--color-primary) !important;
+    font-weight: 400 !important;
+    font-size: 18px !important;
+    margin-top: -3px;
+
+}

@@ -1,0 +1,53 @@
+* {
+    font-family: 'Poppins';
+}
+
+.money-management a {
+    text-decoration: none;
+}
+
+.money-management a:hover .card h1,
+.money-management a:hover .card h2,
+.money-management a:hover .card h3,
+.money-management a:hover .card p {
+    color: rgb(0, 0, 0);
+    transition: 0.3s;
+}
+
+.money-management a:hover .card {
+    background: linear-gradient(255deg, rgba(251, 79, 79, 0.2) 0%, rgba(255, 227, 227, 0.134) 98.58%), #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.card {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 10px 60px rgba(249, 226, 226, 0.5);
+    border-radius: 30px;
+}
+
+.money-management h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #FB4F4F;
+}
+
+.money-management p {
+    font-size: 14px;
+    line-height: 21px;
+    color: #ACACAC;
+}
+
+.money-management h3 {
+    font-weight: 600;
+    font-size: 22px;
+    color: #464646
+}
+
+.money-management h1 {
+    font-weight: 600;
+    font-size: 48px;
+    color: #464646;
+}
