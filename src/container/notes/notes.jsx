@@ -5,7 +5,7 @@ import Topbar from "../../components/menubar/topbar"
 import './notes.css';
 import Note from "../../components/note"
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 
 export class Notes extends Component {
 
@@ -17,11 +17,37 @@ export class Notes extends Component {
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
         this.user = auth.currentUser.uid;
+        this.data = [];
         this.state = {
+            allData: [],
             "title": '',
             "body": '',
             'date': ''
         };
+    }
+
+    fetchData = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "notes", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(list);
+            this.setState({
+                allData: list
+            })
+            this.state.allData = list;
+            console.log(this.state.allData)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    componentDidMount(){
+        
+        this.fetchData();
+        console.log(this.data);
     }
 
     onChange = (e) => {
@@ -119,6 +145,25 @@ export class Notes extends Component {
     // }
 
     render() {
+
+        var listofData = this.state.allData.map((val, i) => {
+            var title = val.title
+            var body = val.body
+            var date = val.date
+            return (
+                <div key={{i}} className="list-notes card-notes mb-3">
+            <div className="card-body my-4 mx-3">
+                <button className="btn-delete float-end"
+                    >
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+                <h5 className="card-title float-none">{title}</h5>
+                <h6>{date}</h6>
+                <p>{body}</p>
+            </div>
+        </div>
+            )            
+        })
         const { title, body, date } = this.state;
         return (
             <div>
@@ -150,12 +195,8 @@ export class Notes extends Component {
 
                         <div className="row mt-3">
                             <div className="col-md-7 col-sm">
-                                <div className="row">
-                                    {/* {
-                                        this.state.notes.map((note) =>{
-                                            return <Note id={note.id} key={note.id} judul={note.judul_note} tanggal={note.tgl_note} isi={note.isi_note} delete={this.deleteNotes}/>
-                                        })
-                                    } */}
+                                <div className="row">                                    
+                                    {listofData}
                                 </div>
                             </div>
                             <div className="col-md-5 col-sm">
