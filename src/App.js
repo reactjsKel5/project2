@@ -11,6 +11,12 @@ import Register from './container/register/register';
 import MenuMM from './container/menuMM/menuMM';
 import Notes from './container/notes/notes';
 import Schedule from './container/schedule/schedule';
+import Task from './container/task/task';
+import Todolist from './container/todolist/todolist';
+import Outcome from './container/outcome/outcome';
+import Income from './container/income/income';
+import Profil from './container/profil/profil';
+import ProfilEdit from './container/profil_edit/profil_edit';
 
 function App() {
   return (
@@ -32,8 +38,13 @@ function App() {
           <Route path='/MoneyManagement' element={<ProtectedRoute><MenuMM/></ProtectedRoute>}/>
           <Route path='/CollegeManagement/Notes' element = {<ProtectedRoute><Notes/></ProtectedRoute>}/>
           <Route path='CollegeManagement/Schedule' element = {<ProtectedRoute><Schedule/></ProtectedRoute>}/>
+          <Route path='CollegeManagement/Task' element = {<ProtectedRoute><Task/></ProtectedRoute>}/>
+          <Route path='CollegeManagement/Todolist' element = {<ProtectedRoute><Todolist/></ProtectedRoute>}/>
+          <Route path='/Pengeluaran' element = {<ProtectedRoute><Outcome/></ProtectedRoute>}/>
+          <Route path='/Pemasukan' element = {<ProtectedRoute><Income/></ProtectedRoute>}/>
+          <Route path='/Profile' element = {<ProtectedRoute><Profil/></ProtectedRoute>}/>
+          <Route path='/editProfile' element = {<ProtectedRoute><ProfilEdit/></ProtectedRoute>}/>
           <Route path='/Register' element={<Register/>}/>
-
         </Routes>
       </AuthContextProvider>
     </div>

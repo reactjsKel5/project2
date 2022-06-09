@@ -1,0 +1,69 @@
+.main {
+    font-family: 'Poppins';
+}
+
+.main h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #FB4F4F;
+}
+
+
+.card-profile-edit {
+    background: #FFFFFF;
+    border: 1px solid #C7C7C7;
+    border-radius: 40px;
+}
+
+.btn-primary {
+    width: 208px;
+    height: 36px;
+    font-size: 17px;
+    font-weight: 600;
+    background: linear-gradient(0deg, #FB4F4F, #FB4F4F);
+    border-radius: 10px;
+    border: none;
+}
+
+.profile-edit .image img {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+}
+
+.profile-edit .form-edit {
+    margin-top: 42px;
+}
+
+.form-edit label {
+    font-weight: 500;
+    font-size: 18px;
+    color: #000000;
+}
+
+.form-edit input {
+    height: 54px;
+    border-radius: 10px;
+}
+
+.profile-edit .btn-outline-danger {
+    width: 208px;
+    border: 1px solid #FB4F4F;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 24px;
+    color: #FB4F4F;
+}
+.profile-edit .btn-outline-danger:hover {
+    color: #FFFFFF;
+}
+
+.profile-edit .btn-danger-profile-edit {
+    width: 208px;
+    background: #FB4F4F;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 24px;
+    color: #FFFFFF;
+}

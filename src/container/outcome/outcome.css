@@ -1,0 +1,131 @@
+* {
+    font-family: 'Poppins', 'Sans-serif';
+}
+
+.outcome-container h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #FB4F4F;
+}
+
+.card-tab-outcome    {
+    width: 346px;
+    background: #FFFFFF;
+    border: 1px solid #CDCDCD;
+    box-sizing: border-box;
+    box-shadow: 19.37px 19.37px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+}
+.outcome-container
+.btn-tab-outcome {
+    background: rgba(201, 95, 80, 0.27);
+    border-radius: 22px;
+}
+
+.card-tab-outcome a {
+    text-decoration: none;
+}
+
+.card-tab-outcome .btn-tab-outcome a {
+    font-weight: 500;
+    font-size: 18px;
+    color: #C95F50;
+    padding: 7px 23px;
+}
+
+.card-tab-outcome .link-to-outcome a {
+    font-weight: 400;
+    font-size: 18px;
+    color: #464646;
+}
+
+.outcome-container h3 {
+    font-size: 22px;
+    color: #464646;
+    font-weight: 600;
+}
+
+.outcome-container h5 {
+    color: #ACACAC;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+/* Insert Income */
+.card-information-insert {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 19.23px 19.23px 15px rgba(38, 50, 56, 0.1);
+    border-radius: 30px;
+}
+
+.category-select {
+    background: #fff;
+    border: 1px solid rgba(196, 196, 196, 0.71) !important;
+    border-radius: 11px;
+    height: 43px;
+    width: 100%;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: left;
+    padding: 6px 24px;
+    color: #6b6b6b;
+}
+
+.add-income .dropdown-category .btn-light:hover {
+    color: #464646;
+}
+
+.add-income input {
+    height: 43px;
+    color: #9F9F9F !important;
+    font-size: 16px;
+    border-radius: 11px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border: 1px solid rgba(196, 196, 196, 0.71);
+}
+
+.outcome-container .btn-danger {
+    background: #FB4F4F;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+    height: 39px;
+    width: 100%;
+}
+
+.date-picker a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #ACACAC;
+}
+
+.date-picker a:hover {
+    color: #FB4F4F;
+}
+
+.content small {
+    font-size: 12px;
+    color: #ACACAC;
+}
+
+.card-income-list {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 19.37px 19.37px 60px rgba(249, 226, 226, 0.5);
+    border-radius: 30px;
+}
+
+.delete button {
+    color: #9a9a9a;
+    border: none;
+    background: none;
+}
+
+.delete button:hover {
+    color: #FB4F4F;
+}

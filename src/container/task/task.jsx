@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Sidebar from "../../components/menubar/sidebar";
 // import Task from "../../component/menubar/taskdel";
 import Topbar from "../../components/menubar/topbar";
-import Taskk from "../../component/task";
+import Taskk from "../../components/task";
 import "./task.css";
 
 class Task extends Component {
@@ -108,11 +108,6 @@ class Task extends Component {
                             <div className="col-md-5 col-sm mb-2">
                                 <div className="card-max">
                                     <div className="card-body px-4">
-                                        {
-                                            this.state.task.map(taskk => {
-                                                return <Taskk key={taskk.id} uid={taskk.uid} jenis={taskk.jenis} tgl_ddline={taskk.tgl_ddline} detail_task={taskk.detail_task} id={taskk.id} delete={this.deleteTask} />
-                                            })
-                                        }
                                     </div>
                                 </div>
                             </div>

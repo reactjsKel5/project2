@@ -1,0 +1,99 @@
+* {
+    font-family: 'Poppins', 'Sans-serif';
+}
+
+.card-todolist {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    border-radius: 22px;
+}
+
+.add-todolist input {
+    height: 61px;
+    color: #9F9F9F !important;
+    font-size: 16px;
+    border-radius: 11px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border: 1px solid rgba(196, 196, 196, 0.71);
+}
+
+.add-todolist button {
+    width: 141px;
+    height: 39px;
+    border-radius: 8px;
+    background: #FB4F4F;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.todolist h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #FB4F4F;
+}
+
+.todolist .form-check-input {
+    border-radius: 50% !important;
+    width: 27px;
+    height: 27px;
+    /* margin-top: -2.5px; */
+}
+
+.todolist .form-check-input:focus {
+    box-shadow: none;
+    border: 2px solid #9F9F9F;
+}
+
+.todolist .form-check-input:checked {
+    border-color: #D7B1D7;
+    background-color: #FB4F4F;
+    /* padding: 13px; */
+}
+
+.todolist label .form-check-label {
+    font-weight: 400;
+    font-size: 16px;
+    color: #464646;
+}
+
+.todolist .btn-delete {
+    border: none;
+    background: transparent !important;
+    font-size: 20px;
+    color: #9F9F9F;
+}
+
+.todolist .btn-delete:hover {
+    color: #FB4F4F;
+    transition: 0.3s;
+}
+
+.btn-light {
+    font-size: 14px;
+    line-height: 24px;
+    text-decoration-line: underline;
+    color: #959595;
+}
+.btn-light:hover {
+    color: #FB4F4F;
+    transition: 0.5s;
+}
+
+@media only screen and (max-width: 600px){
+    .add-todolist {
+        margin-top: 20px;
+    }
+    .todolist {
+        margin-top: 10px;
+    }
+    .add-todolist,
+    .todolist {
+        margin-left: 5%;
+    }
+    .add-todolist button {
+        margin-top: 15px !important;
+        width: 100%;
+    }
+}

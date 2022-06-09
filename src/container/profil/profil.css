@@ -1,0 +1,20 @@
+.profile .card-profile .card-body img {
+  align-items: center;
+  border-radius: 11px 11px 0 0 !important;
+}
+
+.profile .card-profile {
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  box-sizing: border-box;
+  box-shadow: 0px 10px 60px rgba(249, 226, 226, 0.5);
+  border-radius: 30px;
+}
+
+.btn-danger-profile {
+  background: #FB4F4F;
+  border-radius: 10px;
+  width: 208px;
+  font-weight: 500;
+  font-size: 24px;
+  color: #FFFFFF;
+}
