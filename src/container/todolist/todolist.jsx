@@ -4,7 +4,7 @@ import Topbar from "../../components/menubar/topbar";
 import Todo from "../../components/todo";
 import './todolist.css';
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, doc, getDocs, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
 
 class Todolist extends Component {
 
@@ -76,6 +76,20 @@ class Todolist extends Component {
         })
 
         console.log(res);
+    }
+
+    handleStatus = async (id, todos, status) => {
+
+        let updateStatus = (!status).toString();
+        
+        const res = await setDoc(doc(db, "todolist", auth.currentUser.uid, "items", id), {
+            "todos": todos,
+            "status": updateStatus
+        })
+        .then(this.fetchData)
+
+        console.log(res);
+        console.log(updateStatus);
     }
 
     // state = {
@@ -152,11 +166,18 @@ class Todolist extends Component {
     render() {
         var listofData = this.state.allData.map((val, i) => {
             var todos = val.todos
-            var status = val.status
+            var status = (val.status === 'true')
             var id = val.id
             return(
                 <div key={{ i }} className="form-check mx-3 mb-4">
-            <input className="form-check-input" type="checkbox" value="status" id="status" />
+            <input className="form-check-input" type="checkbox" value="status" id="status" 
+                checked = {status}
+                onChange = {
+                () => {
+                    this.handleStatus(id, todos, status)
+                }
+                }
+            />
             <label className="form-check-label ms-3" for="todolist1">
                 {todos}
             </label>
