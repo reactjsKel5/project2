@@ -13,50 +13,127 @@ import {
 } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
+import { auth, db, dbf } from '../../firebase';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
 
 class Dashboard extends Component {
-    state = {
-        schedule: [],
-        task: [],
-        todolist: []
+
+    constructor() {
+        super();
+        // this.userUid = auth.currentUser.uid;
+        // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
+        // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
+        this.user = auth.currentUser.uid;
+        this.state = {
+            allDataTodolist: [],
+            "todos": '',
+            "status": '',
+        };
     }
-    fetchSchedule = () => {
-        fetch('http://localhost:3001/schedule?_sort=id_note8&_order=desc')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    schedule: json
-                })
+
+    fetchData = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "todolist", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(list);
+            this.setState({
+                allDataTodolist: list
             })
+            this.state.allDataTodolist = list;
+            console.log(this.state.allDataTodolist)
+        } catch (e) {
+            console.log(e);
+        }
     }
-    fetchTask = () => {
-        fetch('http://localhost:3001/task?_sort=id_note8&_order=desc')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    task: json
-                })
-            })
+
+    componentDidMount(){
+        
+        this.fetchData();
+        console.log(this.data);
     }
-    fetchTodolist = () => {
-        fetch('http://localhost:3001/todolist?_sort=id_note8&_order=desc')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    todolist: json
-                })
-            })
+
+    handleStatus = async (id, todos, status) => {
+
+        let updateStatus = (!status).toString();
+        
+        const res = await setDoc(doc(db, "todolist", auth.currentUser.uid, "items", id), {
+            "todos": todos,
+            "status": updateStatus
+        })
+        .then(this.fetchData)
+
+        console.log(res);
+        console.log(updateStatus);
     }
-    componentDidMount() {
-        this.fetchSchedule()
-        this.fetchTask()
-        this.fetchTodolist()
-    }
+
+    // state = {
+    //     schedule: [],
+    //     task: [],
+    //     todolist: []
+    // }
+    // fetchSchedule = () => {
+    //     fetch('http://localhost:3001/schedule?_sort=id_note8&_order=desc')
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             this.setState({
+    //                 schedule: json
+    //             })
+    //         })
+    // }
+    // fetchTask = () => {
+    //     fetch('http://localhost:3001/task?_sort=id_note8&_order=desc')
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             this.setState({
+    //                 task: json
+    //             })
+    //         })
+    // }
+    // fetchTodolist = () => {
+    //     fetch('http://localhost:3001/todolist?_sort=id_note8&_order=desc')
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             this.setState({
+    //                 todolist: json
+    //             })
+    //         })
+    // }
+    // componentDidMount() {
+    //     this.fetchSchedule()
+    //     this.fetchTask()
+    //     this.fetchTodolist()
+    // }
 
 
     render() {
+        var listofDataTodolist = this.state.allDataTodolist.map((val, i) => {
+            var todos = val.todos
+            var status = (val.status === 'true')
+            var id = val.id
+            return(
+                <div className="row todolist-item mb-3">
+            <div className="col-auto">
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" value="status" id="checkbox-todolist1" 
+                    checked = {status}
+                    onChange = {
+                    () => {
+                        this.handleStatus(id, todos, status)
+                    }
+                    }
+                    />
+                </div>
+            </div>
+            <div className="col align-self-center">
+                <label htmlFor="checkbox-todolist1">{todos}</label>
+            </div>
+        </div>
+            )})
         return (
-
+            
             <div>
                 <Sidebar />
                 <div className="main">
@@ -79,11 +156,11 @@ class Dashboard extends Component {
                                                 <h4>Mata Kuliah</h4>
                                             </div>
                                         </div>
-                                        {
+                                        {/* {
                                             this.state.schedule.map(data => {
                                                 return <DashboardSchedule key={data.id} waktu_mulai={data.waktu_mulai} waktu_berakhir={data.waktu_berakhir} nama_schedule={data.nama_schedule} />
                                             })
-                                        }
+                                        } */}
                                         <Link to="/CollegeManagement/Schedule">
                                             <button href="#" className="arrow float-end"><ion-icon name="chevron-forward-outline"></ion-icon></button>
                                         </Link>
@@ -92,11 +169,11 @@ class Dashboard extends Component {
                                 <div className="task card mt-3">
                                     <div className="card-body m-4">
                                         <h3 className="mb-5">Today's Task</h3>
-                                        {
+                                        {/* {
                                             this.state.task.map(data => {
                                                 return <DashboardTask key={data.id} detail_task={data.detail_task} tgl_ddline={data.tgl_ddline} />
                                             })
-                                        }
+                                        } */}
                                         <Link to="/CollegeManagement/Task">
                                             <button href="#" className="arrow float-end"><ion-icon name="chevron-forward-outline"></ion-icon></button>
                                         </Link>
@@ -122,11 +199,7 @@ class Dashboard extends Component {
                                             </CircularProgressbarWithChildren>;
                                         </div>
                                         <p className="mb-4">Todolist</p>
-                                        {
-                                            this.state.todolist.map(data => {
-                                                return <DashboardTodolist key={data.id} nama_todo={data.nama_todo} />
-                                            })
-                                        }
+                                        {listofDataTodolist}
                                         <Link to="/CollegeManagement/Todolist">
                                             <button className="btn btn-danger d-inline-block mt-4" onClick={this.insertIncome}>+</button>
                                         </Link>
