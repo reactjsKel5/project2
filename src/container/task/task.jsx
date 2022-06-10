@@ -2,10 +2,93 @@ import React, { Component } from "react";
 import Sidebar from "../../components/menubar/sidebar";
 // import Task from "../../component/menubar/taskdel";
 import Topbar from "../../components/menubar/topbar";
-import Taskk from "../../components/task";
+// import Taskk from "../../components/task";
+import { auth, db } from '../../firebase';
+import { addDoc, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import "./task.css";
 
 class Task extends Component {
+
+    constructor() {
+        super();
+        // this.userUid = auth.currentUser.uid;
+        // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
+        // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
+        this.user = auth.currentUser.uid;
+        this.data = [];
+        this.state = {
+            allData: [],
+            'date': '',
+            "status": 'true',
+            "task": '',
+            "task_category": '',
+        };
+    }
+
+    fetchData = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "task", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(list);
+            this.setState({
+                allData: list
+            })
+            this.state.allData = list;
+            console.log(this.state.allData)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    handleDelete = async (id) => {
+        deleteDoc(doc(db, "task", auth.currentUser.uid, "items", id))
+            .then(
+                this.fetchData()
+            )
+    }
+
+    componentDidMount() {
+
+        this.fetchData();
+        console.log(this.data);
+    }
+
+    onChange = (e) => {
+        const state = this.state
+        // const current = new Date();
+        // const date = `${current.getDay()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+        state[e.target.name] = e.target.value;
+        // state['date'] = date;
+        this.setState(state);
+    }
+
+    onSubmit = async (e) => {
+        e.preventDefault();
+
+        const { date, status, task, task_category } = this.state;
+        const res = await addDoc(collection(db, "task", auth.currentUser.uid, "items"), {
+            "date": date,
+            "status": status,
+            "task": task,
+            "task_category": task_category
+        })
+            .then(
+                this.fetchData()
+            )
+            .then((docRef) => {
+                this.setState({
+                    date: "",
+                    status: "",
+                    task: "",
+                    task_category: ""
+                })
+            })
+        console.log(res);
+    }
+
     // state = {
     //     task: [],
     //     insertTaskk: {
@@ -65,6 +148,30 @@ class Task extends Component {
     // }
 
     render() {
+        var listofData = this.state.allData.map((val, i) => {
+            var date = val.date
+            var status = val.status
+            var task = val.task
+            var task_category = val.task_category
+            var id = val.id
+            return (
+                <div className="form-check mb-3">
+                    <input className="form-check-input" type="checkbox" value="status" id="status" />
+                    <label className="form-check-label ms-3" for="task1">
+                        <h6 className="card-title float-none"><b>{task_category}</b></h6>
+                        <h6>{task}</h6>
+                        <p>{date}</p>
+                    </label>
+                    <button className="btn-delete-task float-end">
+                        <ion-icon name="trash-outline" onClick={() => {
+                            this.handleDelete(id)
+                        }}></ion-icon>
+                    </button>
+                </div>
+            )
+        })
+
+
         return (
             <div>
                 <Sidebar />
@@ -77,7 +184,7 @@ class Task extends Component {
                             <div className="card-body">
                                 <form action="submit" className="m-2 row">
                                     <div className="col">
-                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Ketikkan disini ..." onChange={this.handleChangeInsert} />
+                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Ketikkan disini ..." />
                                     </div>
                                     <div className="col-md-auto col-sm align-self-center">
                                         <button className="btn btn-danger d-inline-block" >Cari</button>
@@ -90,16 +197,16 @@ class Task extends Component {
                                 <div className="card-min">
                                     <div className="card-body my-4 mx-3">
                                         <form action="submit" className="m-2">
-                                            <select class="form-select text-secondary my-3 px-4" name="jenis" id="jenis" onChange={this.handleChangeInsert}>
+                                            <select class="form-select text-secondary my-3 px-4" name="task_category" id="task_category" onChange={this.onChange}>
                                                 <option value="0">--</option>
                                                 <option value="Quiz">Quiz</option>
                                                 <option value="Assignment">Assignment</option>
                                             </select>
-                                            <input type="date" className="form-control px-4" name="tgl_ddline" id="tgl_ddline" onChange={this.handleChangeInsert} />
+                                            <input type="date" className="form-control px-4" name="date" id="date" onChange={this.onChange} />
 
-                                            <textarea type="text" className="form-control px-4 my-3" placeholder="Detail" name="detail_task" id="detail_task" onChange={this.handleChangeInsert} />
+                                            <textarea type="text" className="form-control px-4 my-3" placeholder="Detail" name="task" id="task" onChange={this.onChange} />
 
-                                            <button className="btn btn-primary d-inline-block" onClick={this.insertTask}>Tambah</button>
+                                            <button className="btn btn-primary d-inline-block" onClick={this.onSubmit}>Tambah</button>
 
                                         </form>
                                     </div>
@@ -108,10 +215,10 @@ class Task extends Component {
                             <div className="col-md-5 col-sm mb-2">
                                 <div className="card-max">
                                     <div className="card-body px-4">
+                                        {listofData}
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
