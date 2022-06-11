@@ -129,3 +129,56 @@
 .delete button:hover {
     color: #FB4F4F;
 }
+
+/* show nominal income */
+.card-total-pemasukan {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 19.23px 19.23px 15px rgba(38, 50, 56, 0.1);
+    border-radius: 30px;
+}
+.card-total-pemasukan h3{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    color: #464646;  
+
+}
+
+.card-presentase {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 19.23px 19.23px 15px rgba(38, 50, 56, 0.1);
+    border-radius: 30px;
+}
+
+/* Show saldo balance */
+.card-saldo-balance{
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+    box-shadow: 19.23px 19.23px 15px rgba(38, 50, 56, 0.1);
+    border-radius: 30px;
+}
+.card-saldo-balance h1{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 27px;
+}
+.card-saldo-balance hr{
+    width: 600px;
+    margin-left: 290px;
+
+}
+.card-saldo-balance button{
+    background: #fff;
+    border-radius: 50%;
+    font-size: 25px;
+    width: 30px;
+    height: 30px;
+    color: black;
+    font-weight: 600;
+    border: none;
+}
