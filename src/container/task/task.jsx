@@ -4,7 +4,7 @@ import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 // import Taskk from "../../components/task";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc } from 'firebase/firestore';
 import "./task.css";
 
 class Task extends Component {
@@ -61,6 +61,7 @@ class Task extends Component {
         // const current = new Date();
         // const date = `${current.getDay()}/${current.getMonth() + 1}/${current.getFullYear()}`;
         state[e.target.name] = e.target.value;
+        state['status'] = 'false';
         // state['date'] = date;
         this.setState(state);
     }
@@ -87,6 +88,21 @@ class Task extends Component {
                 })
             })
         console.log(res);
+    }
+
+    changeStatus = async (id, task_category, task, date, status) => {
+        let updateStatus = (!status).toString();
+        
+        const res = await setDoc(doc(db, "task", auth.currentUser.uid, "items", id), {
+            "task_category": task_category,
+            "task": task,
+            "date": date,
+            "status": updateStatus
+        })
+        .then(this.fetchData)
+
+        console.log(res);
+        console.log(updateStatus);
     }
 
     // state = {
@@ -150,13 +166,19 @@ class Task extends Component {
     render() {
         var listofData = this.state.allData.map((val, i) => {
             var date = val.date
-            var status = val.status
+            var status = (val.status === 'true')
             var task = val.task
             var task_category = val.task_category
             var id = val.id
             return (
                 <div className="form-check mb-3">
-                    <input className="form-check-input" type="checkbox" value="status" id="status" />
+                    <input className="form-check-input" type="checkbox" value="status" id="status"
+                    checked= {status}
+                    onChange = {
+                        () => {
+                            this.changeStatus(id, task_category, task, date, status)
+                        }
+                    } />
                     <label className="form-check-label ms-3" for="task1">
                         <h6 className="card-title float-none"><b>{task_category}</b></h6>
                         <h6>{task}</h6>
