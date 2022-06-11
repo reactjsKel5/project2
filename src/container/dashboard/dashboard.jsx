@@ -26,12 +26,13 @@ class Dashboard extends Component {
         this.user = auth.currentUser.uid;
         this.state = {
             allDataTodolist: [],
-            "todos": '',
-            "status": '',
+            allDataTask: [],
+            // "todos": '',
+            // "status": '',
         };
     }
 
-    fetchData = async () => {
+    fetchTodos = async () => {
         var list = [];
         try {
             const querySnapshot = await getDocs(collection(db, "todolist", auth.currentUser.uid, "items"));
@@ -49,9 +50,28 @@ class Dashboard extends Component {
         }
     }
 
+    fetchTask = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "task", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(list);
+            this.setState({
+                allDataTask: list
+            })
+            this.state.allDataTask = list;
+            console.log(this.state.allDataTask)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount(){
         
-        this.fetchData();
+        this.fetchTodos();
+        this.fetchTask();
         console.log(this.data);
     }
 
@@ -132,6 +152,36 @@ class Dashboard extends Component {
             </div>
         </div>
             )})
+
+                var listofDataTask = this.state.allDataTask.map((val, i) => {
+                    var date = val.date
+                    var status = val.status
+                    var task = val.task
+                    var task_category = val.task_category
+                    var id = val.id
+
+                    return (
+                        <div className="row task px-3 mb-3">
+                            <div className="col-auto">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="status" id="checkbox1" />
+                                    </div>
+                                    </div>
+                                    <div className="col task-item">
+                                        <label for="checkbox1">{task_category}</label>
+                                        <div className="row">
+                                            <div className="col">
+                                                <p>{task}</p>
+                                                </div>
+                                                <div className="col-auto">
+                                                    <p>{date}</p>
+                                                    </div>
+                                        </div>
+                                    </div>
+                            </div>
+                                        )
+                                    })
+
         return (
             
             <div>
@@ -169,6 +219,7 @@ class Dashboard extends Component {
                                 <div className="task card mt-3">
                                     <div className="card-body m-4">
                                         <h3 className="mb-5">Today's Task</h3>
+                                        {listofDataTask}
                                         {/* {
                                             this.state.task.map(data => {
                                                 return <DashboardTask key={data.id} detail_task={data.detail_task} tgl_ddline={data.tgl_ddline} />
