@@ -89,6 +89,22 @@ class Dashboard extends Component {
         console.log(updateStatus);
     }
 
+    changeStatus = async (id, task_category, task, date, status) => {
+        let updateStatus = (!status).toString();
+        
+        const res = await setDoc(doc(db, "task", auth.currentUser.uid, "items", id), {
+            "task_category": task_category,
+            "task": task,
+            "date": date,
+            "status": updateStatus
+        })
+        .then(this.fetchData)
+
+        console.log(res);
+        console.log(updateStatus);
+    }
+
+
     // state = {
     //     schedule: [],
     //     task: [],
@@ -155,7 +171,7 @@ class Dashboard extends Component {
 
                 var listofDataTask = this.state.allDataTask.map((val, i) => {
                     var date = val.date
-                    var status = val.status
+                    var status = (val.status === 'true')
                     var task = val.task
                     var task_category = val.task_category
                     var id = val.id
@@ -164,7 +180,13 @@ class Dashboard extends Component {
                         <div className="row task px-3 mb-3">
                             <div className="col-auto">
                                 <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="status" id="checkbox1" />
+                                    <input className="form-check-input" type="checkbox" value="status" id="checkbox1" 
+                                    checked= {status}
+                                    onChange = {
+                                        () => {
+                                            this.changeStatus(id, task_category, task, date, status)
+                                        }
+                                    }/>
                                     </div>
                                     </div>
                                     <div className="col task-item">
