@@ -116,6 +116,7 @@ export class Notes extends Component {
             .then(this.fetchData)
             .then((docRef) => {
                 this.setState({
+                    keyData: "",
                     title: "",
                     body: "",
                     date: ""
