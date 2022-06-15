@@ -26,8 +26,8 @@ class Todolist extends Component {
         try {
             const querySnapshot = await getDocs(collection(db, "todolist", auth.currentUser.uid, "items"));
             querySnapshot.forEach((doc) => {
-                list.push({...doc.data(), id: doc.id});
-            });            
+                list.push({ ...doc.data(), id: doc.id });
+            });
             console.log(list);
             this.setState({
                 allData: list
@@ -39,8 +39,8 @@ class Todolist extends Component {
         }
     }
 
-    componentDidMount(){
-        
+    componentDidMount() {
+
         this.fetchData();
         console.log(this.data);
     }
@@ -67,13 +67,13 @@ class Todolist extends Component {
             "todos": todos,
             "status": status
         })
-        .then(this.fetchData)
-        .then((docRef) => {
-            this.setState({
-                todos: "",
-                status: "",
+            .then(this.fetchData)
+            .then((docRef) => {
+                this.setState({
+                    todos: "",
+                    status: "",
+                })
             })
-        })
 
         console.log(res);
     }
@@ -81,12 +81,12 @@ class Todolist extends Component {
     handleStatus = async (id, todos, status) => {
 
         let updateStatus = (!status).toString();
-        
+
         const res = await setDoc(doc(db, "todolist", auth.currentUser.uid, "items", id), {
             "todos": todos,
             "status": updateStatus
         })
-        .then(this.fetchData)
+            .then(this.fetchData)
 
         console.log(res);
         console.log(updateStatus);
@@ -168,44 +168,36 @@ class Todolist extends Component {
             var todos = val.todos
             var status = (val.status === 'true')
             var id = val.id
-            return(
+            return (
                 <div key={{ i }} className="form-check mx-3 mb-4">
-            <input className="form-check-input" type="checkbox" value="status" id="status" 
-                checked = {status}
-                onChange = {
-                () => {
-                    this.handleStatus(id, todos, status)
-                }
-                }
-            />
-            <label className="form-check-label ms-3" for="todolist1">
-                {todos}
-            </label>
-            <button className="btn-delete float-end" 
-            onClick={
-                () => {
-                    this.handleDelete(id)
-                }
-            }>
-                <ion-icon name="trash-outline"></ion-icon>
-            </button>
-            <button className="btn-delete float-end"
-                        // onClick={
-                        //     () => {
-                        //         this.updateNote()
-                        //     }
-                        // }
-                        >
-                            <ion-icon name="create-outline"></ion-icon>
-                        </button>
-        </div>
+                    <input className="form-check-input" type="checkbox" value="status" id="status"
+                        checked={status}
+                        onChange={
+                            () => {
+                                this.handleStatus(id, todos, status)
+                            }
+                        }
+                    />
+                    <label className="form-check-label ms-3" for="todolist1">
+                        {todos}
+                    </label>
+                    <button className="btn-delete float-end"
+                        onClick={
+                            () => {
+                                this.handleDelete(id)
+                            }
+                        }>
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </button>
+
+                </div>
             )
         })
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar/>
+                    <Topbar />
 
                     {/* Tulis content di bawah sini */}
                     <div className="m-md-5">
@@ -228,7 +220,7 @@ class Todolist extends Component {
                                 <div className="card-body m-4">
                                     <div className="row d-flex">
                                         <div className="col">
-                                        <h2 className="mb-4">Today's To-dos</h2>
+                                            <h2 className="mb-4">Today's To-dos</h2>
                                         </div>
                                         <div className="col text-end">
                                             <button className="btn btn-light" onClick={this.handleDelete}>Hapus semua</button>
