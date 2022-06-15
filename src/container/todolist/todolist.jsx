@@ -189,6 +189,15 @@ class Todolist extends Component {
             }>
                 <ion-icon name="trash-outline"></ion-icon>
             </button>
+            <button className="btn-delete float-end"
+                        // onClick={
+                        //     () => {
+                        //         this.updateNote()
+                        //     }
+                        // }
+                        >
+                            <ion-icon name="create-outline"></ion-icon>
+                        </button>
         </div>
             )
         })

@@ -173,6 +173,17 @@ export class Notes extends Component {
                             }>
                             <ion-icon name="close-outline"></ion-icon>
                         </button>
+
+                        <button className="btn-delete float-end"
+                        // onClick={
+                        //     () => {
+                        //         this.updateNote()
+                        //     }
+                        // }
+                        >
+                            <ion-icon name="create-outline"></ion-icon>
+                        </button>
+                        
                         <h5 className="card-title float-none">{title}</h5>
                         <h6>{date}</h6>
                         <p>{body}</p>

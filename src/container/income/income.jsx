@@ -171,6 +171,7 @@ class Income extends Component {
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
+                        <img src={require('./gaji.png')} alt="category-logo" />
 
                     </div>
                     <div className="col nama-pemasukan align-self-center">
