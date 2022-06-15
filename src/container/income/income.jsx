@@ -254,7 +254,7 @@ class Income extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-                                        <div className="card-total-pemasukan mb-3">
+                                        {/* <div className="card-total-pemasukan mb-3">
                                             <div className="card-body mx-2 my-1">
                                                 <h5>Total pemasukan</h5>
                                                 <div className="row  ">
@@ -267,30 +267,30 @@ class Income extends Component {
 
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
 
 
 
-                                        <div className="card-presentase mb-2">
-                                            <div className="card-body mx-2 my-1">
-                                                <h3>Chart</h3>
-                                                <h5>Presentase pemasukan</h5>
-                                                <div className="row d-flex mt-4">
-                                                    <div className="col-md-auto col-sm">
-                                                        <img src={require('./advanced.png')} alt="chart" />
-                                                    </div>
-                                                    <div className="col align-self-center">
-                                                        <ul>
-                                                            <li>Gaji</li>
-                                                            <li>Orang Tua</li>
-                                                            <li>Hadiah</li>
-                                                            <li>Investasi</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                        {/* <div className="card-presentase mb-2">
+                                            <div className="card-body mx-2 my-1"> */}
+                                        <h3>Chart</h3>
+                                        <h5>Presentase pemasukan</h5>
+                                        <div className="row d-flex mt-4">
+                                            <div className="col-md-auto col-sm">
+                                                <img src={require('./advanced.png')} alt="chart" />
+                                            </div>
+                                            <div className="col align-self-center">
+                                                <ul>
+                                                    <li>Gaji</li>
+                                                    <li>Orang Tua</li>
+                                                    <li>Hadiah</li>
+                                                    <li>Investasi</li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                    {/* </div>
+                                    </div> */}
                                     <div className="col add-income ps-5">
                                         <div className="row mb-3">
                                             <div className="col">

@@ -67,7 +67,7 @@ class Outcome extends Component {
 
         const { category, date, outcome, title } = this.state;
         const res = await addDoc(collection(db, "outcome", auth.currentUser.uid, "items"), {
-            "category":category,
+            "category": category,
             "date": date,
             "outcome": outcome,
             "title": title
@@ -179,16 +179,16 @@ class Outcome extends Component {
                     </div>
                     <div className="col-auto delete align-self-center">
                         <button
-                        onClick={
-                            () => {
-                                this.handleDelete(id)
-                            }
-                        }>
+                            onClick={
+                                () => {
+                                    this.handleDelete(id)
+                                }
+                            }>
                             <ion-icon name="trash-outline"></ion-icon>
                         </button>
                     </div>
                 </div>
-              )
+            )
         })
         return (
             <div>
@@ -228,7 +228,7 @@ class Outcome extends Component {
 
                                     </div>
                                     <div>
-                                    <hr className="mt-2 text-center d-flex justify-content-center" />
+                                        <hr className="mt-2 text-center d-flex justify-content-center" />
                                     </div>
                                 </div>
                                 <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
@@ -251,7 +251,7 @@ class Outcome extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-                                        <div className="card-total-pemasukan mb-3">
+                                        {/* <div className="card-total-pemasukan mb-3">
                                             <div className="card-body mx-2 my-1">
                                                 <h5>Total pengeluaran</h5>
                                                 <div className="row  ">
@@ -263,11 +263,11 @@ class Outcome extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
+                                            </div> */}
 
-                        <div className="card-presentase mb-2">
+                                        {/* <div className="card-presentase mb-2">
                             <div className="card-body mx-2 my-1">
-            
+             */}
                                         <h3>Chart</h3>
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
@@ -284,8 +284,8 @@ class Outcome extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
-                                    </div>
+                                    {/* </div>
+                                    </div> */}
 
                                     <div className="col add-income ps-5">
                                         <div className="row mb-3">
