@@ -5,8 +5,48 @@ import './profil.css'
 
 import ProfileProps from "../../components/profilprops";
 import {Link} from "react-router-dom";
+import { auth, db, dbf } from '../../firebase';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
 
 class Profil extends Component {
+
+    constructor() {
+        super();
+        // this.userUid = auth.currentUser.uid;
+        // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
+        // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
+        this.user = auth.currentUser.uid;
+        this.state = {
+            allData: [],
+            "nama": '',
+            "email": '',
+            "nohp": '',
+        };
+    }
+
+    fetchData = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(list);
+            this.setState({
+                allData: list
+            })
+            this.state.allData = list;
+            console.log(this.state.allData)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    componentDidMount(){
+        
+        this.fetchData();
+        console.log(this.data);
+    }
 
     // state = {
     //     profile: []
@@ -27,6 +67,40 @@ class Profil extends Component {
     // }
 
     render() {
+        var listofData = this.state.allData.map((val, i) => {
+            var nama = val.nama
+            var email = val.email
+            var nohp = val.nohp
+            return(
+                <div key={{ i }} className="row p-4">
+            <div className="text-center mb-5">
+                <img src={require('../../img/profile1.png')} width="170" alt="profile" />
+            </div>
+            <div class="mb-1">
+                <p class="profile-title float-start">Nama Lengkap</p>
+                <p class="profile-title float-end">
+                    {nama}
+                </p>
+            </div>
+
+            <hr className="mb-4" />
+            <div class="mb-1">
+                <p class="profile-title float-start">Email</p>
+                <p class="profile-value float-sm-end">
+                    {email}
+
+                </p>
+            </div>
+            <hr className="mb-4" />
+            <div class="mb-4">
+                <p class="profile-title float-start">Nomor Telepon</p>
+                <p class="profile-value float-sm-end">
+                    {nohp}
+                </p>
+            </div>
+        </div>
+            )
+        })
         return (
             <div>
                 <Sidebar />
@@ -47,6 +121,7 @@ class Profil extends Component {
                                                     return <ProfileProps key={profile.uid} id={profile.uid} nama_lengkap={profile.nama_lengkap} email={profile.email} no_hp={profile.no_hp} />
                                                 })
                                             } */}
+                                            {listofData}
                                         </div>
                                     </div>
                                 </div>
