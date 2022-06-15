@@ -20,6 +20,7 @@ export class Notes extends Component {
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            keyData: '',
             allData: [],
             "title": '',
             "body": '',
@@ -90,6 +91,38 @@ export class Notes extends Component {
         console.log(res);
     }
 
+    handleHookUpdate = (keyNote, titleNote, bodyNote) => {
+
+        this.setState({
+            keyData: keyNote,
+            title: titleNote,
+            body: bodyNote
+        })
+
+        console.log(this.state.keyData);
+
+    }
+
+    handleUpdate = async (event) => {
+
+        event.preventDefault();
+
+        const { title, body } = this.state;
+
+        const res = await setDoc(doc(db, "notes", auth.currentUser.uid, "items", this.state.keyData), {
+            "title": title,
+            "body": body
+        })
+            .then(this.fetchData)
+            .then((docRef) => {
+                this.setState({
+                    title: "",
+                    body: "",
+                    date: ""
+                })
+            })
+    }
+
     // state = {
     //     notes: [],
     //     insertNote : {
@@ -157,6 +190,8 @@ export class Notes extends Component {
 
     render() {
 
+        const { title, body } = this.state;
+
         var listofData = this.state.allData.map((val, i) => {
             var title = val.title
             var body = val.body
@@ -175,15 +210,15 @@ export class Notes extends Component {
                         </button>
 
                         <button className="btn-delete float-end"
-                        // onClick={
-                        //     () => {
-                        //         this.updateNote()
-                        //     }
-                        // }
+                            onClick={
+                                () => {
+                                    this.handleHookUpdate(id, title, body);
+                                }
+                            }
                         >
                             <ion-icon name="create-outline"></ion-icon>
                         </button>
-                        
+
                         <h5 className="card-title float-none">{title}</h5>
                         <h6>{date}</h6>
                         <p>{body}</p>
@@ -191,6 +226,12 @@ export class Notes extends Component {
                 </div>
             )
         })
+
+        // var buttonNote = (if (this.state.keyData == '') {
+        //     return(<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>)
+        // } else {
+        //     return(<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Simpan</button>)
+        // })
 
         return (
             <div>
@@ -209,15 +250,13 @@ export class Notes extends Component {
                                         className="form-control px-4"
                                         name="nama_todo"
                                         id="nama_todo"
-                                        placeholder={this.user} />
+                                        placeholder="Search" />
                                 </div>
                                 <div className="col-md-auto col-sm align-self-center">
                                     <button className="btn btn-danger d-inline-block">
                                         Cari</button>
                                 </div>
                             </form>
-                            {/* </div>
-                            </div> */}
                         </div>
 
                         <div className="row mt-3">
@@ -230,12 +269,15 @@ export class Notes extends Component {
                                 <div className="add-notes card-notes">
                                     <div className="card-body my-4 mx-3">
                                         <form action="submit">
-                                            <input type="text" className="form-control px-4 mb-3" name="title" id="name" placeholder="Judul Note" onChange={this.onChange} />
+                                            <input type="text" className="form-control px-4 mb-3" name="title" id="name" placeholder="Judul Note" onChange={this.onChange} value={title} />
                                             <div className="form-floating">
-                                                <textarea className="form-control px-4 mb-3" name="body" id="body" placeholder="isi_note" onChange={this.onChange}></textarea>
+                                                <textarea className="form-control px-4 mb-3" name="body" id="body" placeholder="isi_note" onChange={this.onChange} value={body}></textarea>
                                                 <label for="isi_note" className="text-secondary">Deskripsi Note</label>
                                             </div>
-                                            <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>
+                                            {
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+                                            }
+                                            {/* <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button> */}
                                         </form>
                                     </div>
                                 </div>
