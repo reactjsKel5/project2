@@ -27,6 +27,7 @@ class Dashboard extends Component {
         this.state = {
             allDataTodolist: [],
             allDataTask: [],
+            allDataSchedule: [],
             // "todos": '',
             // "status": '',
         };
@@ -68,10 +69,29 @@ class Dashboard extends Component {
         }
     }
 
+    fetchSchedule = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "schedule", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(list);
+            this.setState({
+                allDataSchedule: list
+            })
+            this.state.allDataSchedule = list;
+            console.log(this.state.allDataSchedule)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount(){
         
         this.fetchTodos();
         this.fetchTask();
+        this.fetchSchedule();
         console.log(this.data);
     }
 
@@ -204,6 +224,28 @@ class Dashboard extends Component {
                                         )
                                     })
 
+                                    var listofDataSchedule = this.state.allDataSchedule.map((val, i) => {
+                                        var day = val.day
+                                        var timeend = val.timeend
+                                        var timestart = val.timestart
+                                        var topic = val.topic
+                                        return (
+                                            <div class="row text-secondary mb-1">
+                                                <div class="col-4">
+                                                    <p>{timestart} - {timeend}</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p>{topic}</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button className="btn-delete float-end">
+                                                        <ion-icon name="close-outline"></ion-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+
         return (
             
             <div>
@@ -220,6 +262,7 @@ class Dashboard extends Component {
                                 <div className="schedule card">
                                     <div className="card-body m-4">
                                         <h3>Today's Schedule</h3>
+                                        {listofDataSchedule}
                                         <div className="row mt-5 title">
                                             <div className="col-md-4 col-sm time">
                                                 <h4>Waktu</h4>
@@ -228,6 +271,7 @@ class Dashboard extends Component {
                                                 <h4>Mata Kuliah</h4>
                                             </div>
                                         </div>
+                                       
                                         {/* {
                                             this.state.schedule.map(data => {
                                                 return <DashboardSchedule key={data.id} waktu_mulai={data.waktu_mulai} waktu_berakhir={data.waktu_berakhir} nama_schedule={data.nama_schedule} />

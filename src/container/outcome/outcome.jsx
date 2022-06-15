@@ -169,7 +169,7 @@ class Outcome extends Component {
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        {/* <img src={require('./img/gaji.png')} alt="category-logo"/> */}
+                        <img src={require('./gaji.png')} alt="category-logo"/>
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
