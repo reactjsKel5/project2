@@ -1,95 +1,109 @@
-import { Component } from "react";
-import { Link } from "react-router-dom";
+import { Component, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import pictRegist from "../../img/pict-regist.png";
-import "./register.css"
+import "./register.css";
+import { UserAuth } from "../../context/AuthContext";
 
-class Register extends Component {
-    state ={
-        profile: [],
-        insertprofile: {
-            id:'',
-            nama_lengkap:'',
-            no_hp:'',
-            email:'',
-            password:''
+const Register = () => {
+    const [email, setEmail] = useState("");
+    const [nama, setNama] = useState("");
+    const [nohp, setNohp] = useState("");
+    const [error, setError] = useState("");
+    const [password, setPassword] = useState("");
+    const { register } = UserAuth();
+    let navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        try {
+            await register(email, nama, nohp, password);
+            navigate('/')
         }
-    }
+        catch (err) {
+            setError(err.message);
+            console.log(err.message);
+        }
+    };
+
+
+
+
     //menampilkan data mahasiswa
-    ambilDataDariAPI = () => {
-        fetch('http://localhost:3001/profile')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    profile: json
-                })
-            })
-    }
+    // ambilDataDariAPI = () => {
+    //     fetch('http://localhost:3001/profile')
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             this.setState({
+    //                 profile: json
+    //             })
+    //         })
+    // }
 
     //insertdata user
-    handleInsertData = (event) =>{
-        let forminsertprofile = {...this.state.insertprofile};
-        let timestamp = new Date().getTime();
-        forminsertprofile['id']= timestamp;
-        forminsertprofile[event.target.name] = event.target.value;
-        this.setState({
-            insertprofile: forminsertprofile
-        });
-    }
+    // handleInsertData = (event) =>{
+    //     let forminsertprofile = {...this.state.insertprofile};
+    //     let timestamp = new Date().getTime();
+    //     forminsertprofile['id']= timestamp;
+    //     forminsertprofile[event.target.name] = event.target.value;
+    //     this.setState({
+    //         insertprofile: forminsertprofile
+    //     });
+    // }
 
     //tombol insert data
-    handleTombolDaftar = (event) => {
-        event.preventDefault();
-        fetch('http://localhost:3001/profile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.state.insertprofile)
-        })
-        .then(respose => Response.json())
-        .then(json => this.ambilDataDariAPI)
-    }
+    // handleTombolDaftar = (event) => {
+    //     event.preventDefault();
+    //     fetch('http://localhost:3001/profile', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(this.state.insertprofile)
+    //     })
+    //     .then(respose => Response.json())
+    //     .then(json => this.ambilDataDariAPI)
+    // }
 
-    render() {
-        return (
-            
-            <div>
-                <main>
-                    <div className="row register">
-                        <div className="col col-left p-5 text-center ">
-                            <img src={pictRegist} className="m-auto" alt="gambar-regist" />
-                            <h5>Mulai Atur Gaya Hidupmu</h5>
-                            <h3>Sekarang</h3>
-                        </div>
+    return (
 
-                        <div className="col col-left text-center">
-                            <div className="card-register">
-                                <div className="card-body m-4">
-                                    <h3>Buat Akun Baru</h3>
-                                    <p>Lengkapi Data Diri Anda</p>
-                                    
-                                    <form >
-                                        <input type="text" placeholder="Masukkan Nama Lengkap" className="form-control mb-4 mt-5" id="nama_lengkap" name="nama_lengkap"  onChange={this.handleInsertData}/>
-                                        <input type="text" placeholder="Masukkan Nomor Telephone" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={this.handleInsertData}/>
-                                        <input type="text" placeholder="Masukkan Email Anda" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={this.handleInsertData} />
-                                        <input type="password" placeholder="Masukkan Password" className="form-control mb-4" id="password" name="password" onChange={this.handleInsertData} />
+        <div>
+            <main>
+                <div className="row register">
+                    <div className="col col-left p-5 text-center ">
+                        <img src={pictRegist} className="m-auto" alt="gambar-regist" />
+                        <h5>Mulai Atur Gaya Hidupmu</h5>
+                        <h3>Sekarang</h3>
+                    </div>
 
-                                        <p className="to-login mt-5">Sudah punya akun? <Link to="/login"><a>Login</a></Link></p>
-                                        <button type="submit" className="btn btn-primary" onClick={this.handleTombolDaftar}>DAFTAR</button>
+                    <div className="col col-left text-center">
+                        <div className="card-register">
+                            <div className="card-body m-4">
+                                <h3>Buat Akun Baru</h3>
+                                <p>Lengkapi Data Diri Anda</p>
+
+                                <form onSubmit={handleSubmit}>
+                                    <input type="text" placeholder="Masukkan Nama Lengkap" className="form-control mb-4 mt-5" id="nama_lengkap" name="nama_lengkap" onChange={(e) => setNama(e.target.value)} />
+                                    <input type="text" placeholder="Masukkan Nomor Telephone" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={(e) => setNohp(e.target.value)} />
+                                    <input type="text" placeholder="Masukkan Email Anda" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={(e) => setEmail(e.target.value)} />
+                                    <input type="password" placeholder="Masukkan Password" className="form-control mb-4" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+
+                                    <p className="to-login mt-5">Sudah punya akun? <Link to="/login"><a>Login</a></Link></p>
+                                    <button type="Submit" className="btn btn-primary" onClick={handleSubmit}>DAFTAR</button>
 
 
-                                    </form>
-                                </div>
+                                </form>
                             </div>
-
                         </div>
 
                     </div>
-                </main>
-            </div>
 
-        )
-    }
+                </div>
+            </main>
+        </div>
+
+    );
+
 
 }
 export default Register;
