@@ -3,13 +3,14 @@ import IncomeList from "../../components/incomeList";
 import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc } from 'firebase/firestore';
 import './income.css';
 import {
     Link
 } from "react-router-dom";
 import { async } from "@firebase/util";
 
+//update untuk category blum muncul
 class Income extends Component {
     constructor() {
         super();
@@ -17,6 +18,7 @@ class Income extends Component {
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            keyData: '',
             allData: [],
             'category': '',
             'date': '',
@@ -42,6 +44,7 @@ class Income extends Component {
             console.log(e);
         }
     }
+
     handleDelete = async (id) => {
         deleteDoc(doc(db, "income", auth.currentUser.uid, "items", id))
             .then(
@@ -57,7 +60,10 @@ class Income extends Component {
 
     onChange = (e) => {
         const state = this.state
+        const current = new Date();
+        // const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
         state[e.target.name] = e.target.value;
+        // state['date'] = date;
         this.setState(state);
     }
 
@@ -84,6 +90,39 @@ class Income extends Component {
                 })
             })
         console.log(res);
+    }
+    // , categoryIncome,
+    handleHookUpdate = (keyIncome, incomeIncome, titleIncome) => {
+
+        this.setState({
+            keyData: keyIncome,
+            // category: categoryIncome,
+            income: incomeIncome,
+            title: titleIncome
+        })
+
+        console.log(this.state.keyData);
+    }
+
+    handleUpdate = async (event) => {
+        event.preventDefault();
+
+        const { income, title } = this.state;
+
+        const res = await setDoc(doc(db, "income", auth.currentUser.uid, "items", this.state.keyData), {
+            // "category": category,
+            "income": income,
+            "title": title
+        })
+            .then(this.fetchData)
+            .then((docRef) => {
+                this.setState({
+                    keyData: "",
+                    // category: "",
+                    income: "",
+                    title: ""
+                })
+            })
     }
 
 
@@ -161,6 +200,9 @@ class Income extends Component {
     // }
 
     render() {
+
+        const { income, title } = this.state;
+
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
             var date = val.date
@@ -169,6 +211,7 @@ class Income extends Component {
             var id = val.id
 
             return (
+                // <div key={{ i }} className="list-income card-incomes mb3">
                 <div className="income-item row mt-4">
                     <div className="col-auto">
                         <img src={require('./gaji.png')} alt="category-logo" />
@@ -181,6 +224,9 @@ class Income extends Component {
                         <p className="m-0">{income}</p>
 
                     </div>
+                    {/* </div> */}
+
+
                     <div className="col-auto delete align-self-center">
                         <button onClick={
                             () => {
@@ -188,6 +234,15 @@ class Income extends Component {
                             }
                         }>
                             <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                        <button className="btn-delete float-end"
+                            onClick={
+                                () => {
+                                    this.handleHookUpdate(id, income, title);
+                                }
+                            }
+                        >
+                            <ion-icon name="create-outline"></ion-icon>
                         </button>
                     </div>
                 </div>
@@ -310,9 +365,15 @@ class Income extends Component {
                                                 <option value="investasi">Investasi</option>
                                                 <option value="lain">Lain-Lain</option>
                                             </select>
-                                            <input type="number" className="form-control px-4 mb-3" name="income" id="income" placeholder="Jumlah (Rp.)" onChange={this.onChange} />
-                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} />
-                                            <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>
+                                            <input type="number" className="form-control px-4 mb-3" name="income" id="income" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={income} />
+                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
+
+                                            {
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+
+
+                                            }
+
                                         </form>
                                     </div>
                                 </div>
