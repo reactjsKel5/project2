@@ -14,7 +14,10 @@ import {
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, doc, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where } from 'firebase/firestore';
+import moment from "moment";
+import 'moment/locale/id';
+import 'moment/min/moment-with-locales';
 
 class Dashboard extends Component {
 
@@ -24,6 +27,7 @@ class Dashboard extends Component {
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
         this.user = auth.currentUser.uid;
+        this.day = moment().format('dddd');
         this.state = {
             allDataTodolist: [],
             allDataTask: [],
@@ -73,7 +77,7 @@ class Dashboard extends Component {
     fetchSchedule = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "schedule", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -303,8 +307,7 @@ class Dashboard extends Component {
                             <div className="col-md-7 col-sm">
                                 <div className="schedule card">
                                     <div className="card-body m-4">
-                                        <h3>Today's Schedule</h3>
-                                        {listofDataSchedule}
+                                        <h3>Today's Schedule</h3>                                        
                                         <div className="row mt-5 title">
                                             <div className="col-md-4 col-sm time">
                                                 <h4>Waktu</h4>
@@ -313,6 +316,7 @@ class Dashboard extends Component {
                                                 <h4>Mata Kuliah</h4>
                                             </div>
                                         </div>
+                                        {listofDataSchedule}
                                        
                                         {/* {
                                             this.state.schedule.map(data => {

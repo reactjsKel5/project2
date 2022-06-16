@@ -5,8 +5,11 @@ import ScheduleProps from "../../components/scheduleprops";
 import './schedule.css';
 // import { addDoc, collection } from "firebase/firestore";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { async } from '@firebase/util';
+import moment from "moment";
+import 'moment/locale/id';
+import 'moment/min/moment-with-locales';
 
 class Schedule extends Component {
 
@@ -17,14 +20,13 @@ class Schedule extends Component {
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
         this.user = auth.currentUser.uid;
-        this.day = "Selasa"
+        this.day = moment().format('dddd');
         this.state = {
             allData: [],
-            allDataProfile: [],
-            // 'day': '',
-            // "timeend": '',
-            // "timestart": '',
-            // "topic": '',
+            'day': '',
+            "timeend": '',
+            "timestart": '',
+            "topic": '',
         };
     }
     
@@ -37,7 +39,7 @@ class Schedule extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "schedule", auth.currentUser.uid, this.day));
+            const querySnapshot = await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -52,36 +54,24 @@ class Schedule extends Component {
         }
     }
 
-    fetchDataProfile = async () => {
-        var list = [];
-        try {
-            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
-            querySnapshot.forEach((doc) => {
-                list.push({ ...doc.data(), id: doc.id });
-            });
-            console.log(list);
-            this.setState({
-                allDataProfile: list
-            })
-            this.state.allDataProfile = list;
-            console.log(this.state.allDataProfile)
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-
     componentDidMount() {
 
         this.fetchData();
-        this.fetchDataProfile();
+        // this.fetchDataProfile();
         console.log(this.data);
+    }
+
+    handleDelete = async (id) => {
+        deleteDoc(doc(db, "schedule", auth.currentUser.uid, "items", id))
+            .then(
+                this.fetchData()
+            )
     }
 
     onSubmit = async (e) => {
         e.preventDefault();
         const { day, timeend, timestart, topic } = this.state;
-        const res = await addDoc(collection(db, "schedule", auth.currentUser.uid, day), {
+        const res = await addDoc(collection(db, "schedule", auth.currentUser.uid, "items"), {
             "day": day,
             "timeend": timeend,
             "timestart": timestart,
@@ -100,10 +90,13 @@ class Schedule extends Component {
             })
         console.log(res);
     }
-    
-    onChangeSelect = (day) => {
+
+    onChangeSelect = (event, day) => {
+        event.preventDefault();
+
         this.day = day;
         console.log(this.day);
+        this.fetchData();
     }
 
     // state = {
@@ -176,11 +169,14 @@ class Schedule extends Component {
 
     render() {
 
+        const { day, timeend, timestart, topic } = this.state;
+
         var listofData = this.state.allData.map((val, i) => {
             var day = val.day
             var timeend = val.timeend
             var timestart = val.timestart
             var topic = val.topic
+            var id = val.id
             return (
                 <div class="row text-secondary mb-1">
                     <div class="col-4">
@@ -190,7 +186,13 @@ class Schedule extends Component {
                         <p>{topic}</p>
                     </div>
                     <div class="col-2">
-                        <button className="btn-delete float-end">
+                        <button className="btn-delete float-end"
+                        onClick={
+                            () => {
+                                this.handleDelete(id)
+                            }
+                        }
+                        >
                             <ion-icon name="close-outline"></ion-icon>
                         </button>
                     </div>
@@ -198,32 +200,32 @@ class Schedule extends Component {
             )
         })
 
-        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
-            var nama = val.nama
-        return (
-            <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama}</h6>
-                </div>
-                <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
-        )
-    })
+    //     var listofDataProfile = this.state.allDataProfile.map((val, i) => {
+    //         var nama = val.nama
+    //     return (
+    //         <div className="topbar">
+    //         <div className="toggle">
+    //             <ion-icon name="menu-outline"></ion-icon>
+    //         </div>
+    //         <div className="user-information row">
+    //             <div className="col name align-self-center">
+    //                 <h6>{nama}</h6>
+    //             </div>
+    //             <div className="col user">
+    //                 <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+    //             </div>
+    //         </div>
+    //     </div>
+    //     )
+    // })
 
         return (
             <div>
                 <Sidebar />
                 {/* Tulis content di bawah sini */}
                 <div className="main">
-                    {listofDataProfile}
-                    {/* <Topbar /> */}
+                    {/* {listofDataProfile} */}
+                    <Topbar />
                     <div className="m-md-5 schedule">
                         <div className="schedule-txt">Schedule.</div>
                         <div className="col-sm">
@@ -235,7 +237,7 @@ class Schedule extends Component {
                                             <div class="col-md">
                                                 <div class="mb-4">
                                                     <label for="dey" class="text-secondary">Hari</label>
-                                                    <select id="day" name="day" class="form-select" onChange={this.onChange} value={this.state[this.day]}>
+                                                    <select id="day" name="day" class="form-select" onChange={this.onChange} value={day}>
                                                         <option>...</option>
                                                         <option value="Senin">Senin</option>
                                                         <option value="Selasa">Selasa</option>
@@ -248,17 +250,17 @@ class Schedule extends Component {
                                                 </div>
                                                 <div class="mb-4">
                                                     <label for="namaJadwal" class="text-secondary">Nama Jadwal</label>
-                                                    <input type="text" class="form-control" name="topic" id="topic" placeholder="..." onChange={this.onChange} />
+                                                    <input type="text" class="form-control" name="topic" id="topic" placeholder="..." onChange={this.onChange} value={topic} />
                                                 </div>
                                             </div>
                                             <div class="col-md">
                                                 <div class="mb-4">
                                                     <label for="waktuMulai" class="text-secondary">Waktu Mulai</label>
-                                                    <input type="time" class="form-control" name="timestart" id="timeend" onChange={this.onChange} />
+                                                    <input type="time" class="form-control" name="timestart" id="timeend" onChange={this.onChange} value={timestart}/>
                                                 </div>
                                                 <div class="mb-4">
                                                     <label for="waktuBerakhir" class="text-secondary">Waktu Berakhir</label>
-                                                    <input type="time" class="form-control" name="timeend" id="timeend" onChange={this.onChange} />
+                                                    <input type="time" class="form-control" name="timeend" id="timeend" onChange={this.onChange} value={timeend}/>
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12 text-end" >
@@ -272,15 +274,15 @@ class Schedule extends Component {
                             </div>
                         </div>
                         <div class="section-nav-hari">
-                            {/* <nav class="nav nav-day my-5">
-                                <a class="nav-link active" aria-current="page"  onClick={this.onChangeSelect('Senin')}>Senin</a>
-                                <a class="nav-link" onClick={this.onChangeSelect('Selasa')}>Selasa</a>
-                                <a class="nav-link" href="#" onClick={this.onChangeSelect('Rabu')}>Rabu</a>
-                                <a class="nav-link" href="#" onClick={this.onChangeSelect('Kamis')}>Kamis</a>
-                                <a class="nav-link" href="#"onClick={this.onChangeSelect('Jumat')}>Jumat</a>
-                                <a class="nav-link" href="#" onClick={this.onChangeSelect('Sabtu')}>Sabtu</a>
-                                <a class="nav-link" href="#" onClick={this.onChangeSelect('Minggu')}>Minggu</a>
-                            </nav> */}
+                            <nav class="nav nav-day my-5">
+                                <a class="nav-link active" aria-current="page" href="#"  onClick={(event) => {this.onChangeSelect(event, "Senin")}}>Senin</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Selasa")}}>Selasa</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Rabu")}}>Rabu</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Kamis")}}>Kamis</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Jumat")}}>Jumat</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Sabtu")}}>Sabtu</a>
+                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Minggu")}}>Minggu</a>
+                            </nav>
                         </div>
                         <div className="col-sm">
                             <div className="card-schedule">
