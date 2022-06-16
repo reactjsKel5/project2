@@ -7,16 +7,16 @@ import {
     Link
 } from "react-router-dom";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc } from 'firebase/firestore';
 
 
 class Outcome extends Component {
-
     constructor() {
         super();
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            keyData: '',
             allData: [],
             'category': '',
             'date': '',
@@ -84,6 +84,39 @@ class Outcome extends Component {
                 })
             })
         console.log(res);
+    }
+
+    handleHookUpdate = (keyOutcome, categoryOutcome, outcomeOutcome, titleOutcome) => {
+
+        this.setState({
+            keyData: keyOutcome,
+            category: categoryOutcome,
+            outcome: outcomeOutcome,
+            title: titleOutcome
+        })
+
+        console.log(this.state.keyData);
+    }
+
+    handleUpdate = async (event) => {
+        event.preventDefault();
+
+        const { category, outcome, title } = this.state;
+
+        const res = await setDoc(doc(db, "outcome", auth.currentUser.uid, "items", this.state.keyData), {
+            "category": category,
+            "outcome": outcome,
+            "title": title
+        })
+            .then(this.fetchData)
+            .then((docRef) => {
+                this.setState({
+                    keyData: "",
+                    category: "",
+                    outcome: "",
+                    title: ""
+                })
+            })
     }
 
 
@@ -160,6 +193,9 @@ class Outcome extends Component {
     // }
 
     render() {
+
+        const {category, outcome, title } = this.state;
+
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
             var date = val.date
@@ -185,6 +221,15 @@ class Outcome extends Component {
                                 }
                             }>
                             <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                        <button className="btn-delete float-end"
+                            onClick={
+                                () => {
+                                    this.handleHookUpdate(id, category, outcome, title);
+                                }
+                            }
+                        >
+                            <ion-icon name="create-outline"></ion-icon>
                         </button>
                     </div>
                 </div>
@@ -297,7 +342,7 @@ class Outcome extends Component {
                                             </div>
                                         </div>
                                         <form action="submit">
-                                            <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} >
+                                            <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category}>
                                                 <option value="0">--</option>
                                                 <option value="makan">Makan</option>
                                                 <option value="kecantikan">Kecantikan</option>
@@ -306,9 +351,13 @@ class Outcome extends Component {
                                                 <option value="Kesehatan">Kesehatan</option>
                                                 <option value="lain">Lain-lain</option>
                                             </select>
-                                            <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} />
-                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} />
-                                            <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>
+                                            <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
+                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
+                                            {
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+
+
+                                            }
                                         </form>
                                     </div>
                                 </div>
