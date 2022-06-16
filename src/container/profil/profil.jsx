@@ -9,7 +9,6 @@ import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
 
 class Profil extends Component {
-
     constructor() {
         super();
         // this.userUid = auth.currentUser.uid;
@@ -101,11 +100,31 @@ class Profil extends Component {
         </div>
             )
         })
+
+        var listofDataProfile = this.state.allData.map((val, i) => {
+            var nama = val.nama
+        return (
+            <div className="topbar">
+            <div className="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div className="user-information row">
+                <div className="col name align-self-center">
+                    <h6>{nama}</h6>
+                </div>
+                <div className="col user">
+                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                </div>
+            </div>
+        </div>
+        )
+    })
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar />
+                    {/* <Topbar /> */}
+                    {listofDataProfile}
                     <div className="m-md-5 profile">
                         <div className="row">
                             <div className="card-profile">

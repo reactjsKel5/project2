@@ -3,14 +3,75 @@ import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 import './menuCM.css';
 import {Link} from "react-router-dom";
+import { auth, db, dbf } from '../../firebase';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import { async } from '@firebase/util';
 
 class MenuCM extends Component {
+    constructor() {
+        super();
+        // this.userUid = auth.currentUser.uid;
+        // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
+        // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
+        this.user = auth.currentUser.uid;
+        this.data = [];
+        this.state = {
+            allDataProfile: [],
+            // "title": '',
+            // "body": '',
+            // 'date': ''
+        };
+    }
+
+    fetchDataProfile = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(list);
+            this.setState({
+                allDataProfile: list
+            })
+            this.state.allDataProfile = list;
+            console.log(this.state.allDataProfile)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    componentDidMount() {
+        this.fetchDataProfile();
+        console.log(this.data);
+    }
+
     render() {
+        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
+            var nama = val.nama
+        return (
+            <div className="topbar">
+            <div className="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div className="user-information row">
+                <div className="col name align-self-center">
+                    <h6>{nama}</h6>
+                </div>
+                <div className="col user">
+                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                </div>
+            </div>
+        </div>
+        )
+    })
+
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar />
+                    {listofDataProfile}
+                    {/* <Topbar /> */}
 
                     {/* Tulis content di bawah sini */}
                     <div className="content-cm mx-5 my-4">

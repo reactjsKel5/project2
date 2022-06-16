@@ -28,6 +28,7 @@ class Dashboard extends Component {
             allDataTodolist: [],
             allDataTask: [],
             allDataSchedule: [],
+            allDataProfile: [],
             // "todos": '',
             // "status": '',
         };
@@ -87,11 +88,30 @@ class Dashboard extends Component {
         }
     }
 
+    fetchDataProfile = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(list);
+            this.setState({
+                allDataProfile: list
+            })
+            this.state.allDataProfile = list;
+            console.log(this.state.allDataProfile)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount(){
         
         this.fetchTodos();
         this.fetchTask();
         this.fetchSchedule();
+        this.fetchDataProfile();
         console.log(this.data);
     }
 
@@ -224,34 +244,56 @@ class Dashboard extends Component {
                                         )
                                     })
 
-                                    var listofDataSchedule = this.state.allDataSchedule.map((val, i) => {
-                                        var day = val.day
-                                        var timeend = val.timeend
-                                        var timestart = val.timestart
-                                        var topic = val.topic
-                                        return (
-                                            <div class="row text-secondary mb-1">
-                                                <div class="col-4">
-                                                    <p>{timestart} - {timeend}</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p>{topic}</p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <button className="btn-delete float-end">
-                                                        <ion-icon name="close-outline"></ion-icon>
-                                                    </button>
-                                                </div>
+                var listofDataSchedule = this.state.allDataSchedule.map((val, i) => {
+                    var day = val.day
+                    var timeend = val.timeend
+                    var timestart = val.timestart
+                    var topic = val.topic
+                
+                    return (
+                        <div class="row text-secondary mb-1">
+                            <div class="col-4">
+                                <p>{timestart} - {timeend}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p>{topic}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <button className="btn-delete float-end">
+                                            <ion-icon name="close-outline"></ion-icon>
+                                            </button>
                                             </div>
-                                        )
-                                    })
+                                            </div>
+                                            )
+                                        })
+
+                var listofDataProfile = this.state.allDataProfile.map((val, i) => {
+                    var nama = val.nama
+                    
+                    return (
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                            </div>
+                            <div className="user-information row">
+                                <div className="col name align-self-center">
+                                    <h6>{nama}</h6>
+                                    </div>
+                                    <div className="col user">
+                                        <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                                        </div>
+                                        </div>
+                                        </div>
+                                    )
+                                })
 
         return (
             
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar />
+                    {listofDataProfile}
+                    {/* <Topbar /> */}
 
                     {/* Tulis content di bawah sini */}
 

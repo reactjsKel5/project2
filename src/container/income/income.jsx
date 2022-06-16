@@ -20,6 +20,7 @@ class Income extends Component {
         this.state = {
             keyData: '',
             allData: [],
+            allDataProfile: [],
             'category': '',
             'date': '',
             'income': '',
@@ -45,6 +46,24 @@ class Income extends Component {
         }
     }
 
+    fetchDataProfile = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(list);
+            this.setState({
+                allDataProfile: list
+            })
+            this.state.allDataProfile = list;
+            console.log(this.state.allDataProfile)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     handleDelete = async (id) => {
         deleteDoc(doc(db, "income", auth.currentUser.uid, "items", id))
             .then(
@@ -53,8 +72,8 @@ class Income extends Component {
     }
 
     componentDidMount() {
-
         this.fetchData();
+        this.fetchDataProfile();
         console.log(this.data);
     }
 
@@ -228,14 +247,8 @@ class Income extends Component {
 
 
                     <div className="col-auto delete align-self-center">
-                        <button onClick={
-                            () => {
-                                this.handleDelete(id)
-                            }
-                        }>
-                            <ion-icon name="trash-outline"></ion-icon>
-                        </button>
-                        <button className="btn-delete float-end"
+                        
+                        <button 
                             onClick={
                                 () => {
                                     this.handleHookUpdate(id, income, title);
@@ -244,16 +257,45 @@ class Income extends Component {
                         >
                             <ion-icon name="create-outline"></ion-icon>
                         </button>
+
+                        <button className="btn-delete float-end" onClick={
+                            () => {
+                                this.handleDelete(id)
+                            }
+                        }>
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
                     </div>
                 </div>
 
             )
         })
+
+        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
+            var nama = val.nama
+        return (
+            <div className="topbar">
+            <div className="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div className="user-information row">
+                <div className="col name align-self-center">
+                    <h6>{nama}</h6>
+                </div>
+                <div className="col user">
+                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                </div>
+            </div>
+        </div>
+        )
+    })
+
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar />
+                    {/* <Topbar /> */}
+                    {listofDataProfile}
 
                     {/* Tulis content di bawah sini */}
                     <div className="income-container mx-md-5 my-5">

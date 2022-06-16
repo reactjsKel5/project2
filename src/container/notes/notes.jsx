@@ -9,9 +9,6 @@ import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/fi
 import { async } from '@firebase/util';
 
 export class Notes extends Component {
-
-
-
     constructor() {
         super();
         // this.userUid = auth.currentUser.uid;
@@ -22,9 +19,10 @@ export class Notes extends Component {
         this.state = {
             keyData: '',
             allData: [],
-            "title": '',
-            "body": '',
-            'date': ''
+            allDataProfile: [],
+            // "title": '',
+            // "body": '',
+            // 'date': ''
         };
     }
 
@@ -46,9 +44,29 @@ export class Notes extends Component {
         }
     }
 
+    fetchDataProfile = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(collection(db, "profile", auth.currentUser.uid, "items"));
+            querySnapshot.forEach((doc) => {
+                list.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(list);
+            this.setState({
+                allDataProfile: list
+            })
+            this.state.allDataProfile = list;
+            console.log(this.state.allDataProfile)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    
     componentDidMount() {
 
         this.fetchData();
+        this.fetchDataProfile();
         console.log(this.data);
     }
 
@@ -228,6 +246,25 @@ export class Notes extends Component {
             )
         })
 
+        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
+            var nama = val.nama
+        return (
+            <div className="topbar">
+            <div className="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div className="user-information row">
+                <div className="col name align-self-center">
+                    <h6>{nama}</h6>
+                </div>
+                <div className="col user">
+                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                </div>
+            </div>
+        </div>
+        )
+    })
+
         // var buttonNote = (if (this.state.keyData == '') {
         //     return(<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>)
         // } else {
@@ -238,8 +275,8 @@ export class Notes extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                    <Topbar />
-
+                    {listofDataProfile}
+                    {/* <Topbar /> */}
                     <div className="m-md-5 notes">
                         <div className="search-notes">
                             {/* <div className="card">
