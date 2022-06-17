@@ -18,6 +18,7 @@ import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where } fro
 import moment from "moment";
 import 'moment/locale/id';
 import 'moment/min/moment-with-locales';
+import { data } from "autoprefixer";
 
 class Dashboard extends Component {
 
@@ -148,7 +149,7 @@ class Dashboard extends Component {
             "todos": todos,
             "status": updateStatus
         })
-        .then(this.fetchData)
+        .then(this.fetchTodos)
 
         console.log(res);
         console.log(updateStatus);
@@ -163,7 +164,7 @@ class Dashboard extends Component {
             "date": date,
             "status": updateStatus
         })
-        .then(this.fetchData)
+        .then(this.fetchTask)
 
         console.log(res);
         console.log(updateStatus);
@@ -228,6 +229,13 @@ class Dashboard extends Component {
                             onChange = {
                             () => {
                                 this.handleStatus(id, todos, status)
+                                this.setState(() => {
+                                    this.fetchTodos();
+                                    this.fetchTodosDone();
+                                    dataTodolistDone = this.state.allDataTodolistDone;
+                                    dataTodolist = this.state.allDataTodolist.length;
+                                    presentaseTodolistDone = (dataTodolistDone / dataTodolist) * 100;
+                                });
                             }
                             }
                             />
