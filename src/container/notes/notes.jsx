@@ -17,12 +17,13 @@ export class Notes extends Component {
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            search: '',
             keyData: '',
             allData: [],
             allDataProfile: [],
-            // "title": '',
-            // "body": '',
-            // 'date': ''
+            "title": '',
+            "body": '',
+            'date': ''
         };
     }
 
@@ -62,7 +63,7 @@ export class Notes extends Component {
         }
     }
 
-    
+
     componentDidMount() {
 
         this.fetchData();
@@ -140,6 +141,27 @@ export class Notes extends Component {
                     date: ""
                 })
             })
+    }
+
+    handleSearch = (event) => {
+        var searchData = event.target.value;
+        console.log(searchData);
+
+        if (searchData == "") {
+            this.fetchData();
+        } else {
+            var filteredData = this.state.allData.filter((value) => {
+                return value.title.toLowerCase().includes(searchData.toLowerCase());
+            });
+
+            this.setState({
+                allData: filteredData
+            })
+            this.state.allData = filteredData;
+        }
+
+
+        console.log(this.state.allData)
     }
 
     // state = {
@@ -248,22 +270,22 @@ export class Notes extends Component {
 
         var listofDataProfile = this.state.allDataProfile.map((val, i) => {
             var nama_lengkap = val.nama_lengkap
-        return (
-            <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
+            return (
+                <div className="topbar">
+                    <div className="toggle">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </div>
+                    <div className="user-information row">
+                        <div className="col name align-self-center">
+                            <h6>{nama_lengkap}</h6>
+                        </div>
+                        <div className="col user">
+                            <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                        </div>
+                    </div>
                 </div>
-                <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
-        )
-    })
+            )
+        })
 
         // var buttonNote = (if (this.state.keyData == '') {
         //     return(<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>)
@@ -288,12 +310,16 @@ export class Notes extends Component {
                                         className="form-control px-4"
                                         name="nama_todo"
                                         id="nama_todo"
-                                        placeholder="Search" />
+                                        placeholder="Search"
+                                        onChange={this.handleSearch} />
                                 </div>
-                                <div className="col-md-auto col-sm align-self-center">
-                                    <button className="btn btn-danger d-inline-block">
+                                {/* <div className="col-md-auto col-sm align-self-center">
+                                    <button className="btn btn-danger d-inline-block"
+                                        onClick={() => {
+                                            console.log(this.state.search)
+                                        }}>
                                         Cari</button>
-                                </div>
+                                </div> */}
                             </form>
                         </div>
 
