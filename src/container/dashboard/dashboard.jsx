@@ -30,6 +30,7 @@ class Dashboard extends Component {
         this.day = moment().format('dddd');
         this.state = {
             allDataTodolist: [],
+            allDataTodolistDone: 0,
             allDataTask: [],
             allDataSchedule: [],
             allDataProfile: [],
@@ -55,6 +56,25 @@ class Dashboard extends Component {
             console.log(e);
         }
     }
+
+    fetchTodosDone = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "todolist", auth.currentUser.uid, "items"), where("status", "==", "true")));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(querySnapshot.docs.length);
+            this.setState({
+                allDataTodolistDone: list.length
+            })
+            this.state.allDataTodolistDone = list.length;
+            console.log(this.state.allDataTodolistDone)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 
     fetchTask = async () => {
         var list = [];
@@ -113,10 +133,18 @@ class Dashboard extends Component {
     componentDidMount(){
         
         this.fetchTodos();
+        this.fetchTodosDone();
         this.fetchTask();
         this.fetchSchedule();
         this.fetchDataProfile();
         console.log(this.data);
+    }
+
+    onChange = (e) => {
+        const state = this.state;
+        state[e.target.name] = e.target.value;
+        state['status'] = 'false';
+        this.setState(state);
     }
 
     handleStatus = async (id, todos, status) => {
@@ -189,28 +217,33 @@ class Dashboard extends Component {
 
 
     render() {
+        // Calculate presentase
+        var dataTodolistDone = this.state.allDataTodolistDone;
+        var dataTodolist = this.state.allDataTodolist.length;
+        var presentaseTodolistDone = (dataTodolistDone / dataTodolist) * 100;
+
         var listofDataTodolist = this.state.allDataTodolist.map((val, i) => {
             var todos = val.todos
             var status = (val.status === 'true')
             var id = val.id
             return(
                 <div className="row todolist-item mb-3">
-            <div className="col-auto">
-                <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="status" id="checkbox-todolist1" 
-                    checked = {status}
-                    onChange = {
-                    () => {
-                        this.handleStatus(id, todos, status)
-                    }
-                    }
-                    />
+                    <div className="col-auto">
+                        <div key={{ i }} className="form-check">
+                            <input className="form-check-input" type="checkbox" value="status" id="status" 
+                            checked = {status}
+                            onChange = {
+                            () => {
+                                this.handleStatus(id, todos, status)
+                            }
+                            }
+                            />
+                        </div>
+                    </div>
+                    <div className="col align-self-center">
+                        <label htmlFor="checkbox-todolist1">{todos}</label>
+                    </div>
                 </div>
-            </div>
-            <div className="col align-self-center">
-                <label htmlFor="checkbox-todolist1">{todos}</label>
-            </div>
-        </div>
             )})
 
                 var listofDataTask = this.state.allDataTask.map((val, i) => {
@@ -330,7 +363,7 @@ class Dashboard extends Component {
                                 </div>
                                 <div className="task card mt-3">
                                     <div className="card-body m-4">
-                                        <h3 className="mb-5">Today's Task</h3>
+                                        <h3 className="mb-5">Your Tasks</h3>
                                         {listofDataTask}
                                         {/* {
                                             this.state.task.map(data => {
@@ -349,14 +382,14 @@ class Dashboard extends Component {
                                         <p>Progress</p>
                                         <div className="text-center my-5 mx-auto" style={{ width: 250, height: 250 }}>
                                             <CircularProgressbarWithChildren
-                                                value={60}
+                                                value={Math.round(presentaseTodolistDone)}
                                                 className="text-center"
                                                 styles={buildStyles({
                                                     pathColor: '#FB4F4F'
                                                 })}
                                             >
                                                 <div style={{ fontSize: 52 }}>
-                                                    <strong>60%</strong>
+                                                    <strong>{Math.round(presentaseTodolistDone)}%</strong>
                                                 </div>
                                                 <p style={{ color: '#887F96', marginBottom: -5, marginTop: -10 }}>Selesai</p>
                                             </CircularProgressbarWithChildren>;
