@@ -4,7 +4,7 @@ import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 // import Taskk from "../../components/task";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import "./task.css";
 
 class Task extends Component {
@@ -47,16 +47,16 @@ class Task extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "items"));
-            querySnapshot.forEach((doc) => {
-                list.push({ ...doc.data(), id: doc.id });
-            });
-            console.log(list);
-            this.setState({
-                allDataProfile: list
+            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            .then((docRef) => {
+                this.setState({
+                    email : docRef.data()['email'],
+                    nama_lengkap : docRef.data()['nama_lengkap'],
+                    phone : docRef.data()['phone'],
+                    prof_img : docRef.data()['prof_img'],
+                })
+                console.log(this.state)
             })
-            this.state.allDataProfile = list;
-            console.log(this.state.allDataProfile)
         } catch (e) {
             console.log(e);
         }
@@ -184,6 +184,8 @@ class Task extends Component {
     // }
 
     render() {
+        const nama_lengkap = this.state.nama_lengkap;
+
         var listofData = this.state.allData.map((val, i) => {
             var date = val.date
             var status = (val.status === 'true')
@@ -213,10 +215,11 @@ class Task extends Component {
             )
         })
 
-        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
-            var nama_lengkap = val.nama_lengkap
         return (
-            <div className="topbar">
+            <div>
+                <Sidebar />
+                <div className="main">
+                <div className="topbar">
             <div className="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
             </div>
@@ -229,16 +232,6 @@ class Task extends Component {
                 </div>
             </div>
         </div>
-        )
-    })
-
-
-        return (
-            <div>
-                <Sidebar />
-                <div className="main">
-                    {listofDataProfile}
-                    {/* <Topbar /> */}
 
                     <div className="m-md-5 col-sm task">
                         <h2 className="mb-4">Task.</h2>

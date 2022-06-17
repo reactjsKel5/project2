@@ -4,7 +4,7 @@ import Topbar from "../../components/menubar/topbar";
 import './profil_edit.css';
 import pict from "./jm2.jpg";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, getDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 //import  "bootstrap/dist/css/bootstrap.css";
 
@@ -24,16 +24,16 @@ class ProfilEdit extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "items"));
-            querySnapshot.forEach((doc) => {
-                list.push({ ...doc.data(), id: doc.id });
-            });
-            console.log(list);
-            this.setState({
-                allDataProfile: list
+            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            .then((docRef) => {
+                this.setState({
+                    email : docRef.data()['email'],
+                    nama_lengkap : docRef.data()['nama_lengkap'],
+                    phone : docRef.data()['phone'],
+                    prof_img : docRef.data()['prof_img'],
+                })
+                console.log(this.state)
             })
-            this.state.allDataProfile = list;
-            console.log(this.state.allDataProfile)
         } catch (e) {
             console.log(e);
         }
@@ -46,10 +46,17 @@ class ProfilEdit extends Component {
     }
 
     render() {
-        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
-            var nama_lengkap = val.nama_lengkap
+        const nama_lengkap = this.state.nama_lengkap;
+        const email = this.state.email;
+        const phone = this.state.phone;
+        const prof_img = this.state.prof_img;
+
+            
         return (
-            <div className="topbar">
+            <div>
+                <Sidebar />
+                <div className="main">
+                <div className="topbar">
             <div className="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
             </div>
@@ -62,14 +69,6 @@ class ProfilEdit extends Component {
                 </div>
             </div>
         </div>
-        )
-    })
-        return (
-            <div>
-                <Sidebar />
-                <div className="main">
-                    {/* <Topbar /> */}
-                    {listofDataProfile}
 
                     {/* Tulis content di bawah sini */}
                     <div className="profile-edit m-md-5">

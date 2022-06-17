@@ -7,7 +7,7 @@ import {
     Link
 } from "react-router-dom";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 
 
 class Outcome extends Component {
@@ -47,16 +47,16 @@ class Outcome extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "items"));
-            querySnapshot.forEach((doc) => {
-                list.push({ ...doc.data(), id: doc.id });
-            });
-            console.log(list);
-            this.setState({
-                allDataProfile: list
+            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            .then((docRef) => {
+                this.setState({
+                    email : docRef.data()['email'],
+                    nama_lengkap : docRef.data()['nama_lengkap'],
+                    phone : docRef.data()['phone'],
+                    prof_img : docRef.data()['prof_img'],
+                })
+                console.log(this.state)
             })
-            this.state.allDataProfile = list;
-            console.log(this.state.allDataProfile)
         } catch (e) {
             console.log(e);
         }
@@ -215,6 +215,7 @@ class Outcome extends Component {
     render() {
 
         const {category, outcome, title } = this.state;
+        const nama_lengkap = this.state.nama_lengkap;
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
@@ -258,10 +259,13 @@ class Outcome extends Component {
             )
         })
 
-        var listofDataProfile = this.state.allDataProfile.map((val, i) => {
-            var nama_lengkap = val.nama_lengkap
+            
+    
         return (
-            <div className="topbar">
+            <div>
+                <Sidebar />
+                <div className="main">
+                <div className="topbar">
             <div className="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
             </div>
@@ -274,15 +278,6 @@ class Outcome extends Component {
                 </div>
             </div>
         </div>
-        )
-    })
-
-        return (
-            <div>
-                <Sidebar />
-                <div className="main">
-                    {/* <Topbar /> */}
-                    {listofDataProfile}
 
                     {/* Tulis content di bawah sini */}
                     <div className="outcome-container mx-md-5 my-5">

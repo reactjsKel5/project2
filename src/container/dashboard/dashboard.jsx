@@ -14,7 +14,7 @@ import {
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import moment from "moment";
 import 'moment/locale/id';
 import 'moment/min/moment-with-locales';
@@ -116,16 +116,16 @@ class Dashboard extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "items"));
-            querySnapshot.forEach((doc) => {
-                list.push({ ...doc.data(), id: doc.id });
-            });
-            console.log(list);
-            this.setState({
-                allDataProfile: list
+            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            .then((docRef) => {
+                this.setState({
+                    email : docRef.data()['email'],
+                    nama_lengkap : docRef.data()['nama_lengkap'],
+                    phone : docRef.data()['phone'],
+                    prof_img : docRef.data()['prof_img'],
+                })
+                console.log(this.state)
             })
-            this.state.allDataProfile = list;
-            console.log(this.state.allDataProfile)
         } catch (e) {
             console.log(e);
         }
@@ -211,10 +211,13 @@ class Dashboard extends Component {
 
 
     render() {
+        
         // Calculate presentase
         var dataTodolistDone = this.state.allDataTodolistDone;
         var dataTodolist = this.state.allDataTodolist.length;
         var presentaseTodolistDone = (dataTodolistDone / dataTodolist) * 100;
+
+        const nama_lengkap = this.state.nama_lengkap;
 
         var listofDataTodolist = this.state.allDataTodolist.map((val, i) => {
             var todos = val.todos
@@ -305,11 +308,14 @@ class Dashboard extends Component {
                                             )
                                         })
 
-                var listofDataProfile = this.state.allDataProfile.map((val, i) => {
-                    var nama_lengkap = val.nama_lengkap
+               
                     
-                    return (
-                    <div className="topbar">
+        return (
+            
+            <div>
+                <Sidebar />
+                <div className="main">
+                <div className="topbar">
                         <div className="toggle">
                             <ion-icon name="menu-outline"></ion-icon>
                             </div>
@@ -322,17 +328,6 @@ class Dashboard extends Component {
                                         </div>
                                         </div>
                                         </div>
-                                    )
-                                })
-
-        return (
-            
-            <div>
-                <Sidebar />
-                <div className="main">
-                    {listofDataProfile}
-                    {/* <Topbar /> */}
-
                     {/* Tulis content di bawah sini */}
 
                     <div className="dashboard m-5">
