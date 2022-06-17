@@ -140,13 +140,6 @@ class Dashboard extends Component {
         console.log(this.data);
     }
 
-    onChange = (e) => {
-        const state = this.state;
-        state[e.target.name] = e.target.value;
-        state['status'] = 'false';
-        this.setState(state);
-    }
-
     handleStatus = async (id, todos, status) => {
 
         let updateStatus = (!status).toString();
