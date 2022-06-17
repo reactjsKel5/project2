@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import pictRegist from "../../img/pict-regist.png";
 import "./register.css";
 import { UserAuth } from "../../context/AuthContext";
+import { setDoc, doc, collection, addDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -10,22 +12,49 @@ const Register = () => {
     const [nohp, setNohp] = useState("");
     const [error, setError] = useState("");
     const [password, setPassword] = useState("");
-    const { register } = UserAuth();
+    const { createUser } = UserAuth();
     let navigate = useNavigate();
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setError("");
+    //     try {
+    //         await createUser(email, nama, nohp, password);
+    //         navigate('/')
+    //     }
+    //     catch (err) {
+    //         setError(err.message);
+    //         console.log(err.message);
+    //     }
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
         try {
-            await register(email, nama, nohp, password);
+            await createUser(email, password)
+            const res = await addDoc(collection(db, "users", auth.currentUser.uid), {
+                "email": email,
+                "nama": nama,
+                "nohp": nohp,
+                "password": password
+            })
+                .then((value) => {
+                    console.log(value.currentuser.uid)
+                });
+                // .then((docRef) => {
+                //     this.setState({
+                //         email: "",
+                //         nama: "",
+                //         nohp: "",
+                //         password: ""
+                //     })
+                // })
             navigate('/')
-        }
-        catch (err) {
-            setError(err.message);
-            console.log(err.message);
+        } catch (e) {
+            setError(e.message);
+            console.log(e.message);
         }
     };
-
 
 
 
