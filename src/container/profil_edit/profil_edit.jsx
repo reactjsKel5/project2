@@ -4,7 +4,7 @@ import Topbar from "../../components/menubar/topbar";
 import './profil_edit.css';
 import pict from "./jm2.jpg";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 //import  "bootstrap/dist/css/bootstrap.css";
 
@@ -18,6 +18,11 @@ class ProfilEdit extends Component {
         this.data = [];
         this.state = {
             allDataProfile: [],
+            "email": "",
+            "nama_lengkap": "",
+            "password": "",
+            "phone": "",
+            "prof_img": ""
         };
     }
 
@@ -25,50 +30,69 @@ class ProfilEdit extends Component {
         var list = [];
         try {
             const querySnapshot = await getDoc(doc(db, "users", this.user))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        password: docRef.data()['password'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img']
+                    })
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
     }
 
-    
+
     componentDidMount() {
         this.fetchDataProfile();
-        console.log(this.data);
+        // console.log(this.data);
+    }
+
+    onChange = (e) => {
+        const state = this.state
+        state[e.target.name] = e.target.value;
+        this.setState(state);
+    }
+
+    handleUpdate = async (event) => {
+
+        event.preventDefault();
+
+        const { email, nama_lengkap, password, phone, prof_img } = this.state;
+
+        const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
+            "email": email,
+            "nama_lengkap": nama_lengkap,
+            "password": password,
+            "phone": phone,
+            "prof_img": prof_img
+        })
+            .then(this.fetchDataProfile)
     }
 
     render() {
-        const nama_lengkap = this.state.nama_lengkap;
-        const email = this.state.email;
-        const phone = this.state.phone;
-        const prof_img = this.state.prof_img;
+        const { email, nama_lengkap, password, phone, prof_img } = this.state;
 
-            
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
-                </div>
-                <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
+                    {/* <Topbar /> */}
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Tulis content di bawah sini */}
                     <div className="profile-edit m-md-5">
@@ -78,7 +102,7 @@ class ProfilEdit extends Component {
                         <div className="card-profile-edit">
                             <div className="card-body m-4">
                                 <div class="image mx-4 text-center">
-                                    <img src={pict} alt="login image" />
+                                    <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
                                         <button type="submit" className="btn btn-primary ">Ubah Profile</button>
                                     </div>
@@ -88,23 +112,23 @@ class ProfilEdit extends Component {
                         <div className="form-edit">
                             <form action="submit">
                                 <label htmlFor="nama" className="form-label ">Nama Lengkap</label>
-                                <input type="text" className="form-control mb-4 " id="nama_lengkap" name="nama_lengkap" />
+                                <input type="text" className="form-control mb-4 " id="nama_lengkap" name="nama_lengkap" onChange={this.onChange} value={nama_lengkap} />
 
                                 <label htmlFor="no-hp" className="form-label ">Nomor Telepon</label>
-                                <input type="text" className="form-control mb-4 " id="no_hp" name="no_hp" />
+                                <input type="text" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={this.onChange} value={phone} />
 
                                 <label htmlFor="email" className="form-label ">Email</label>
-                                <input type="text" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" />
+                                <input type="text" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={this.onChange} value={email} />
 
                                 <label htmlFor="password" className="form-label ">Password</label>
-                                <input type="password" className="form-control mb-4" id="password" name="password" />
+                                <input type="password" className="form-control mb-4" id="password" name="password" onChange={this.onChange} value={password} />
 
                                 <div className="row button-section mt-5">
                                     <div className="col">
                                         <button type="submit" className="btn btn-outline-danger">Hapus</button>
                                     </div>
                                     <div className="col">
-                                        <button type="submit" className="btn btn-danger-profile-edit float-end">Simpan</button></div>
+                                        <button className="btn btn-danger-profile-edit float-end" onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
                                 </div>
                             </form>
                         </div>
