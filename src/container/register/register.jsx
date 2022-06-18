@@ -31,25 +31,17 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await createUser(email, password)
-            const res = await addDoc(collection(db, "users", auth.currentUser.uid), {
+            await createUser(email, password);
+            console.log("INI UID : " + auth.currentUser.uid);
+            const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
                 "email": email,
-                "nama": nama,
-                "nohp": nohp,
-                "password": password
-            })
-                .then((value) => {
-                    console.log(value.currentuser.uid)
-                });
-                // .then((docRef) => {
-                //     this.setState({
-                //         email: "",
-                //         nama: "",
-                //         nohp: "",
-                //         password: ""
-                //     })
-                // })
-            navigate('/')
+                "nama_lengkap": nama,
+                "password": password,
+                "phone": nohp,
+                "prof_img": "https://firebasestorage.googleapis.com/v0/b/coller-me.appspot.com/o/prof_img%2Fcute-an-astronaut-sits-in-internet-vector-22760432.jpg?alt=media&token=02d1f34d-766b-4f3b-817c-8c1437d96c6c"
+            });
+            console.log(res);
+            navigate('/Dashboard');
         } catch (e) {
             setError(e.message);
             console.log(e.message);
