@@ -9,6 +9,7 @@ import {
     Link
 } from "react-router-dom";
 import { async } from "@firebase/util";
+import DonutChart from "react-donut-chart/dist/DonutChart";
 
 //update untuk category blum muncul
 class Income extends Component {
@@ -222,6 +223,7 @@ class Income extends Component {
 
         const { income, title } = this.state;
         const nama_lengkap = this.state.nama_lengkap;
+        const prof_img = this.state.prof_img;
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
@@ -285,7 +287,7 @@ class Income extends Component {
                     <h6>{nama_lengkap}</h6>
                 </div>
                 <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                    <img src={prof_img} width="200" alt="user-photo" />
                 </div>
             </div>
         </div>
@@ -367,16 +369,45 @@ class Income extends Component {
                                         <h3>Chart</h3>
                                         <h5>Presentase pemasukan</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm">
-                                                <img src={require('./advanced.png')} alt="chart" />
-                                            </div>
-                                            <div className="col align-self-center">
+                                            <div className="col-md-auto col-sm" style={{height: 250 }}>
+                                            <DonutChart
+                                               width={350}
+                                               height={350}
+                                               data={[
+                                                {
+                                                    label: 'Gaji',
+                                                    value: 45,
+                                                    // isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'Orang Tua',
+                                                  value: 25,
+                                                //   isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'Hadiah',
+                                                  value: 25,
+                                                //   isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'Lain-lain',
+                                                  value: 25,
+                                                },
+                                               ]} 
+                                               >
+                                               {/* <div style={{ fontSize: 52 }}>
+                                                    <strong>Rp. 135.000</strong>
+                                                </div> */}
+                                               </DonutChart>
+                                            
+                                            {/* <div className="col align-self-center">
                                                 <ul>
                                                     <li>Gaji</li>
                                                     <li>Orang Tua</li>
                                                     <li>Hadiah</li>
                                                     <li>Investasi</li>
                                                 </ul>
+                                            </div> */}
                                             </div>
                                         </div>
                                     </div>

@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import { auth, db } from '../../firebase';
 import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
+import DonutChart from "react-donut-chart";
+import Food from '../outcome/Food.png';
 
 
 class Outcome extends Component {
@@ -21,7 +23,7 @@ class Outcome extends Component {
             allDataProfile: [],
             'category': '',
             'date': '',
-            'outcome': '',
+            'outcome': 0,
             'title': '',
         };
     }
@@ -99,18 +101,19 @@ class Outcome extends Component {
                 this.setState({
                     category: "",
                     date: "",
-                    outcome: "",
+                    outcome: 0,
                     title: ""
                 })
             })
         console.log(res);
     }
 
-    handleHookUpdate = (keyOutcome, categoryOutcome, outcomeOutcome, titleOutcome) => {
+    handleHookUpdate = (keyOutcome, categoryOutcome, dateOutcome, outcomeOutcome, titleOutcome) => {
 
         this.setState({
             keyData: keyOutcome,
             category: categoryOutcome,
+            date: dateOutcome,
             outcome: outcomeOutcome,
             title: titleOutcome
         })
@@ -121,10 +124,11 @@ class Outcome extends Component {
     handleUpdate = async (event) => {
         event.preventDefault();
 
-        const { category, outcome, title } = this.state;
+        const { category, date, outcome, title } = this.state;
 
         const res = await setDoc(doc(db, "outcome", auth.currentUser.uid, "items", this.state.keyData), {
             "category": category,
+            "date": date,
             "outcome": outcome,
             "title": title
         })
@@ -133,92 +137,28 @@ class Outcome extends Component {
                 this.setState({
                     keyData: "",
                     category: "",
-                    outcome: "",
+                    date: "",
+                    outcome: 0,
                     title: ""
                 })
             })
     }
 
-
-    // state = {
-    //     listOutcome: [],
-    //     addOutcome: {
-    //         id: 1,
-    //         uid: 1,
-    //         pengeluaran: 1,
-    //         kategori_pengeluaran: 1,
-    //         tgl_pengeluaran: "2022-03-25",
-    //         catatan: "",
-    //         saldo: 0
-    //     },
-    //     kategori: []
-    // }
-
-
-    // getOutcome = () => {
-    //     fetch('http://localhost:3001/pengeluaran')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 listOutcome: json
-    //             })
-    //         })
-    // }
-
-    // getCat = () => {
-    //     fetch('http://localhost:3001/kategori_pengeluaran')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 kategori: json
-    //             })
-    //         })
-    // }
-
-    // componentDidMount() {
-    //     this.getOutcome()
-    //     this.getCat()
-    // }
-
-    // handleDelete = (id) => {
-    //     fetch(`http://localhost:3001/pengeluaran/${id}`, { method: 'DELETE' })
-    //         .then(res => {
-    //             this.getOutcome()
-    //         })
-    // }
-
-    // handleAdd = (event) => {
-    //     let insertOutcome = { ...this.state.addOutcome };
-    //     let timestamp = new Date().getTime();
-    //     insertOutcome['id'] = timestamp;
-    //     insertOutcome[event.target.name] = event.target.value;
-    //     this.setState({
-    //         addOutcome: insertOutcome
-    //     });
-    // }
-
-    // // insert to API
-    // insertOutcome = (event) => {
-    //     event.preventDefault();
-    //     fetch('http://localhost:3001/pengeluaran', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(this.state.addOutcome)
-    //     })
-    //         .then(response => response.json())
-    //         .then(json => this.getOutcome())
-    // }
-
     render() {
 
-        const {category, outcome, title } = this.state;
+        const {category, date, outcome, title } = this.state;
+        // const {makan, kecantikan, gayahidup, kebutuhan} = this.state;
+        // if (category == "makan" ){
+        //     <img src={require('./gaji.png')} alt="category-logo"/>
+        //  }
+        
         const nama_lengkap = this.state.nama_lengkap;
+        const prof_img = this.state.prof_img;
+       
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
+            
             var date = val.date
             var outcome = val.outcome
             var title = val.title
@@ -226,7 +166,7 @@ class Outcome extends Component {
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        <img src={require('./gaji.png')} alt="category-logo"/>
+                        {/* <img src={`${category}.png`} alt="category-logo"/> */}
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
@@ -258,9 +198,7 @@ class Outcome extends Component {
                 </div>
             )
         })
-
-            
-    
+        
         return (
             <div>
                 <Sidebar />
@@ -274,7 +212,7 @@ class Outcome extends Component {
                     <h6>{nama_lengkap}</h6>
                 </div>
                 <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                    <img src={prof_img} width="200" alt="user-photo" />
                 </div>
             </div>
         </div>
@@ -334,37 +272,51 @@ class Outcome extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-                                        {/* <div className="card-total-pemasukan mb-3">
-                                            <div className="card-body mx-2 my-1">
-                                                <h5>Total pengeluaran</h5>
-                                                <div className="row  ">
-                                                    <div className="col nominal mt-2">
-                                                        <h3>135.000</h3>
-                                                    </div>
-                                                    <div className="col rupiah mt-3">
-                                                        <h5>Rupiah</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div> */}
-
-                                        {/* <div className="card-presentase mb-2">
-                            <div className="card-body mx-2 my-1">
-             */}
+                                        
                                         <h3>Chart</h3>
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm">
-                                                <img src={require('./advanced.png')} alt="chart" />
+                                            <div className="col-md-auto col-sm" style={{height: 250 }}>
+                                               <DonutChart
+                                               width={350}
+                                               height={350}
+                                               data={[
+                                                {
+                                                    label: 'Food',
+                                                    value: 45,
+                                                    // isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'Entertainment',
+                                                  value: 25,
+                                                //   isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'Education',
+                                                  value: 25,
+                                                //   isEmpty: true,
+                                                },
+                                                {
+                                                  label: 'etc',
+                                                  value: 25,
+                                                },
+                                               ]} 
+                                               >
+                                               {/* <div style={{ fontSize: 52 }}>
+                                                    <strong>Rp. 135.000</strong>
+                                                </div> */}
+                                               </DonutChart>
+                                              
+                                                {/* <img src={require('./advanced.png')} alt="chart" /> */}
                                             </div>
-                                            <div className="col align-self-center">
-                                                <ul>
-                                                    <li>Makan</li>
+                                            {/* <div className="col align-self-center">
+                                                 <ul>
+                                                     <li>Makan</li>
                                                     <li>Gaya Hidup</li>
-                                                    <li>Kebutuhan Rumah</li>
-                                                    <li>Lain-lain</li>
-                                                </ul>
-                                            </div>
+                                                     <li>Kebutuhan Rumah</li>
+                                                     <li>Lain-lain</li>
+                                                 </ul>
+                                             </div> */}
                                         </div>
                                     </div>
                                     {/* </div>
@@ -382,13 +334,12 @@ class Outcome extends Component {
                                         <form action="submit">
                                             <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category}>
                                                 <option value="0">--</option>
-                                                <option value="makan">Makan</option>
-                                                <option value="kecantikan">Kecantikan</option>
-                                                <option value="gaya hidup">Gaya Hidup</option>
-                                                <option value="kebutuhan">Kebutuhan Rumah</option>
-                                                <option value="Kesehatan">Kesehatan</option>
-                                                <option value="lain">Lain-lain</option>
+                                                <option value="Food">Food</option>
+                                                <option value="Entertainment">Entertainment</option>
+                                                <option value="Education">Education</option>
+                                                <option value=".etc">.etc</option>
                                             </select>
+                                            <input type="date" className="form-control px-4 mb-3" name="date" id="date"  onChange={this.onChange} value={date} />
                                             <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
                                             {

@@ -75,6 +75,36 @@ class ProfilEdit extends Component {
     render() {
         const { email, nama_lengkap, password, phone, prof_img } = this.state;
 
+        const { image, setImage } = this.state;
+        const { url, setUrl } = this.state;
+        
+    
+        const handleChange = e => {
+            if (e.target.files[0]) {
+                setImage(e.target.files[0]);
+            }
+        };
+    
+        const handleUpload = () => {
+            const uploadFoto = storage.ref(`prof_img/${image.name}`).put(image);
+            uploadFoto.on(
+                "state_changed",
+                snapshot => {},
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                    .ref("prof_img")
+                    .child(image.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        setUrl(url);
+                    });
+                }
+            );
+        };
+
         return (
             <div>
                 <Sidebar />
@@ -104,7 +134,8 @@ class ProfilEdit extends Component {
                                 <div class="image mx-4 text-center">
                                     <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
-                                        <button type="submit" className="btn btn-primary ">Ubah Profile</button>
+                                    <input type="file" onChange={handleChange}/>
+                                        // <button type="submit" className="btn btn-primary ">Ubah Profile</button>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +159,7 @@ class ProfilEdit extends Component {
                                         <button type="submit" className="btn btn-outline-danger">Hapus</button>
                                     </div>
                                     <div className="col">
-                                        <button className="btn btn-danger-profile-edit float-end" onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
+                                        <button className="btn btn-danger-profile-edit float-end" onChange={handleUpload} onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
                                 </div>
                             </form>
                         </div>

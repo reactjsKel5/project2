@@ -185,6 +185,7 @@ class Todolist extends Component {
     // }
     render() {
         const nama_lengkap = this.state.nama_lengkap;
+        const prof_img = this.state.prof_img;
 
         var listofData = this.state.allData.map((val, i) => {
             var todos = val.todos
@@ -230,7 +231,7 @@ class Todolist extends Component {
                     <h6>{nama_lengkap}</h6>
                 </div>
                 <div className="col user">
-                    <img src="https://images.unsplash.com/photo-1638204957796-4ad60705aa17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fHBvcnRyYWl0JTIwcGhvdG9ncmFwaHl8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" width="200" alt="user-photo" />
+                    <img src={prof_img} width="200" alt="user-photo" />
                 </div>
             </div>
         </div>
