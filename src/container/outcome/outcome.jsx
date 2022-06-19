@@ -9,7 +9,7 @@ import {
 import { auth, db } from '../../firebase';
 import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import DonutChart from "react-donut-chart";
-import Food from '../outcome/Food.png';
+// import Food from '../outcome/Food.png';
 
 
 class Outcome extends Component {

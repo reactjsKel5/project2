@@ -4,7 +4,7 @@ import Topbar from "../../components/menubar/topbar";
 import './menuCM.css';
 import {Link} from "react-router-dom";
 import { auth, db, dbf } from '../../firebase';
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, getDoc} from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 
 class MenuCM extends Component {
@@ -17,6 +17,7 @@ class MenuCM extends Component {
         this.data = [];
         this.state = {
             allDataProfile: [],
+            allDataTodolistOnGoing: 0,
             // "title": '',
             // "body": '',
             // 'date': ''
@@ -41,14 +42,36 @@ class MenuCM extends Component {
         }
     }
 
+    fetchTodosOnGoing = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "todolist", auth.currentUser.uid, "items"), where("status", "==", "false")));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(querySnapshot.docs.length);
+            this.setState({
+                allDataTodolistOnGoing: list.length
+            })
+            this.state.allDataTodolistOnGoing = list.length;
+            console.log(this.state.allDataTodolistOnGoing)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount() {
         this.fetchDataProfile();
+        this.fetchTodosOnGoing();
         console.log(this.data);
     }
 
     render() {
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
+
+        // Todolist calculate
+        var allDataTodolistOnGoing = this.state.allDataTodolistOnGoing;
             
         return (
             <div>
@@ -103,7 +126,7 @@ class MenuCM extends Component {
                                 <div className="card-info">
                                     <div className="card-body row mx-3 my-2">
                                         <div className="col-auto number align-self-center">
-                                            <h1>5</h1>
+                                            <h1>{allDataTodolistOnGoing}</h1>
                                         </div>
                                         <div className="col label align-self-center">
                                             <h4>To do List</h4>
