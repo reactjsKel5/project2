@@ -19,6 +19,8 @@ class Income extends Component {
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            totincome: 0,
+            totoutcome: 0,
             keyData: '',
             allData: [],
             allDataProfile: [],
@@ -75,6 +77,8 @@ class Income extends Component {
     componentDidMount() {
         this.fetchData();
         this.fetchDataProfile();
+        this.fetchDataIncome();
+        this.fetchDataOutcome();
         console.log(this.data);
     }
 
@@ -144,6 +148,43 @@ class Income extends Component {
             })
     }
 
+    fetchDataIncome = async () => {
+        var totalIncome = 0;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "income", auth.currentUser.uid, "items"))
+            querySnapshot.forEach((doc) => {
+                totalIncome = totalIncome + doc.data()["income"];
+                console.log(doc.data()["income"]);
+
+            });
+            console.log(totalIncome);
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totincome: totalIncome })
+        console.log(totalIncome);
+
+    }
+
+    fetchDataOutcome = async () => {
+        var totalOutcome = 0;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "outcome", auth.currentUser.uid, "items"))
+            querySnapshot.forEach((doc) => {
+                totalOutcome = totalOutcome + doc.data()["outcome"];
+                console.log(doc.data()["outcome"]);
+            });
+            console.log(totalOutcome);
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totoutcome: totalOutcome })
+        console.log(totalOutcome);
+
+    }
+
 
 
 
@@ -152,6 +193,12 @@ class Income extends Component {
         const { category, date, income, title } = this.state;
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
+
+        //show data total
+        const TotalIncome = this.state.totincome;
+        const TotalOutcome = this.state.totoutcome;
+        const Balance = TotalIncome - TotalOutcome;
+        console.log(Balance);
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
@@ -241,7 +288,7 @@ class Income extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col date-balance text-center d-flex justify-content-center">
-                                        <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
+                                        <h1 className="text-center mt-1 mb-2">Rp {Balance}</h1>
                                     </div>
                                     <div>
                                         <hr className="mt-2 text-center d-flex justify-content-center text-center" />
@@ -251,11 +298,11 @@ class Income extends Component {
                                 <div className="row  ">
                                     <div className="col pemasukan align-self-center justify-content-center text-center mt-2">
                                         <h5>Income</h5>
-                                        <h3>Rp 5.000.000</h3>
+                                        <h3>Rp {TotalIncome}</h3>
                                     </div>
                                     <div className="col pengeluaran align-self-center justify-content-center text-center mt-3">
                                         <h5>Outcome</h5>
-                                        <h3>Rp 1.754.500</h3>
+                                        <h3>Rp {TotalOutcome}</h3>
 
                                     </div>
 
