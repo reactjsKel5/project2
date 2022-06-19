@@ -8,7 +8,7 @@ import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where, getDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 import moment from "moment";
-import 'moment/locale/id';
+import 'moment/locale/en-au';
 import 'moment/min/moment-with-locales';
 
 class Schedule extends Component {
@@ -22,6 +22,15 @@ class Schedule extends Component {
         this.user = auth.currentUser.uid;
         this.day = moment().format('dddd');
         this.state = {
+            isActive: {
+                "Sunday": false,
+                "Monday": false,
+                "Tuesday": false,
+                "Wednesday": false,
+                "Thursday": false,
+                "Friday": false,
+                "Saturday": false
+            },
             allData: [],
             allDataProfile: [],
             'day': '',
@@ -77,6 +86,8 @@ class Schedule extends Component {
         this.fetchData();
         this.fetchDataProfile();
         console.log(this.data);
+        console.log(this.day);
+        this.state.isActive[this.day] = true;
     }
 
     handleDelete = async (id) => {
@@ -109,8 +120,16 @@ class Schedule extends Component {
         console.log(res);
     }
 
-    onChangeSelect = (event, day) => {
+    onChangeSelect = (event, day, sunday, monday, tuesday, wednesday, thursday, friday, saturday) => {
         event.preventDefault();
+
+        this.state.isActive["Sunday"] = sunday;
+        this.state.isActive["Monday"] = monday;
+        this.state.isActive["Tuesday"] = tuesday;
+        this.state.isActive["Wednesday"] = wednesday;
+        this.state.isActive["Thursday"] = thursday;
+        this.state.isActive["Friday"] = friday;
+        this.state.isActive["Saturday"] = saturday;
 
         this.day = day;
         console.log(this.day);
@@ -198,7 +217,7 @@ class Schedule extends Component {
             var topic = val.topic
             var id = val.id
             return (
-                <div class="row text-secondary mb-1">
+                <div key={i} class="row text-secondary mb-1">
                     <div class="col-4">
                         <p>{timestart} - {timeend}</p>
                     </div>
@@ -252,13 +271,13 @@ class Schedule extends Component {
                                                     <label for="dey" class="text-secondary">Hari</label>
                                                     <select id="day" name="day" class="form-select" onChange={this.onChange} value={day}>
                                                         <option>...</option>
-                                                        <option value="Senin">Senin</option>
-                                                        <option value="Selasa">Selasa</option>
-                                                        <option value="Rabu">Rabu</option>
-                                                        <option value="Kamis">Kamis</option>
-                                                        <option value="Jumat">Jumat</option>
-                                                        <option value="Sabtu">Sabtu</option>
-                                                        <option value="Minggu">Minggu</option>
+                                                        <option value="Monday">Senin</option>
+                                                        <option value="Tuesday">Selasa</option>
+                                                        <option value="Wednesday">Rabu</option>
+                                                        <option value="Thursday">Kamis</option>
+                                                        <option value="Friday">Jumat</option>
+                                                        <option value="Saturday">Sabtu</option>
+                                                        <option value="Sunday">Minggu</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-4">
@@ -288,13 +307,13 @@ class Schedule extends Component {
                         </div>
                         <div class="section-nav-hari">
                             <nav class="nav nav-day my-5">
-                                <a class="nav-link active" aria-current="page" href="#"  onClick={(event) => {this.onChangeSelect(event, "Senin")}}>Senin</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Selasa")}}>Selasa</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Rabu")}}>Rabu</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Kamis")}}>Kamis</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Jumat")}}>Jumat</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Sabtu")}}>Sabtu</a>
-                                <a class="nav-link" href="#" onClick={(event) => {this.onChangeSelect(event, "Minggu")}}>Minggu</a>
+                                <a class={this.state.isActive["Monday"] ? "nav-link active" : "nav-link"} aria-current="page" href="#"  onClick={(event) => {this.onChangeSelect(event, "Monday", false, true, false, false, false, false, false)}}>Senin</a>
+                                <a class={this.state.isActive["Tuesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Tuesday", false, false, true, false, false, false, false)}}>Selasa</a>
+                                <a class={this.state.isActive["Wednesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Wednesday", false, false, false, true, false, false, false)}}>Rabu</a>
+                                <a class={this.state.isActive["Thursday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Thursday", false, false, false, false, true, false, false)}}>Kamis</a>
+                                <a class={this.state.isActive["Friday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Friday", false, false, false, false, false, true, false)}}>Jumat</a>
+                                <a class={this.state.isActive["Saturday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Saturday", false, false, false, false, false, false, true)}}>Sabtu</a>
+                                <a class={this.state.isActive["Sunday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Sunday", true, false, false, false, false, false, false)}}>Minggu</a>
                             </nav>
                         </div>
                         <div className="col-sm">

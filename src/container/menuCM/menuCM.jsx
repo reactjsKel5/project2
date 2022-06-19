@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
+import moment from "moment";
 
 class MenuCM extends Component {
     constructor() {
@@ -15,9 +16,11 @@ class MenuCM extends Component {
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
         this.user = auth.currentUser.uid;
         this.data = [];
+        this.day = moment().format('dddd');
         this.state = {
             allDataProfile: [],
             allDataTodolistOnGoing: 0,
+            scheduleLength: 0
             // "title": '',
             // "body": '',
             // 'date': ''
@@ -60,9 +63,26 @@ class MenuCM extends Component {
         }
     }
 
+    fetchScheduleLength = async () => {
+        try {
+            await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)))
+                .then((value) => {
+                    this.setState({
+                        scheduleLength: value.size
+                    });
+                    this.state.scheduleLength = value.size;
+                    console.log("Schedule Today : " + value.size);
+                });
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount() {
         this.fetchDataProfile();
         this.fetchTodosOnGoing();
+        this.fetchScheduleLength();
         console.log(this.data);
     }
 
@@ -113,7 +133,7 @@ class MenuCM extends Component {
                                 <div className="card-info">
                                     <div className="card-body row mx-3 my-2">
                                         <div className="col-auto number align-self-center">
-                                            <h1>3</h1>
+                                            <h1>{this.state.scheduleLength}</h1>
                                         </div>
                                         <div className="col label align-self-center">
                                             <h4>Schedule</h4>
