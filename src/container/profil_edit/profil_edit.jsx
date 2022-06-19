@@ -78,30 +78,30 @@ class ProfilEdit extends Component {
 
         const { image, setImage } = this.state;
         const { url, setUrl } = this.state;
-        
-    
+
+
         const handleChange = e => {
             if (e.target.files[0]) {
                 setImage(e.target.files[0]);
             }
         };
-    
+
         const handleUpload = () => {
             const uploadFoto = storage.ref(`prof_img/${image.name}`).put(image);
             uploadFoto.on(
                 "state_changed",
-                snapshot => {},
+                snapshot => { },
                 error => {
                     console.log(error);
                 },
                 () => {
                     storage
-                    .ref("prof_img")
-                    .child(image.name)
-                    .getDownloadURL()
-                    .then(url => {
-                        setUrl(url);
-                    });
+                        .ref("prof_img")
+                        .child(image.name)
+                        .getDownloadURL()
+                        .then(url => {
+                            setUrl(url);
+                        });
                 }
             );
         };
@@ -135,7 +135,7 @@ class ProfilEdit extends Component {
                                 <div class="image mx-4 text-center">
                                     <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
-                                    <input type="file" onChange={handleChange}/>
+                                        <input type="file" onChange={handleChange} />
                                         // <button type="submit" className="btn btn-primary ">Ubah Profile</button>
                                     </div>
                                 </div>
@@ -147,7 +147,7 @@ class ProfilEdit extends Component {
                                 <input type="text" className="form-control mb-4 " id="nama_lengkap" name="nama_lengkap" onChange={this.onChange} value={nama_lengkap} />
 
                                 <label htmlFor="no-hp" className="form-label ">Nomor Telepon</label>
-                                <input type="text" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={this.onChange} value={phone} />
+                                <input type="text" className="form-control mb-4 " id="phone" name="phone" onChange={this.onChange} value={phone} />
 
                                 <label htmlFor="email" className="form-label ">Email</label>
                                 <input type="text" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={this.onChange} value={email} />
