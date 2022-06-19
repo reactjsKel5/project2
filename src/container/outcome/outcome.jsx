@@ -50,15 +50,15 @@ class Outcome extends Component {
         var list = [];
         try {
             const querySnapshot = await getDoc(doc(db, "users", this.user))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img'],
+                    })
+                    console.log(this.state)
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
@@ -146,19 +146,19 @@ class Outcome extends Component {
 
     render() {
 
-        const {category, date, outcome, title } = this.state;
+        const { category, date, outcome, title } = this.state;
         // const {makan, kecantikan, gayahidup, kebutuhan} = this.state;
         // if (category == "makan" ){
         //     <img src={require('./gaji.png')} alt="category-logo"/>
         //  }
-        
+
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
-       
+
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
-            
+
             var date = val.date
             var outcome = val.outcome
             var title = val.title
@@ -175,7 +175,7 @@ class Outcome extends Component {
                         <p className="m-0">{outcome}</p>
                     </div>
                     <div className="col-auto delete align-self-center">
-                    <button 
+                        <button
                             onClick={
                                 () => {
                                     this.handleHookUpdate(id, category, outcome, title);
@@ -193,29 +193,29 @@ class Outcome extends Component {
                             }>
                             <ion-icon name="trash-outline"></ion-icon>
                         </button>
-                        
+
                     </div>
                 </div>
             )
         })
-        
+
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
-                </div>
-                <div className="col user">
-                    <img src={prof_img} width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Tulis content di bawah sini */}
                     <div className="outcome-container mx-md-5 my-5">
@@ -236,23 +236,13 @@ class Outcome extends Component {
                         <div className="card-saldo-balance mb-5">
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
-                                    <div className="col title-balance-right text-center d-flex justify-content-center">
-                                        <button href="#" className="arrow float-end"><ion-icon name="chevron-back-outline"></ion-icon></button>
-
-                                    </div>
                                     <div className="col date-balance text-center d-flex justify-content-center">
-                                        <h5> June 2022</h5>
-                                    </div>
-
-                                    <div className="col title-balance-left text-center d-flex justify-content-center">
-                                        <button href="#" className="arrow float-end"><ion-icon name="chevron-forward-outline"></ion-icon></button>
-
+                                        <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
                                     </div>
                                     <div>
-                                        <hr className="mt-2 text-center d-flex justify-content-center" />
+                                        <hr className="mt-2 text-center d-flex justify-content-center text-center" />
                                     </div>
                                 </div>
-                                <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
                                 <div className="row  ">
                                     <div className="col pemasukan align-self-center justify-content-center text-center mt-2">
                                         <h5>Income</h5>
@@ -272,41 +262,41 @@ class Outcome extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-                                        
+
                                         <h3>Chart</h3>
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm" style={{height: 250 }}>
-                                               <DonutChart
-                                               width={350}
-                                               height={350}
-                                               data={[
-                                                {
-                                                    label: 'Food',
-                                                    value: 45,
-                                                    // isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'Entertainment',
-                                                  value: 25,
-                                                //   isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'Education',
-                                                  value: 25,
-                                                //   isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'etc',
-                                                  value: 25,
-                                                },
-                                               ]} 
-                                               >
-                                               {/* <div style={{ fontSize: 52 }}>
+                                            <div className="col-md-auto col-sm" style={{ height: 250 }}>
+                                                <DonutChart
+                                                    width={350}
+                                                    height={350}
+                                                    data={[
+                                                        {
+                                                            label: 'Food',
+                                                            value: 45,
+                                                            // isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'Entertainment',
+                                                            value: 25,
+                                                            //   isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'Education',
+                                                            value: 25,
+                                                            //   isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'etc',
+                                                            value: 25,
+                                                        },
+                                                    ]}
+                                                >
+                                                    {/* <div style={{ fontSize: 52 }}>
                                                     <strong>Rp. 135.000</strong>
                                                 </div> */}
-                                               </DonutChart>
-                                              
+                                                </DonutChart>
+
                                                 {/* <img src={require('./advanced.png')} alt="chart" /> */}
                                             </div>
                                             {/* <div className="col align-self-center">
@@ -339,7 +329,7 @@ class Outcome extends Component {
                                                 <option value="Education">Education</option>
                                                 <option value=".etc">.etc</option>
                                             </select>
-                                            <input type="date" className="form-control px-4 mb-3" name="date" id="date"  onChange={this.onChange} value={date} />
+                                            <input type="date" className="form-control px-4 mb-3" name="date" id="date" onChange={this.onChange} value={date} />
                                             <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
                                             {

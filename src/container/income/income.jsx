@@ -240,23 +240,14 @@ class Income extends Component {
                         <div className="card-saldo-balance mb-5">
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
-                                    <div className="col title-balance-right text-center d-flex justify-content-center">
-                                        <button href="#" className="arrow float-end"><ion-icon name="chevron-back-outline"></ion-icon></button>
-
-                                    </div>
                                     <div className="col date-balance text-center d-flex justify-content-center">
-                                        <h5> June 2022</h5>
-                                    </div>
-
-                                    <div className="col title-balance-left text-center d-flex justify-content-center">
-                                        <button href="#" className="arrow float-end"><ion-icon name="chevron-forward-outline"></ion-icon></button>
-
+                                        <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
                                     </div>
                                     <div>
                                         <hr className="mt-2 text-center d-flex justify-content-center text-center" />
                                     </div>
                                 </div>
-                                <h1 className="text-center mt-1 mb-2">Rp 3.245.500</h1>
+
                                 <div className="row  ">
                                     <div className="col pemasukan align-self-center justify-content-center text-center mt-2">
                                         <h5>Income</h5>
