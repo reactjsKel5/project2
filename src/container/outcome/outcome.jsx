@@ -91,7 +91,7 @@ class Outcome extends Component {
         const res = await addDoc(collection(db, "outcome", auth.currentUser.uid, "items"), {
             "category": category,
             "date": date,
-            "outcome": outcome,
+            "outcome": Number(outcome),
             "title": title
         })
             .then(

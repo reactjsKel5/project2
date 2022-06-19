@@ -92,7 +92,7 @@ class Income extends Component {
         const res = await addDoc(collection(db, "income", auth.currentUser.uid, "items"), {
             "category": category,
             "date": date,
-            "income": income,
+            "income": Number(income),
             "title": title
         })
             .then(
@@ -276,22 +276,22 @@ class Income extends Component {
                                                     height={350}
                                                     data={[
                                                         {
-                                                            label: 'Gaji',
+                                                            label: 'Salary',
                                                             value: 45,
                                                             // isEmpty: true,
                                                         },
                                                         {
-                                                            label: 'Orang Tua',
+                                                            label: 'Parent',
                                                             value: 25,
                                                             //   isEmpty: true,
                                                         },
                                                         {
-                                                            label: 'Hadiah',
+                                                            label: 'Gift',
                                                             value: 25,
                                                             //   isEmpty: true,
                                                         },
                                                         {
-                                                            label: 'Lain-lain',
+                                                            label: '.etc',
                                                             value: 25,
                                                         },
                                                     ]}
@@ -326,11 +326,11 @@ class Income extends Component {
                                         <form action="submit">
                                             <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category} >
                                                 <option value="0">--</option>
-                                                <option value="gaji">Gaji</option>
-                                                <option value="orangtua">Orang Tua</option>
-                                                <option value="hadiah">Hadiah</option>
-                                                <option value="investasi">Investasi</option>
-                                                <option value="lain">Lain-Lain</option>
+                                                <option value="Salary">Salary</option>
+                                                <option value="Parent">Parent</option>
+                                                <option value="Gift">Gift</option>
+                                                <option value=".etc">.etc</option>
+
                                             </select>
                                             <input type="date" className="form-control px-4 mb-3" name="date" id="date" onChange={this.onChange} value={date} />
                                             <input type="number" className="form-control px-4 mb-3" name="income" id="income" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={income} />
