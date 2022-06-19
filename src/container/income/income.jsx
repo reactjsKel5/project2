@@ -24,7 +24,7 @@ class Income extends Component {
             allDataProfile: [],
             'category': '',
             'date': '',
-            'income': '',
+            'income': 0,
             'title': '',
         };
     }
@@ -51,15 +51,15 @@ class Income extends Component {
         var list = [];
         try {
             const querySnapshot = await getDoc(doc(db, "users", this.user))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img'],
+                    })
+                    console.log(this.state)
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
@@ -80,10 +80,7 @@ class Income extends Component {
 
     onChange = (e) => {
         const state = this.state
-        const current = new Date();
-        // const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
         state[e.target.name] = e.target.value;
-        // state['date'] = date;
         this.setState(state);
     }
 
@@ -105,18 +102,18 @@ class Income extends Component {
                 this.setState({
                     category: "",
                     date: "",
-                    income: "",
+                    income: 0,
                     title: ""
                 })
             })
         console.log(res);
     }
     // , categoryIncome,
-    handleHookUpdate = (keyIncome, incomeIncome, titleIncome) => {
+    handleHookUpdate = (keyIncome, categoryIncome, incomeIncome, titleIncome) => {
 
         this.setState({
             keyData: keyIncome,
-            // category: categoryIncome,
+            category: categoryIncome,
             income: incomeIncome,
             title: titleIncome
         })
@@ -127,10 +124,11 @@ class Income extends Component {
     handleUpdate = async (event) => {
         event.preventDefault();
 
-        const { income, title } = this.state;
+        const { category, date, income, title } = this.state;
 
         const res = await setDoc(doc(db, "income", auth.currentUser.uid, "items", this.state.keyData), {
-            // "category": category,
+            "category": category,
+            "date": date,
             "income": income,
             "title": title
         })
@@ -138,8 +136,9 @@ class Income extends Component {
             .then((docRef) => {
                 this.setState({
                     keyData: "",
-                    // category: "",
-                    income: "",
+                    category: "",
+                    date: "",
+                    income: 0,
                     title: ""
                 })
             })
@@ -147,77 +146,6 @@ class Income extends Component {
 
 
 
-    // state = {
-    //     listIncome: [],
-    //     addIncome: {
-    //         id: 1,
-    //         uid: 1,
-    //         pemasukan: 1,
-    //         kategori_pemasukan: 1,
-    //         tgl_pemasukan: "2022-03-25",
-    //         catatan: "",
-    //         saldo: 0
-    //     },
-    //     kategori: []
-    // }
-
-
-    // getIncome = () => {
-    //     fetch('http://localhost:3001/pemasukan')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 listIncome: json
-    //             })
-    //         })
-    // }
-
-    // getCat = () => {
-    //     fetch('http://localhost:3001/kategori_pemasukan')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 kategori: json
-    //             })
-    //         })
-    // }
-
-    // componentDidMount() {
-    //     this.getIncome()
-    //     this.getCat()
-    // }
-
-    // handleDelete = (id) => {
-    //     fetch(`http://localhost:3001/pemasukan/${id}`, { method: 'DELETE' })
-    //         .then(res => {
-    //             this.getIncome()
-    //         })
-    // }
-
-    // handleAdd = (event) => {
-    //     let insertIncome = { ...this.state.addIncome };
-    //     let timestamp = new Date().getTime();
-    //     insertIncome['id'] = timestamp;
-    //     insertIncome[event.target.name] = event.target.value;
-    //     this.setState({
-    //         addIncome: insertIncome
-    //     });
-    // }
-
-    // // insert to API
-    // insertIncome = (event) => {
-    //     event.preventDefault();
-    //     fetch('http://localhost:3001/pemasukan', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(this.state.addIncome)
-    //     })
-    //         .then(response => response.json())
-    //         .then(json => this.getIncome())
-    // }
 
     render() {
 
@@ -250,11 +178,11 @@ class Income extends Component {
 
 
                     <div className="col-auto delete align-self-center">
-                        
-                        <button 
+
+                        <button
                             onClick={
                                 () => {
-                                    this.handleHookUpdate(id, income, title);
+                                    this.handleHookUpdate(id, category, income, title);
                                 }
                             }
                         >
@@ -272,25 +200,25 @@ class Income extends Component {
                 </div>
 
             )
-        })   
+        })
 
         return (
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
-                </div>
-                <div className="col user">
-                    <img src={prof_img} width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Tulis content di bawah sini */}
                     <div className="income-container mx-md-5 my-5">
@@ -347,60 +275,42 @@ class Income extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-                                        {/* <div className="card-total-pemasukan mb-3">
-                                            <div className="card-body mx-2 my-1">
-                                                <h5>Total pemasukan</h5>
-                                                <div className="row  ">
-                                                    <div className="col nominal mt-2">
-                                                        <h3>135.000</h3>
-                                                    </div>
-                                                    <div className="col rupiah mt-3">
-                                                        <h5>Rupiah</h5>
-                                                    </div>
 
-                                                </div>
-                                            </div>
-                                        </div> */}
-
-
-
-                                        {/* <div className="card-presentase mb-2">
-                                            <div className="card-body mx-2 my-1"> */}
                                         <h3>Chart</h3>
                                         <h5>Presentase pemasukan</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm" style={{height: 250 }}>
-                                            <DonutChart
-                                               width={350}
-                                               height={350}
-                                               data={[
-                                                {
-                                                    label: 'Gaji',
-                                                    value: 45,
-                                                    // isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'Orang Tua',
-                                                  value: 25,
-                                                //   isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'Hadiah',
-                                                  value: 25,
-                                                //   isEmpty: true,
-                                                },
-                                                {
-                                                  label: 'Lain-lain',
-                                                  value: 25,
-                                                },
-                                               ]} 
-                                               >
-                                               {/* <div style={{ fontSize: 52 }}>
+                                            <div className="col-md-auto col-sm" style={{ height: 250 }}>
+                                                <DonutChart
+                                                    width={350}
+                                                    height={350}
+                                                    data={[
+                                                        {
+                                                            label: 'Gaji',
+                                                            value: 45,
+                                                            // isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'Orang Tua',
+                                                            value: 25,
+                                                            //   isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'Hadiah',
+                                                            value: 25,
+                                                            //   isEmpty: true,
+                                                        },
+                                                        {
+                                                            label: 'Lain-lain',
+                                                            value: 25,
+                                                        },
+                                                    ]}
+                                                >
+                                                    {/* <div style={{ fontSize: 52 }}>
                                                     <strong>Rp. 135.000</strong>
                                                 </div> */}
-                                               </DonutChart>
-                                            
-                                            {/* <div className="col align-self-center">
+                                                </DonutChart>
+
+                                                {/* <div className="col align-self-center">
                                                 <ul>
                                                     <li>Gaji</li>
                                                     <li>Orang Tua</li>
@@ -431,6 +341,7 @@ class Income extends Component {
                                                 <option value="investasi">Investasi</option>
                                                 <option value="lain">Lain-Lain</option>
                                             </select>
+                                            <input type="date" className="form-control px-4 mb-3" name="date" id="date" onChange={this.onChange} value={date} />
                                             <input type="number" className="form-control px-4 mb-3" name="income" id="income" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={income} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
 
@@ -451,11 +362,7 @@ class Income extends Component {
                                 <div className="card-body m-3">
                                     <small>28/02/2022</small>
                                     {listofData}
-                                    {/* {
-                                        this.state.listIncome.map(data => {
-                                            return <IncomeList key={data.id} uid={data.uid} pemasukan={data.pemasukan} catatan={data.catatan} id={data.id} delete={this.handleDelete} />
-                                        })
-                                    } */}
+
                                 </div>
                             </div>
                         </div>
