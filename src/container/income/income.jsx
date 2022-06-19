@@ -149,7 +149,7 @@ class Income extends Component {
 
     render() {
 
-        const { income, title } = this.state;
+        const { category, date, income, title } = this.state;
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
 
@@ -324,7 +324,7 @@ class Income extends Component {
                                             </div>
                                         </div>
                                         <form action="submit">
-                                            <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} >
+                                            <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category} >
                                                 <option value="0">--</option>
                                                 <option value="gaji">Gaji</option>
                                                 <option value="orangtua">Orang Tua</option>
