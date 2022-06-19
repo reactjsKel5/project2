@@ -28,6 +28,8 @@ export const AuthContextProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log("INI USER : " + currentUser);
       setUser(currentUser);
+      localStorage.setItem("userUid", currentUser?.uid);
+      console.log(localStorage.getItem("userUid"));
     });
     return () => {
       unsubscribe();
