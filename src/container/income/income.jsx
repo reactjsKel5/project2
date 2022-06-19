@@ -9,7 +9,7 @@ import {
     Link
 } from "react-router-dom";
 import { async } from "@firebase/util";
-import DonutChart from "react-donut-chart/dist/DonutChart";
+// import DonutChart from "react-donut-chart/dist/DonutChart";
 
 //update untuk category blum muncul
 class Income extends Component {
@@ -318,7 +318,7 @@ class Income extends Component {
                                         <h5>Presentase pemasukan</h5>
                                         <div className="row d-flex mt-4">
                                             <div className="col-md-auto col-sm" style={{ height: 250 }}>
-                                                <DonutChart
+                                                {/* <DonutChart
                                                     width={350}
                                                     height={350}
                                                     data={[
@@ -343,10 +343,10 @@ class Income extends Component {
                                                         },
                                                     ]}
                                                 >
-                                                    {/* <div style={{ fontSize: 52 }}>
+                                                    <div style={{ fontSize: 52 }}>
                                                     <strong>Rp. 135.000</strong>
-                                                </div> */}
-                                                </DonutChart>
+                                                </div>
+                                                </DonutChart> */}
 
                                                 {/* <div className="col align-self-center">
                                                 <ul>

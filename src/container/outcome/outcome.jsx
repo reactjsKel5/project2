@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { auth, db } from '../../firebase';
 import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
-import DonutChart from "react-donut-chart";
+// import DonutChart from "react-donut-chart";
 // import Food from '../outcome/Food.png';
 
 
@@ -314,7 +314,7 @@ class Outcome extends Component {
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
                                             <div className="col-md-auto col-sm" style={{ height: 250 }}>
-                                                <DonutChart
+                                                {/* <DonutChart
                                                     width={350}
                                                     height={350}
                                                     data={[
@@ -339,10 +339,10 @@ class Outcome extends Component {
                                                         },
                                                     ]}
                                                 >
-                                                    {/* <div style={{ fontSize: 52 }}>
+                                                    <div style={{ fontSize: 52 }}>
                                                     <strong>Rp. 135.000</strong>
-                                                </div> */}
-                                                </DonutChart>
+                                                </div>
+                                                </DonutChart> */}
 
                                                 {/* <img src={require('./advanced.png')} alt="chart" /> */}
                                             </div>

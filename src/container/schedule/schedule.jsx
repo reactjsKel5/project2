@@ -19,7 +19,7 @@ class Schedule extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.day = moment().format('dddd');
         this.state = {
             isActive: {
@@ -39,7 +39,7 @@ class Schedule extends Component {
             "topic": '',
         };
     }
-    
+
     onChange = (e) => {
         const state = this.state
         state[e.target.name] = e.target.value;
@@ -49,7 +49,7 @@ class Schedule extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)));
+            const querySnapshot = await getDocs(query(collection(db, "schedule", this.userUid, "items"), where("day", "==", this.day)));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -67,16 +67,16 @@ class Schedule extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img'],
+                    })
+                    console.log(this.state)
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
@@ -91,7 +91,7 @@ class Schedule extends Component {
     }
 
     handleDelete = async (id) => {
-        deleteDoc(doc(db, "schedule", auth.currentUser.uid, "items", id))
+        deleteDoc(doc(db, "schedule", this.userUid, "items", id))
             .then(
                 this.fetchData()
             )
@@ -100,15 +100,15 @@ class Schedule extends Component {
     onSubmit = async (e) => {
         e.preventDefault();
         const { day, timeend, timestart, topic } = this.state;
-        const res = await addDoc(collection(db, "schedule", auth.currentUser.uid, "items"), {
+        const res = await addDoc(collection(db, "schedule", this.userUid, "items"), {
             "day": day,
             "timeend": timeend,
             "timestart": timestart,
             "topic": topic
         })
-        .then(
-            this.fetchData()
-        )
+            .then(
+                this.fetchData()
+            )
             .then((docRef) => {
                 this.setState({
                     day: "",
@@ -226,11 +226,11 @@ class Schedule extends Component {
                     </div>
                     <div class="col-2">
                         <button className="btn-delete float-end"
-                        onClick={
-                            () => {
-                                this.handleDelete(id)
+                            onClick={
+                                () => {
+                                    this.handleDelete(id)
+                                }
                             }
-                        }
                         >
                             <ion-icon name="close-outline"></ion-icon>
                         </button>
@@ -238,26 +238,26 @@ class Schedule extends Component {
                 </div>
             )
         })
-   
+
 
         return (
             <div>
                 <Sidebar />
                 {/* Tulis content di bawah sini */}
                 <div className="main">
-                <div className="topbar">
-                    <div className="toggle">
-                        <ion-icon name="menu-outline"></ion-icon>
-                    </div>
-                    <div className="user-information row">
-                        <div className="col name align-self-center">
-                            <h6>{nama_lengkap}</h6>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
                         </div>
-                        <div className="col user">
-                        <img src={prof_img} width="200" alt="user-photo" />
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
                         </div>
                     </div>
-                </div>
                     <div className="m-md-5 schedule">
                         <div className="schedule-txt">Schedule.</div>
                         <div className="col-sm">
@@ -288,11 +288,11 @@ class Schedule extends Component {
                                             <div class="col-md">
                                                 <div class="mb-4">
                                                     <label for="waktuMulai" class="text-secondary">Waktu Mulai</label>
-                                                    <input type="time" class="form-control" name="timestart" id="timeend" onChange={this.onChange} value={timestart}/>
+                                                    <input type="time" class="form-control" name="timestart" id="timeend" onChange={this.onChange} value={timestart} />
                                                 </div>
                                                 <div class="mb-4">
                                                     <label for="waktuBerakhir" class="text-secondary">Waktu Berakhir</label>
-                                                    <input type="time" class="form-control" name="timeend" id="timeend" onChange={this.onChange} value={timeend}/>
+                                                    <input type="time" class="form-control" name="timeend" id="timeend" onChange={this.onChange} value={timeend} />
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12 text-end" >
@@ -307,13 +307,13 @@ class Schedule extends Component {
                         </div>
                         <div class="section-nav-hari">
                             <nav class="nav nav-day my-5">
-                                <a class={this.state.isActive["Monday"] ? "nav-link active" : "nav-link"} aria-current="page" href="#"  onClick={(event) => {this.onChangeSelect(event, "Monday", false, true, false, false, false, false, false)}}>Senin</a>
-                                <a class={this.state.isActive["Tuesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Tuesday", false, false, true, false, false, false, false)}}>Selasa</a>
-                                <a class={this.state.isActive["Wednesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Wednesday", false, false, false, true, false, false, false)}}>Rabu</a>
-                                <a class={this.state.isActive["Thursday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Thursday", false, false, false, false, true, false, false)}}>Kamis</a>
-                                <a class={this.state.isActive["Friday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Friday", false, false, false, false, false, true, false)}}>Jumat</a>
-                                <a class={this.state.isActive["Saturday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Saturday", false, false, false, false, false, false, true)}}>Sabtu</a>
-                                <a class={this.state.isActive["Sunday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => {this.onChangeSelect(event, "Sunday", true, false, false, false, false, false, false)}}>Minggu</a>
+                                <a class={this.state.isActive["Monday"] ? "nav-link active" : "nav-link"} aria-current="page" href="#" onClick={(event) => { this.onChangeSelect(event, "Monday", false, true, false, false, false, false, false) }}>Senin</a>
+                                <a class={this.state.isActive["Tuesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Tuesday", false, false, true, false, false, false, false) }}>Selasa</a>
+                                <a class={this.state.isActive["Wednesday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Wednesday", false, false, false, true, false, false, false) }}>Rabu</a>
+                                <a class={this.state.isActive["Thursday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Thursday", false, false, false, false, true, false, false) }}>Kamis</a>
+                                <a class={this.state.isActive["Friday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Friday", false, false, false, false, false, true, false) }}>Jumat</a>
+                                <a class={this.state.isActive["Saturday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Saturday", false, false, false, false, false, false, true) }}>Sabtu</a>
+                                <a class={this.state.isActive["Sunday"] ? "nav-link active" : "nav-link"} href="#" onClick={(event) => { this.onChangeSelect(event, "Sunday", true, false, false, false, false, false, false) }}>Minggu</a>
                             </nav>
                         </div>
                         <div className="col-sm">
@@ -324,11 +324,11 @@ class Schedule extends Component {
                                             <div class="col-4">Waktu</div>
                                             <div class="col-6">Jadwal</div>
                                             <div className="row">
-                                            <div class="col">
-                                               <p>
-                                               {listofData}
-                                               </p>
-                                            </div>
+                                                <div class="col">
+                                                    <p>
+                                                        {listofData}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
