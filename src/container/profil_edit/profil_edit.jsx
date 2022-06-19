@@ -6,6 +6,7 @@ import pict from "./jm2.jpg";
 import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
+import { storage } from '../../firebase';
 //import  "bootstrap/dist/css/bootstrap.css";
 
 class ProfilEdit extends Component {
