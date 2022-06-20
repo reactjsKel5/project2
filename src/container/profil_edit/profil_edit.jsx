@@ -7,6 +7,7 @@ import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
 import { storage } from '../../firebase';
+import { Link } from "react-router-dom";
 //import  "bootstrap/dist/css/bootstrap.css";
 
 class ProfilEdit extends Component {
@@ -136,7 +137,7 @@ class ProfilEdit extends Component {
                                     <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
                                         <input type="file" onChange={handleChange} />
-                                        // <button type="submit" className="btn btn-primary ">Ubah Profile</button>
+                                        <button type="submit" className="btn btn-primary ">Ubah Profile</button>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +158,9 @@ class ProfilEdit extends Component {
 
                                 <div className="row button-section mt-5">
                                     <div className="col">
-                                        <button type="submit" className="btn btn-outline-danger">Hapus</button>
+                                        <Link to="/editProfile/editPassword">
+                                            <button type="submit" className="btn btn-outline-danger">Change Password</button>
+                                        </Link>
                                     </div>
                                     <div className="col">
                                         <button className="btn btn-danger-profile-edit float-end" onChange={handleUpload} onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
