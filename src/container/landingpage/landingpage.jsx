@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./landingpage.css";
+import { Link } from "react-router-dom";
 
 import Logo from '../../img/logo.jpg';
 import Header from '../../img/header.jpeg';
@@ -27,18 +28,22 @@ class LandingPage extends Component {
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
                                     <li className="nav-item">
-                                        <a className="nav-link active" aria-current="page" href="#">About</a>
+                                        <a className="nav-link active" aria-current="page" href="#about">About</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#">Tutorial</a>
+                                        <a className="nav-link" href="https://bit.ly/DemoCollerApp">Tutorial</a>
                                     </li>
                                     <li className="nav-item">
                                         <a className="nav-link" href="#">Review</a>
                                     </li>
                                 </ul>
                                 <div className="d-flex">
-                                    <a href="login.php"><button className="btn btn-login bg-transparent me-5">Login</button></a>
-                                    <a href="register.php"><button className="btn btn-primary">Register</button></a>
+                                    <Link to = "/Login">
+                                    <a><button className="btn btn-login bg-transparent me-5">Login</button></a>
+                                    </Link>
+                                    <Link to ="/Register">
+                                    <a ><button className="btn btn-primary">Register</button></a>
+                                    </Link>                                    
                                 </div>
                             </div>
                         </div>
@@ -49,7 +54,7 @@ class LandingPage extends Component {
                                 <div className="header-content">
                                     <h1><b>Manajemen perkuliahan dengan COLLER</b></h1>
                                     <h5 className="my-5">Coller adalah aplikasi yang akan membantu kamu di dalam dunia perkuliahan.</h5>
-                                    <a href="#explore">
+                                    <a href="#feature">
                                         <button type="button" className="btn btn-outline-dark">Expolre Features</button>
                                     </a>
                                 </div>
@@ -118,7 +123,7 @@ class LandingPage extends Component {
                             </div>
                         </div>
                     </section>
-                    <section className="section-4 mt-3">
+                    <section id="feature" className="section-4 mt-3">
                         <div className="row">
                             <div className="col-6">
                                 <div className="header-content">
@@ -168,7 +173,7 @@ class LandingPage extends Component {
                         </div>
                     </section>
                 </div>
-                <section className="section-download mx-auto text-center">
+                <section className="section-download mx-auto text-center" id="about">
                     <div className="features-title mx-auto">
                         <h2>Try <span>Coller </span>Today!</h2>
                         <h5>Get started for free</h5>
@@ -176,7 +181,9 @@ class LandingPage extends Component {
                             <a href="#">
                                 <img src={ Playstore } alt="playstore" />
                             </a>
-                            <a href="register.php"><button className="btn btn-primary">Register</button></a>
+                            <Link to ="/Register">
+                            <a><button className="btn btn-primary">Register</button></a>
+                            </Link>
                         </div>
                     </div>
                 </section>

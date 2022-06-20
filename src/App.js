@@ -17,13 +17,13 @@ import Outcome from './container/outcome/outcome';
 import Income from './container/income/income';
 import Profil from './container/profil/profil';
 import ProfilEdit from './container/profil_edit/profil_edit';
-
+import LandingPage from './container/landingpage/landingpage';
 function App() {
   return (
     <div>
       <AuthContextProvider>
         <Routes>
-        <Route path='/' element={<Login />} />
+        <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route
@@ -45,6 +45,7 @@ function App() {
           <Route path='/Profile' element = {<ProtectedRoute><Profil/></ProtectedRoute>}/>
           <Route path='/editProfile' element = {<ProtectedRoute><ProfilEdit/></ProtectedRoute>}/>
           <Route path='/Register' element={<Register/>}/>
+          <Route path='/Landing' element={<LandingPage/>}/>
         </Routes>
       </AuthContextProvider>
     </div>
