@@ -29,6 +29,7 @@ export const AuthContextProvider = ({ children }) => {
       console.log("INI USER : " + currentUser);
       setUser(currentUser);
       localStorage.setItem("userUid", currentUser?.uid);
+      localStorage.setItem("user", currentUser);
       console.log(localStorage.getItem("userUid"));
     });
     return () => {

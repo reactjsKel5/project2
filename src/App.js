@@ -18,6 +18,9 @@ import Income from './container/income/income';
 import Profil from './container/profil/profil';
 import ProfilEdit from './container/profil_edit/profil_edit';
 import LandingPage from './container/landingpage/landingpage';
+import EditPassword from './container/editpassword/editpassword';
+
+
 function App() {
   return (
     <div>
@@ -44,6 +47,7 @@ function App() {
           <Route path='/Pemasukan' element = {<ProtectedRoute><Income/></ProtectedRoute>}/>
           <Route path='/Profile' element = {<ProtectedRoute><Profil/></ProtectedRoute>}/>
           <Route path='/editProfile' element = {<ProtectedRoute><ProfilEdit/></ProtectedRoute>}/>
+          <Route path='/editProfile/editPassword' element = {<ProtectedRoute><EditPassword/></ProtectedRoute>}/>
           <Route path='/Register' element={<Register/>}/>
           <Route path='/Landing' element={<LandingPage/>}/>
         </Routes>
