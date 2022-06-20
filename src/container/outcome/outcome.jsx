@@ -316,7 +316,7 @@ class Outcome extends Component {
                         <button
                             onClick={
                                 () => {
-                                    this.handleHookUpdate(id, category, outcome, title);
+                                    this.handleHookUpdate(id, category, date, outcome, title);
                                 }
                             }
                         >
@@ -408,8 +408,8 @@ class Outcome extends Component {
                                                 <DonutChart
                                                     width={550}
                                                     height={550}
-                                                    strokeColor= '#ffffff'
-                                                    
+                                                    strokeColor='#ffffff'
+
                                                     data={[
                                                         {
                                                             label: 'Food',
@@ -433,8 +433,8 @@ class Outcome extends Component {
                                                     ]}
                                                 >
                                                     <div style={{ fontSize: 52 }}>
-                                                    <strong>Rp. 135.000</strong>
-                                                </div>
+                                                        <strong>Rp. 135.000</strong>
+                                                    </div>
                                                 </DonutChart>
 
                                                 {/* <img src={require('./advanced.png')} alt="chart" /> */}
@@ -473,23 +473,23 @@ class Outcome extends Component {
                                             <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
                                             {
-                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit} 
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}
                                                 // onChange={
                                                 //     () => {
                                                 //         this.handleHookUpdate(keyOutcome, categoryOutcome, dateOutcome, outcomeOutcome, titleOutcome)
                                                 //         this.setState(() => {
-                                                
+
                                                 //             //show total
                                                 //             TotalIncome = this.state.totincome;
                                                 //             TotalOutcome = this.state.totoutcome;
                                                 //             Balance = TotalIncome - TotalOutcome;
-    
+
                                                 //             // show per category
                                                 //             TotalFood = this.state.totfood;
                                                 //             TotalEntertainment = this.state.totentertain;
                                                 //             TotalEducation = this.state.toteducation;
                                                 //             TotalEtc = this.state.totetc;
-    
+
                                                 //             // operation persentase
                                                 //             persenFood = TotalFood / TotalOutcome * 100;
                                                 //             persenEntertainment = TotalEntertainment / TotalOutcome * 100;
