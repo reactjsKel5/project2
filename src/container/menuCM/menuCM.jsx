@@ -20,7 +20,8 @@ class MenuCM extends Component {
         this.state = {
             allDataProfile: [],
             allDataTodolistOnGoing: 0,
-            scheduleLength: 0
+            scheduleLength: 0,
+            taskOnGoing: 0,
             // "title": '',
             // "body": '',
             // 'date': ''
@@ -63,6 +64,25 @@ class MenuCM extends Component {
         }
     }
 
+    fetchTaskOnGoing = async () => {
+        var list = [];
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "task", auth.currentUser.uid, "items"), where("status", "==", "false")));
+            querySnapshot.forEach((doc) => {
+                list.push({...doc.data(), id: doc.id});
+            });            
+            console.log(querySnapshot.docs.length);
+            this.setState({
+                taskOnGoing: list.length
+            })
+            this.state.taskOnGoing = list.length;
+            console.log(this.state.taskOnGoing)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    
     fetchScheduleLength = async () => {
         try {
             await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)))
@@ -83,6 +103,7 @@ class MenuCM extends Component {
         this.fetchDataProfile();
         this.fetchTodosOnGoing();
         this.fetchScheduleLength();
+        this.fetchTaskOnGoing();
         console.log(this.data);
     }
 
@@ -92,6 +113,8 @@ class MenuCM extends Component {
 
         // Todolist calculate
         var allDataTodolistOnGoing = this.state.allDataTodolistOnGoing;
+        // Task OnGoing
+        var task = this.state.taskOnGoing;
             
         return (
             <div>
@@ -120,7 +143,7 @@ class MenuCM extends Component {
                                 <div className="card-info">
                                     <div className="card-body row mx-3 my-2">
                                         <div className="col-auto number align-self-center">
-                                            <h1>5</h1>
+                                            <h1>{task}</h1>
                                         </div>
                                         <div className="col label align-self-center">
                                             <h4>Task</h4>
