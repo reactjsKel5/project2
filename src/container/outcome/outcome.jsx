@@ -7,8 +7,8 @@ import {
     Link
 } from "react-router-dom";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
-// import DonutChart from "react-donut-chart";
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
+import DonutChart from "react-donut-chart";
 // import Food from '../outcome/Food.png';
 
 
@@ -20,6 +20,10 @@ class Outcome extends Component {
         this.state = {
             totincome: 0,
             totoutcome: 0,
+            totfood: 0,
+            totentertain: 0,
+            toteducation: 0,
+            totetc: 0,
             keyData: '',
             allData: [],
             allDataProfile: [],
@@ -46,6 +50,62 @@ class Outcome extends Component {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    fetchFood = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "outcome", auth.currentUser.uid, "items"), where("category", "==", "Food")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["outcome"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totfood: data });
+        console.log("Food : " + this.state.totfood);
+    }
+
+    fetchEntertain = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "outcome", auth.currentUser.uid, "items"), where("category", "==", "Entertainment")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["outcome"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totentertain: data });
+        console.log("Entertainment : " + this.state.totentertain);
+    }
+
+    fetchEducation = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "outcome", auth.currentUser.uid, "items"), where("category", "==", "Education")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["outcome"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ toteducation: data });
+        console.log("Education : " + this.state.toteducation);
+    }
+
+    fetchEtc = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "outcome", auth.currentUser.uid, "items"), where("category", "==", ".etc")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["outcome"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totetc: data });
+        console.log("Etc : " + this.state.totetc);
     }
 
     fetchDataProfile = async () => {
@@ -79,6 +139,10 @@ class Outcome extends Component {
         this.fetchDataProfile();
         this.fetchDataIncome();
         this.fetchDataOutcome();
+        this.fetchFood();
+        this.fetchEntertain();
+        this.fetchEducation();
+        this.fetchEtc();
         console.log(this.data);
     }
 
@@ -102,11 +166,18 @@ class Outcome extends Component {
                 this.fetchData()
             )
             .then((docRef) => {
+                this.fetchData();
+                this.fetchDataIncome();
+                this.fetchDataOutcome();
+                this.fetchFood();
+                this.fetchEntertain();
+                this.fetchEducation();
+                this.fetchEtc();
                 this.setState({
                     category: "",
                     date: "",
                     outcome: 0,
-                    title: ""
+                    title: "",
                 })
             })
         console.log(res);
@@ -138,6 +209,7 @@ class Outcome extends Component {
         })
             .then(this.fetchData)
             .then((docRef) => {
+                // taruh componentDidMount di sini
                 this.setState({
                     keyData: "",
                     category: "",
@@ -202,6 +274,25 @@ class Outcome extends Component {
         const Balance = TotalIncome - TotalOutcome;
         console.log(Balance);
 
+        // show per category
+        var TotalFood = this.state.totfood;
+        console.log("total food: " + TotalFood);
+
+        var TotalEntertainment = this.state.totentertain;
+        console.log("total entertainment: " + TotalEntertainment);
+
+        var TotalEducation = this.state.toteducation;
+        console.log("total education: " + TotalEducation);
+
+        var TotalEtc = this.state.totetc;
+        console.log("total etc: " + TotalEtc);
+
+        // operation persentase
+        var persenFood = Math.round(TotalFood / TotalOutcome * 100);
+        console.log("persenfood:" + persenFood);
+        var persenEntertainment = Math.round(TotalEntertainment / TotalOutcome * 100);
+        var persenEducation = Math.round(TotalEducation / TotalOutcome * 100);
+        var persenEtc = Math.round(TotalEtc / TotalOutcome * 100);
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
@@ -313,36 +404,38 @@ class Outcome extends Component {
                                         <h3>Chart</h3>
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm" style={{ height: 250 }}>
-                                                {/* <DonutChart
-                                                    width={350}
-                                                    height={350}
+                                            <div className="col-md-auto col-sm" style={{ height: 350 }}>
+                                                <DonutChart
+                                                    width={550}
+                                                    height={550}
+                                                    strokeColor= '#ffffff'
+                                                    
                                                     data={[
                                                         {
                                                             label: 'Food',
-                                                            value: 45,
+                                                            value: persenFood,
                                                             // isEmpty: true,
                                                         },
                                                         {
                                                             label: 'Entertainment',
-                                                            value: 25,
+                                                            value: persenEntertainment,
                                                             //   isEmpty: true,
                                                         },
                                                         {
                                                             label: 'Education',
-                                                            value: 25,
+                                                            value: persenEducation,
                                                             //   isEmpty: true,
                                                         },
                                                         {
                                                             label: 'etc',
-                                                            value: 25,
+                                                            value: persenEtc,
                                                         },
                                                     ]}
                                                 >
                                                     <div style={{ fontSize: 52 }}>
                                                     <strong>Rp. 135.000</strong>
                                                 </div>
-                                                </DonutChart> */}
+                                                </DonutChart>
 
                                                 {/* <img src={require('./advanced.png')} alt="chart" /> */}
                                             </div>
@@ -380,7 +473,32 @@ class Outcome extends Component {
                                             <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
                                             {
-                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit} 
+                                                // onChange={
+                                                //     () => {
+                                                //         this.handleHookUpdate(keyOutcome, categoryOutcome, dateOutcome, outcomeOutcome, titleOutcome)
+                                                //         this.setState(() => {
+                                                
+                                                //             //show total
+                                                //             TotalIncome = this.state.totincome;
+                                                //             TotalOutcome = this.state.totoutcome;
+                                                //             Balance = TotalIncome - TotalOutcome;
+    
+                                                //             // show per category
+                                                //             TotalFood = this.state.totfood;
+                                                //             TotalEntertainment = this.state.totentertain;
+                                                //             TotalEducation = this.state.toteducation;
+                                                //             TotalEtc = this.state.totetc;
+    
+                                                //             // operation persentase
+                                                //             persenFood = TotalFood / TotalOutcome * 100;
+                                                //             persenEntertainment = TotalEntertainment / TotalOutcome * 100;
+                                                //             persenEducation = TotalEducation / TotalOutcome * 100;
+                                                //             persenEtc = TotalEtc / TotalOutcome * 100;
+                                                //         });
+                                                //     }
+                                                // }
+                                                >Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
 
 
                                             }
