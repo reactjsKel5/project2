@@ -9,8 +9,10 @@ import {
 import { auth, db } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import DonutChart from "react-donut-chart";
-// import Food from '../outcome/Food.png';
-
+import Food from '../../img/Food.png';
+import Entertainment from '../../img/Entertainment.png';
+import Education from '../../img/Education.png';
+import Etc from '../../img/Etc.png'
 
 class Outcome extends Component {
     constructor() {
@@ -204,12 +206,19 @@ class Outcome extends Component {
         const res = await setDoc(doc(db, "outcome", auth.currentUser.uid, "items", this.state.keyData), {
             "category": category,
             "date": date,
-            "outcome": outcome,
+            "outcome": Number(outcome),
             "title": title
         })
             .then(this.fetchData)
             .then((docRef) => {
                 // taruh componentDidMount di sini
+                this.fetchData();
+                this.fetchDataIncome();
+                this.fetchDataOutcome();
+                this.fetchFood();
+                this.fetchEntertain();
+                this.fetchEducation();
+                this.fetchEtc();
                 this.setState({
                     keyData: "",
                     category: "",
@@ -296,7 +305,6 @@ class Outcome extends Component {
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
-
             var date = val.date
             var outcome = val.outcome
             var title = val.title
@@ -304,7 +312,7 @@ class Outcome extends Component {
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        {/* <img src={`${category}.png`} alt="category-logo"/> */}
+                        <img src={Etc} alt={category} width={30}/>
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
@@ -474,30 +482,6 @@ class Outcome extends Component {
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
                                             {
                                                 this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}
-                                                // onChange={
-                                                //     () => {
-                                                //         this.handleHookUpdate(keyOutcome, categoryOutcome, dateOutcome, outcomeOutcome, titleOutcome)
-                                                //         this.setState(() => {
-
-                                                //             //show total
-                                                //             TotalIncome = this.state.totincome;
-                                                //             TotalOutcome = this.state.totoutcome;
-                                                //             Balance = TotalIncome - TotalOutcome;
-
-                                                //             // show per category
-                                                //             TotalFood = this.state.totfood;
-                                                //             TotalEntertainment = this.state.totentertain;
-                                                //             TotalEducation = this.state.toteducation;
-                                                //             TotalEtc = this.state.totetc;
-
-                                                //             // operation persentase
-                                                //             persenFood = TotalFood / TotalOutcome * 100;
-                                                //             persenEntertainment = TotalEntertainment / TotalOutcome * 100;
-                                                //             persenEducation = TotalEducation / TotalOutcome * 100;
-                                                //             persenEtc = TotalEtc / TotalOutcome * 100;
-                                                //         });
-                                                //     }
-                                                // }
                                                 >Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
 
 

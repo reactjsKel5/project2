@@ -112,77 +112,6 @@ class Todolist extends Component {
         console.log(updateStatus);
     }
 
-    // state = {
-    //     todolist: [],
-    //     insertTodo: {
-    //         id: 1,
-    //         uid: 1,
-    //         nama_todo: "",
-    //         status: 0
-    //     }
-    // }
-
-
-    // // get todolist
-    // fetchTodolist = () => {
-    //     fetch('http://localhost:3001/todolist?_sort=id_note8&_order=desc')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 todolist: json
-    //             })
-    //         })
-    // }
-
-    // componentDidMount() {
-    //     this.fetchTodolist()
-    // }
-
-    // // delete todolist by id
-    // deleteTodolist = (id_todolist) => {
-    //     fetch(`http://localhost:3001/todolist/${id_todolist}`, {
-    //         method: 'DELETE'
-    //     })
-    //         .then(json => {
-    //             this.fetchTodolist()
-    //         })
-    // }
-
-    // // delete all todolist
-    // deleteAllTodolist = (uid) => {
-    //     fetch(`http://localhost:3001/todolist/${uid}`, {
-    //         method: 'DELETE'
-    //     })
-    //         .then(json => {
-    //             this.fetchTodolist()
-    //         })
-    // }
-
-    // // handle value of field
-    // handleChangeInsert = (event) => {
-    //     let insertTodolistData = { ...this.state.insertTodo };
-    //     let timestamp = new Date().getTime();
-    //     insertTodolistData['id'] = timestamp;
-    //     insertTodolistData[event.target.name] = event.target.value;
-    //     this.setState({
-    //         insertTodo: insertTodolistData
-    //     });
-    // }
-
-    // // insert to API
-    // insertTodolist = (event) => {
-    //     event.preventDefault();
-    //     fetch('http://localhost:3001/todolist', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept' : 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(this.state.insertTodo)
-    //     })
-    //         .then(response => response.json())
-    //         .then(json => this.fetchTodolist())
-    // }
     render() {
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
@@ -258,9 +187,6 @@ class Todolist extends Component {
                                     <div className="row d-flex">
                                         <div className="col">
                                             <h2 className="mb-4">Today's To-dos</h2>
-                                        </div>
-                                        <div className="col text-end">
-                                            <button className="btn btn-light" onClick={this.handleDelete}>Hapus semua</button>
                                         </div>
                                     </div>
                                     <div className="row">
