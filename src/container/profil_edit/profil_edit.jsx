@@ -8,6 +8,7 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'fir
 import { async } from '@firebase/util';
 import { storage } from '../../firebase';
 import { Link } from "react-router-dom";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 //import  "bootstrap/dist/css/bootstrap.css";
 
 class ProfilEdit extends Component {
@@ -19,6 +20,7 @@ class ProfilEdit extends Component {
         this.user = auth.currentUser.uid;
         this.data = [];
         this.state = {
+            "imageUpload": null,
             allDataProfile: [],
             "email": "",
             "nama_lengkap": "",
@@ -81,30 +83,52 @@ class ProfilEdit extends Component {
         const { url, setUrl } = this.state;
 
 
-        const handleChange = e => {
+        const handleChange = (e) => {
             if (e.target.files[0]) {
-                setImage(e.target.files[0]);
+                this.setState({
+                    imageUpload: e.target.files[0]
+                })
+                this.state.imageUpload = e.target.files[0];
+                console.log("Image ada : " + this.state.imageUpload.name);
+            } else {
+                console.log("mana imagenya");
             }
         };
 
         const handleUpload = () => {
-            const uploadFoto = storage.ref(`prof_img/${image.name}`).put(image);
-            uploadFoto.on(
-                "state_changed",
-                snapshot => { },
-                error => {
-                    console.log(error);
-                },
-                () => {
-                    storage
-                        .ref("prof_img")
-                        .child(image.name)
-                        .getDownloadURL()
-                        .then(url => {
-                            setUrl(url);
-                        });
-                }
-            );
+            const imageRef = ref(storage, `prof_img/${this.state.imageUpload.name}`);
+            uploadBytes(imageRef, this.state.imageUpload).then(() => {
+                getDownloadURL(imageRef).then( async (link) => {
+                    const { email, nama_lengkap, password, phone } = this.state;
+
+                    const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
+                        "email": email,
+                        "nama_lengkap": nama_lengkap,
+                        "password": password,
+                        "phone": phone,
+                        "prof_img": link
+                    })
+                        .then(this.fetchDataProfile)
+
+                });
+            });
+            // const uploadFoto = storage.ref(`prof_img/${image.name}`).put(image);
+            // uploadFoto.on(
+            //     "state_changed",
+            //     snapshot => { },
+            //     error => {
+            //         console.log(error);
+            //     },
+            //     () => {
+            //         storage
+            //             .ref("prof_img")
+            //             .child(image.name)
+            //             .getDownloadURL()
+            //             .then(url => {
+            //                 setUrl(url);
+            //             });
+            //     }
+            // );
         };
 
         return (
@@ -137,7 +161,7 @@ class ProfilEdit extends Component {
                                     <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
                                         <input type="file" onChange={handleChange} />
-                                        <button type="submit" className="btn btn-primary ">Ubah Profile</button>
+                                        <button onClick={handleUpload} className="btn btn-primary ">Ubah Profile</button>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +187,7 @@ class ProfilEdit extends Component {
                                         </Link>
                                     </div>
                                     <div className="col">
-                                        <button className="btn btn-danger-profile-edit float-end" onChange={handleUpload} onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
+                                        <button className="btn btn-danger-profile-edit float-end" onClick={(event) => this.handleUpdate(event)}>Simpan</button></div>
                                 </div>
                             </form>
                         </div>
