@@ -43,7 +43,7 @@ class Todolist extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
             .then((docRef) => {
                 this.setState({
                     email : docRef.data()['email'],
@@ -160,7 +160,7 @@ class Todolist extends Component {
                     <h6>{nama_lengkap}</h6>
                 </div>
                 <div className="col user">
-                    <img src={prof_img} width="200" alt="user-photo" />
+                    <img src={prof_img} alt="user-photo" />
                 </div>
             </div>
         </div>
