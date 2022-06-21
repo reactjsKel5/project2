@@ -3,7 +3,7 @@ import IncomeList from "../../components/incomeList";
 import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import './income.css';
 import {
     Link
