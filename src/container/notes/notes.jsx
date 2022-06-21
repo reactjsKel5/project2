@@ -14,7 +14,7 @@ export class Notes extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.state = {
             keyData: '',
@@ -29,7 +29,7 @@ export class Notes extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "notes", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "notes", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -47,7 +47,7 @@ export class Notes extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
             .then((docRef) => {
                 this.setState({
                     email : docRef.data()['email'],
@@ -80,7 +80,7 @@ export class Notes extends Component {
     }
 
     handleDelete = async (id) => {
-        deleteDoc(doc(db, "notes", auth.currentUser.uid, "items", id))
+        deleteDoc(doc(db, "notes", this.userUid, "items", id))
             .then(
                 this.fetchData()
             )
@@ -90,7 +90,7 @@ export class Notes extends Component {
         e.preventDefault();
 
         const { title, body, date } = this.state;
-        const res = await addDoc(collection(db, "notes", auth.currentUser.uid, "items"), {
+        const res = await addDoc(collection(db, "notes", this.userUid, "items"), {
             "title": title,
             "body": body,
             "date": date
@@ -127,13 +127,14 @@ export class Notes extends Component {
 
         const { title, body } = this.state;
 
-        const res = await setDoc(doc(db, "notes", auth.currentUser.uid, "items", this.state.keyData), {
+        const res = await setDoc(doc(db, "notes", this.userUid, "items", this.state.keyData), {
             "title": title,
             "body": body
         })
             .then(this.fetchData)
             .then((docRef) => {
                 this.setState({
+                    search: '',
                     keyData: "",
                     title: "",
                     body: "",
@@ -141,6 +142,28 @@ export class Notes extends Component {
                 })
             })
     }
+
+    handleSearch = (event) => {
+        var searchData = event.target.value;
+        console.log(searchData);
+
+        if (searchData == "") {
+            this.fetchData();
+        } else {
+            var filteredData = this.state.allData.filter((value) => {
+                return value.title.toLowerCase().includes(searchData.toLowerCase());
+            });
+
+            this.setState({
+                allData: filteredData
+            })
+            this.state.allData = filteredData;
+        }
+
+
+        console.log(this.state.allData)
+    }
+
 
     // state = {
     //     notes: [],
@@ -284,12 +307,13 @@ export class Notes extends Component {
                                         className="form-control px-4"
                                         name="nama_todo"
                                         id="nama_todo"
-                                        placeholder="Search" />
+                                        placeholder="Search"
+                                        onChange={this.handleSearch} />
                                 </div>
-                                <div className="col-md-auto col-sm align-self-center">
+                                {/* <div className="col-md-auto col-sm align-self-center">
                                     <button className="btn btn-danger d-inline-block">
                                         Cari</button>
-                                </div>
+                                </div> */}
                             </form>
                         </div>
 
