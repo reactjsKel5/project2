@@ -133,7 +133,7 @@ class Task extends Component {
             this.fetchData();
         } else {
             var filteredData = this.state.allData.filter((value) => {
-                return value.title.toLowerCase().includes(searchData.toLowerCase());
+                return value.task.toLowerCase().includes(searchData.toLowerCase());
             });
 
             this.setState({
