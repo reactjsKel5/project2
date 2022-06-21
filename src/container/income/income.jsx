@@ -9,7 +9,7 @@ import {
     Link
 } from "react-router-dom";
 import { async } from "@firebase/util";
-// import DonutChart from "react-donut-chart/dist/DonutChart";
+import DonutChart from "react-donut-chart/dist/DonutChart";
 
 //update untuk category blum muncul
 class Income extends Component {
@@ -21,6 +21,10 @@ class Income extends Component {
         this.state = {
             totincome: 0,
             totoutcome: 0,
+            totsalary: 0,
+            totparent: 0,
+            totgift: 0,
+            totetc: 0,
             keyData: '',
             allData: [],
             allDataProfile: [],
@@ -47,6 +51,62 @@ class Income extends Component {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    fetchSalary = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Salary")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["income"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totsalary: data });
+        console.log("Salary : " + this.state.totsalary);
+    }
+
+    fetchParent = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Parent")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["income"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ toteparent: data });
+        console.log("Parent : " + this.state.totparent);
+    }
+
+    fetchGift = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Gift")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["income"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totgift: data });
+        console.log("Gift : " + this.state.totgift);
+    }
+
+    fetchEtc = async () => {
+        var data = 0;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", ".etc")));
+            querySnapshot.forEach((doc) => {
+                data = data + doc.data()["income"];
+            })
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({ totetc: data });
+        console.log("Etc : " + this.state.totetc);
     }
 
     fetchDataProfile = async () => {
@@ -79,6 +139,10 @@ class Income extends Component {
         this.fetchDataProfile();
         this.fetchDataIncome();
         this.fetchDataOutcome();
+        this.fetchSalary();
+        this.fetchParent();
+        this.fetchGift();
+        this.fetchEtc();
         console.log(this.data);
     }
 
@@ -103,6 +167,14 @@ class Income extends Component {
                 this.fetchData()
             )
             .then((docRef) => {
+                this.fetchData();
+                // this.fetchDataProfile();
+                this.fetchDataIncome();
+                this.fetchDataOutcome();
+                this.fetchSalary();
+                this.fetchParent();
+                this.fetchGift();
+                this.fetchEtc();
                 this.setState({
                     category: "",
                     date: "",
@@ -199,6 +271,26 @@ class Income extends Component {
         const TotalOutcome = this.state.totoutcome;
         const Balance = TotalIncome - TotalOutcome;
         console.log(Balance);
+
+        // show per category
+        var TotalSalary = this.state.totsalary;
+        console.log("total salary: " + TotalSalary);
+
+        var TotalParent = this.state.totparent;
+        console.log("total parent: " + TotalParent);
+
+        var TotalGift = this.state.totgift;
+        console.log("total gift: " + TotalGift);
+
+        var TotalEtc = this.state.totetc;
+        console.log("total etc: " + TotalEtc);
+
+        // operation persentase
+        var persenSalary = Math.round(TotalSalary / TotalIncome * 100);
+        console.log("persensalary:" + persenSalary);
+        var persenParent = Math.round(TotalParent / TotalIncome * 100);
+        var persenGift = Math.round(TotalGift / TotalIncome * 100);
+        var persenEtc = Math.round(TotalEtc / TotalIncome * 100);
 
         var listofData = this.state.allData.map((val, i) => {
             var category = val.category
@@ -318,35 +410,35 @@ class Income extends Component {
                                         <h5>Presentase pemasukan</h5>
                                         <div className="row d-flex mt-4">
                                             <div className="col-md-auto col-sm" style={{ height: 250 }}>
-                                                {/* <DonutChart
-                                                    width={350}
-                                                    height={350}
+                                                <DonutChart
+                                                    width={450}
+                                                    height={450}
                                                     data={[
                                                         {
                                                             label: 'Salary',
-                                                            value: 45,
+                                                            value: persenSalary,
                                                             // isEmpty: true,
                                                         },
                                                         {
                                                             label: 'Parent',
-                                                            value: 25,
+                                                            value: persenParent,
                                                             //   isEmpty: true,
                                                         },
                                                         {
                                                             label: 'Gift',
-                                                            value: 25,
+                                                            value: persenGift,
                                                             //   isEmpty: true,
                                                         },
                                                         {
                                                             label: '.etc',
-                                                            value: 25,
+                                                            value: persenEtc,
                                                         },
                                                     ]}
                                                 >
                                                     <div style={{ fontSize: 52 }}>
-                                                    <strong>Rp. 135.000</strong>
-                                                </div>
-                                                </DonutChart> */}
+                                                        <strong>Rp. 135.000</strong>
+                                                    </div>
+                                                </DonutChart>
 
                                                 {/* <div className="col align-self-center">
                                                 <ul>
