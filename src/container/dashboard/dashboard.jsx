@@ -24,10 +24,10 @@ class Dashboard extends Component {
 
     constructor() {
         super();
-        // this.userUid = auth.currentUser.uid;
+        // this.userUid = this.userUid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.day = moment().format('dddd');
         this.state = {
             allDataTodolist: [],
@@ -43,7 +43,7 @@ class Dashboard extends Component {
     fetchTodos = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "todolist", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "todolist", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -61,7 +61,7 @@ class Dashboard extends Component {
     fetchTodosDone = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(query(collection(db, "todolist", auth.currentUser.uid, "items"), where("status", "==", "true")));
+            const querySnapshot = await getDocs(query(collection(db, "todolist", this.userUid, "items"), where("status", "==", "true")));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -80,7 +80,7 @@ class Dashboard extends Component {
     fetchTask = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "task", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "task", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -98,7 +98,7 @@ class Dashboard extends Component {
     fetchSchedule = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)));
+            const querySnapshot = await getDocs(query(collection(db, "schedule", this.userUid, "items"), where("day", "==", this.day)));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -145,7 +145,7 @@ class Dashboard extends Component {
 
         let updateStatus = (!status).toString();
         
-        const res = await setDoc(doc(db, "todolist", auth.currentUser.uid, "items", id), {
+        const res = await setDoc(doc(db, "todolist", this.userUid, "items", id), {
             "todos": todos,
             "status": updateStatus
         })
@@ -158,7 +158,7 @@ class Dashboard extends Component {
     changeStatus = async (id, task_category, task, date, status) => {
         let updateStatus = (!status).toString();
         
-        const res = await setDoc(doc(db, "task", auth.currentUser.uid, "items", id), {
+        const res = await setDoc(doc(db, "task", this.userUid, "items", id), {
             "task_category": task_category,
             "task": task,
             "date": date,

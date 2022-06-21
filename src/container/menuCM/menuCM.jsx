@@ -14,7 +14,7 @@ class MenuCM extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.day = moment().format('dddd');
         this.state = {
@@ -49,7 +49,7 @@ class MenuCM extends Component {
     fetchTodosOnGoing = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(query(collection(db, "todolist", auth.currentUser.uid, "items"), where("status", "==", "false")));
+            const querySnapshot = await getDocs(query(collection(db, "todolist", this.userUid, "items"), where("status", "==", "false")));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -67,7 +67,7 @@ class MenuCM extends Component {
     fetchTaskOnGoing = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(query(collection(db, "task", auth.currentUser.uid, "items"), where("status", "==", "false")));
+            const querySnapshot = await getDocs(query(collection(db, "task", this.userUid, "items"), where("status", "==", "false")));
             querySnapshot.forEach((doc) => {
                 list.push({...doc.data(), id: doc.id});
             });            
@@ -85,7 +85,7 @@ class MenuCM extends Component {
     
     fetchScheduleLength = async () => {
         try {
-            await getDocs(query(collection(db, "schedule", auth.currentUser.uid, "items"), where("day", "==", this.day)))
+            await getDocs(query(collection(db, "schedule", this.userUid, "items"), where("day", "==", this.day)))
                 .then((value) => {
                     this.setState({
                         scheduleLength: value.size

@@ -14,7 +14,7 @@ class Task extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.state = {
             allData: [],
@@ -29,7 +29,7 @@ class Task extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "task", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "task", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -48,22 +48,22 @@ class Task extends Component {
         var list = [];
         try {
             const querySnapshot = await getDoc(doc(db, "users", this.user))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img'],
+                    })
+                    console.log(this.state)
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
     }
 
     handleDelete = async (id) => {
-        deleteDoc(doc(db, "task", auth.currentUser.uid, "items", id))
+        deleteDoc(doc(db, "task", this.userUid, "items", id))
             .then(
                 this.fetchData()
             )
@@ -90,7 +90,7 @@ class Task extends Component {
         e.preventDefault();
 
         const { date, status, task, task_category } = this.state;
-        const res = await addDoc(collection(db, "task", auth.currentUser.uid, "items"), {
+        const res = await addDoc(collection(db, "task", this.userUid, "items"), {
             "date": date,
             "status": status,
             "task": task,
@@ -112,17 +112,38 @@ class Task extends Component {
 
     changeStatus = async (id, task_category, task, date, status) => {
         let updateStatus = (!status).toString();
-        
-        const res = await setDoc(doc(db, "task", auth.currentUser.uid, "items", id), {
+
+        const res = await setDoc(doc(db, "task", this.userUid, "items", id), {
             "task_category": task_category,
             "task": task,
             "date": date,
             "status": updateStatus
         })
-        .then(this.fetchData)
+            .then(this.fetchData)
 
         console.log(res);
         console.log(updateStatus);
+    }
+
+    handleSearch = (event) => {
+        var searchData = event.target.value;
+        console.log(searchData);
+
+        if (searchData == "") {
+            this.fetchData();
+        } else {
+            var filteredData = this.state.allData.filter((value) => {
+                return value.title.toLowerCase().includes(searchData.toLowerCase());
+            });
+
+            this.setState({
+                allData: filteredData
+            })
+            this.state.allData = filteredData;
+        }
+
+
+        console.log(this.state.allData)
     }
 
     // state = {
@@ -196,12 +217,12 @@ class Task extends Component {
             return (
                 <div className="form-check mb-3">
                     <input className="form-check-input" type="checkbox" value="status" id="status"
-                    checked= {status}
-                    onChange = {
-                        () => {
-                            this.changeStatus(id, task_category, task, date, status)
-                        }
-                    } />
+                        checked={status}
+                        onChange={
+                            () => {
+                                this.changeStatus(id, task_category, task, date, status)
+                            }
+                        } />
                     <label className="form-check-label ms-3" for="task1">
                         <h6 className="card-title float-none"><b>{task_category}</b></h6>
                         <h6>{task}</h6>
@@ -220,30 +241,29 @@ class Task extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
-                </div>
-                <div className="col user">
-                    <img src={prof_img} width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="m-md-5 col-sm task">
                         <h2 className="mb-4">Task.</h2>
                         <div className="card-main">
                             <div className="card-body">
-                                <form action="submit" className="m-2 row">
+                                <form className="m-2 row">
                                     <div className="col">
-                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Ketikkan disini ..." />
+                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Ketikkan disini ..." onChange={this.handleSearch} />
                                     </div>
                                     <div className="col-md-auto col-sm align-self-center">
-                                        <button className="btn btn-danger d-inline-block" >Cari</button>
                                     </div>
                                 </form>
                             </div>

@@ -13,7 +13,7 @@ class Todolist extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.state = {
             allData: [],
             allDataProfile: [],
@@ -25,7 +25,7 @@ class Todolist extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "todolist", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "todolist", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -73,7 +73,7 @@ class Todolist extends Component {
     }
 
     handleDelete = async (id) => {
-        deleteDoc(doc(db, "todolist", auth.currentUser.uid, "items", id))
+        deleteDoc(doc(db, "todolist", this.userUid, "items", id))
             .then(
                 this.fetchData()
             )
@@ -83,7 +83,7 @@ class Todolist extends Component {
         event.preventDefault();
 
         const { todos, status } = this.state;
-        const res = await addDoc(collection(db, "todolist", auth.currentUser.uid, "items"), {
+        const res = await addDoc(collection(db, "todolist", this.userUid, "items"), {
             "todos": todos,
             "status": status
         })
@@ -102,7 +102,7 @@ class Todolist extends Component {
 
         let updateStatus = (!status).toString();
 
-        const res = await setDoc(doc(db, "todolist", auth.currentUser.uid, "items", id), {
+        const res = await setDoc(doc(db, "todolist", this.userUid, "items", id), {
             "todos": todos,
             "status": updateStatus
         })
