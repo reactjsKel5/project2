@@ -87,27 +87,31 @@ class Task extends Component {
     }
 
     onSubmit = async (e) => {
-        e.preventDefault();
-
-        const { date, status, task, task_category } = this.state;
-        const res = await addDoc(collection(db, "task", this.userUid, "items"), {
-            "date": date,
-            "status": status,
-            "task": task,
-            "task_category": task_category
-        })
-            .then(
-                this.fetchData()
-            )
-            .then((docRef) => {
-                this.setState({
-                    date: "",
-                    status: "",
-                    task: "",
-                    task_category: ""
-                })
+        e.preventDefault(); 
+        try {
+            const { date, status, task, task_category } = this.state;
+            const res = await addDoc(collection(db, "task", this.userUid, "items"), {
+                "date": date,
+                "status": status,
+                "task": task,
+                "task_category": task_category
             })
-        console.log(res);
+                .then(
+                    this.fetchData()
+                )
+                .then((docRef) => {
+                    this.setState({
+                        date: "",
+                        status: "",
+                        task: "",
+                        task_category: ""
+                    })
+                })
+            console.log(res);
+        } catch (error) {
+            alert ('Harap isi field yang kosong');
+        }
+
     }
 
     changeStatus = async (id, task_category, task, date, status) => {

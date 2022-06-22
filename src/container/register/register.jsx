@@ -52,6 +52,8 @@ const Register = () => {
                     setError("Password harus minimal 6 karakter")
                 } else if (e.code == 'auth/invalid-email') {
                     setError("Masukkan format email yang benar")
+                } else if (e.code == 'auth/internal-error') {
+                    setError("Harap isi field yang kosong")
                 }
                 // setError(e.message);
                 console.log(e.message);

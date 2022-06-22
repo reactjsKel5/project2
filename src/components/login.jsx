@@ -15,14 +15,14 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (email == '' && password == ''){
-            setError("Harap Isi Field Email Dan Password !!")
+            setError("Harap isi field email dan password !!")
         } else {
             try {
                 await signIn(email, password)
                 navigate('/dashboard')
             } catch (e) {
                 if (e.code == 'auth/wrong-password') {
-                setError("Password salah")
+                setError("Harap masukkan password yang benar")
                 } else if (e.code == 'auth/user-not-found') {
                     setError("Email tidak terdaftar")
                 } else if (e.code == 'auth/invalid-email'){
