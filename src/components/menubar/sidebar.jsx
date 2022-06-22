@@ -81,7 +81,7 @@ function Sidebar() {
     const handleLogout = async () => {
         try {
             await logout();
-            navigate('/');
+            navigate('/login');
             console.log('You are logged out')
         } catch (e) {
             console.log(e.message);

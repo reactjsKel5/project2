@@ -38,10 +38,10 @@ class LandingPage extends Component {
                                     </li>
                                 </ul>
                                 <div className="d-flex">
-                                    <Link to = "/Login">
+                                    <Link to = "/login">
                                     <a><button className="btn btn-login bg-transparent me-5">Login</button></a>
                                     </Link>
-                                    <Link to ="/Register">
+                                    <Link to ="/register">
                                     <a ><button className="btn btn-primary">Register</button></a>
                                     </Link>                                    
                                 </div>

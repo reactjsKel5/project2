@@ -14,14 +14,26 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('')
-        try {
-            await signIn(email, password)
-            navigate('/dashboard')
-        } catch (e) {
-            setError(e.message)
-            console.log(e.message)
+        if (email == '' && password == ''){
+            setError("Harap Isi Field Email Dan Password !!")
+        } else {
+            try {
+                await signIn(email, password)
+                navigate('/dashboard')
+            } catch (e) {
+                if (e.code == 'auth/wrong-password') {
+                setError("Password Salah")
+                } else if (e.code == 'auth/user-not-found') {
+                    setError("Email Tidak Terdaftar")
+                } else if (e.code == 'auth/invalid-email'){
+                    setError ("Masukkan format email yang benar")
+                }
+                // setError(e.message)
+                // console.log(e.message)
+                console.log(e.code)
+            }
         }
+        
     };
     return (
         <div className="row login">
@@ -40,7 +52,7 @@ const Login = () => {
                         <br />
                         <p className="text-center mt-5">Belum memiliki akun? <Link to="/register"><a>Daftar</a></Link></p>
                         <button type="submit" className="btn btn-primary">Masuk</button>
-                        {error && <span><p className="text-center mt-5">Email atau Password Salah !!!</p></span>}
+                        <span><p className="text-center mt-5">{error}</p></span>
                     </form>
                 </div>
             </div>
