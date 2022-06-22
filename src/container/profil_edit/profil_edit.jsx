@@ -17,7 +17,7 @@ class ProfilEdit extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.state = {
             "imageUpload": null,
@@ -33,7 +33,7 @@ class ProfilEdit extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
                 .then((docRef) => {
                     this.setState({
                         email: docRef.data()['email'],
@@ -66,7 +66,7 @@ class ProfilEdit extends Component {
 
         const { email, nama_lengkap, password, phone, prof_img } = this.state;
 
-        const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
+        const res = await setDoc(doc(db, "users", this.userUid), {
             "email": email,
             "nama_lengkap": nama_lengkap,
             "password": password,
@@ -98,10 +98,10 @@ class ProfilEdit extends Component {
         const handleUpload = () => {
             const imageRef = ref(storage, `prof_img/${this.state.imageUpload.name}`);
             uploadBytes(imageRef, this.state.imageUpload).then(() => {
-                getDownloadURL(imageRef).then( async (link) => {
+                getDownloadURL(imageRef).then(async (link) => {
                     const { email, nama_lengkap, password, phone } = this.state;
 
-                    const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
+                    const res = await setDoc(doc(db, "users", this.userUid), {
                         "email": email,
                         "nama_lengkap": nama_lengkap,
                         "password": password,

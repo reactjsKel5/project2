@@ -98,7 +98,7 @@ class Todolist extends Component {
     
             console.log(res);
         } catch (error) {
-            alert('Your input are Invalid!!!');
+            alert('Invalid Input!!!');
         }
     }
 
