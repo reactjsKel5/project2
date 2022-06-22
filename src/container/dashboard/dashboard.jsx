@@ -169,53 +169,16 @@ class Dashboard extends Component {
         console.log(res);
         console.log(updateStatus);
     }
-
-
-    // state = {
-    //     schedule: [],
-    //     task: [],
-    //     todolist: []
-    // }
-    // fetchSchedule = () => {
-    //     fetch('http://localhost:3001/schedule?_sort=id_note8&_order=desc')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 schedule: json
-    //             })
-    //         })
-    // }
-    // fetchTask = () => {
-    //     fetch('http://localhost:3001/task?_sort=id_note8&_order=desc')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 task: json
-    //             })
-    //         })
-    // }
-    // fetchTodolist = () => {
-    //     fetch('http://localhost:3001/todolist?_sort=id_note8&_order=desc')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 todolist: json
-    //             })
-    //         })
-    // }
-    // componentDidMount() {
-    //     this.fetchSchedule()
-    //     this.fetchTask()
-    //     this.fetchTodolist()
-    // }
-
-
+    
     render() {
         
         // Calculate presentase
         var dataTodolistDone = this.state.allDataTodolistDone;
         var dataTodolist = this.state.allDataTodolist.length;
-        var presentaseTodolistDone = (dataTodolistDone / dataTodolist) * 100;
+        var presentaseTodolistDone = 0;
+        if (dataTodolist != 0){
+            presentaseTodolistDone = (dataTodolistDone / dataTodolist) * 100;
+        }
 
         const nama_lengkap = this.state.nama_lengkap;
         const prof_img = this.state.prof_img;
@@ -375,9 +338,9 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-md-5 col-sm">
                                 <div className="card todolist">
-                                    <div className="card-body mx-4 my-4">
-                                        <p>Progress</p>
-                                        <div className="text-center my-5 mx-auto" style={{ width: 250, height: 250 }}>
+                                    <div className="card-body schedule mx-4 my-4">
+                                        <p>To-do List Progress.</p>
+                                        <div className="text-center mt-5 mb-3 mx-auto" style={{ width: 250, height: 250 }}>
                                             <CircularProgressbarWithChildren
                                                 value={Math.round(presentaseTodolistDone)}
                                                 className="text-center"
@@ -391,7 +354,6 @@ class Dashboard extends Component {
                                                 <p style={{ color: '#887F96', marginBottom: -5, marginTop: -10 }}>Selesai</p>
                                             </CircularProgressbarWithChildren>;
                                         </div>
-                                        <p className="mb-4">Todolist</p>
                                         {listofDataTodolist}
                                         <Link to="/CollegeManagement/Todolist">
                                             <button className="btn btn-danger d-inline-block mt-4" onClick={this.insertIncome}>+</button>
