@@ -3,7 +3,7 @@ import IncomeList from "../../components/incomeList";
 import Sidebar from "../../components/menubar/sidebar";
 import Topbar from "../../components/menubar/topbar";
 import { auth, db } from '../../firebase';
-import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc, query, where } from 'firebase/firestore';
 import './income.css';
 import {
     Link
@@ -52,7 +52,6 @@ class Income extends Component {
             console.log(e);
         }
     }
-
     fetchSalary = async () => {
         var data = 0;
         try {
@@ -77,7 +76,7 @@ class Income extends Component {
         } catch (e) {
             console.log(e);
         }
-        this.setState({ toteparent: data });
+        this.setState({ totparent: data });
         console.log("Parent : " + this.state.totparent);
     }
 
@@ -185,11 +184,12 @@ class Income extends Component {
         console.log(res);
     }
     // , categoryIncome,
-    handleHookUpdate = (keyIncome, categoryIncome, incomeIncome, titleIncome) => {
+    handleHookUpdate = (keyIncome, categoryIncome, dateIncome, incomeIncome, titleIncome) => {
 
         this.setState({
             keyData: keyIncome,
             category: categoryIncome,
+            date: dateIncome,
             income: incomeIncome,
             title: titleIncome
         })
@@ -205,11 +205,18 @@ class Income extends Component {
         const res = await setDoc(doc(db, "income", auth.currentUser.uid, "items", this.state.keyData), {
             "category": category,
             "date": date,
-            "income": income,
+            "income": Number(income),
             "title": title
         })
             .then(this.fetchData)
             .then((docRef) => {
+                this.fetchData();
+                this.fetchDataIncome();
+                this.fetchDataOutcome();
+                this.fetchSalary();
+                this.fetchParent();
+                this.fetchGift();
+                this.fetchEtc();
                 this.setState({
                     keyData: "",
                     category: "",
@@ -289,46 +296,61 @@ class Income extends Component {
         var persenSalary = Math.round(TotalSalary / TotalIncome * 100);
         console.log("persensalary:" + persenSalary);
         var persenParent = Math.round(TotalParent / TotalIncome * 100);
+        console.log("persenparent:" + persenParent);
         var persenGift = Math.round(TotalGift / TotalIncome * 100);
         var persenEtc = Math.round(TotalEtc / TotalIncome * 100);
 
+
         var listofData = this.state.allData.map((val, i) => {
+            var image = '';
             var category = val.category
             var date = val.date
             var income = val.income
             var title = val.title
             var id = val.id
+            switch (category) {
+                case 'Salary': image = require('../../img/gaji.png');
+                    break;
+                case 'Parent': image = require('../../img/orang-tua.png');
+                    break;
+                case 'Gift': image = require('../../img/hadiah.png');
+                    break;
+                default: image = require('../../img/Etc.png');
+            }
 
             return (
                 // <div key={{ i }} className="list-income card-incomes mb3">
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        <img src={require('./gaji.png')} alt="category-logo" />
+                        <img src={image} alt={category} width={30} />
 
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
                     </div>
-                    <div className="col jumlah align-self-center">
-                        <p className="m-0">{income}</p>
-
+                    <div className="col nama-category align-self-center">
+                        <p className="m-0">{category}</p>
                     </div>
-                    {/* </div> */}
-
+                    <div className="col jumlah align-self-center">
+                        <p className="m-0">Rp. {income}</p>
+                    </div>
+                    <div className="col tanggal align-self-center">
+                        <p className="m-0">{date}</p>
+                    </div>
 
                     <div className="col-auto delete align-self-center">
 
                         <button
                             onClick={
                                 () => {
-                                    this.handleHookUpdate(id, category, income, title);
+                                    this.handleHookUpdate(id, category, date, income, title);
                                 }
                             }
                         >
-                            <ion-icon name="create-outline"></ion-icon>
+                            <ion-icon name="pencil-outline"></ion-icon>
                         </button>
 
-                        <button className="btn-delete float-end" onClick={
+                        <button className="btn-delete float-end ms-3" onClick={
                             () => {
                                 this.handleDelete(id)
                             }
@@ -367,7 +389,7 @@ class Income extends Component {
                             </div>
                             <div className="col-auto col-sm">
                                 <div className="card-tab-income float-end">
-                                    <div className="card-body">
+                                    <div className="card-body text-center">
                                         <div className="btn btn-tab-income"><a href="#">Pemasukan</a></div>
                                         <Link to="/Pengeluaran"><a className="ms-3 link-to-outcome" style={{ color: '#464646' }}>Pengeluaran</a></Link>
                                     </div>
@@ -402,17 +424,17 @@ class Income extends Component {
                             </div>
                         </div>
                         <div className="card-information-insert mb-5">
-                            <div className="card-body mx-4 my-3">
+                            <div className="card-body mx-5 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-
                                         <h3>Chart</h3>
                                         <h5>Presentase pemasukan</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm" style={{ height: 250 }}>
+                                            <div className="col-md-auto col-sm" style={{ height: 380 }}>
                                                 <DonutChart
-                                                    width={450}
-                                                    height={450}
+                                                    width={550}
+                                                    height={360}
+                                                    strokeColor='#ffffff'
                                                     data={[
                                                         {
                                                             label: 'Salary',
@@ -454,14 +476,8 @@ class Income extends Component {
                                     {/* </div>
                                     </div> */}
                                     <div className="col add-income ps-5">
-                                        <div className="row mb-3">
-                                            <div className="col">
-                                                <h3>Tambahkan</h3>
-                                            </div>
-                                            <div className="col date-picker text-end">
-                                                <a href="#">Hari ini</a>
-                                            </div>
-                                        </div>
+                                        <h3 className="mb-5 mt-2">Tambahkan</h3>
+
                                         <form action="submit">
                                             <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category} >
                                                 <option value="0">--</option>
@@ -476,7 +492,8 @@ class Income extends Component {
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
 
                                             {
-                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}
+                                                >Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
 
 
                                             }
@@ -486,11 +503,11 @@ class Income extends Component {
                                 </div>
                             </div>
                         </div>
-                        <h2>Daftar Pemasukan.</h2>
+                        <h2 className="mt-5 mb-4">Income History.</h2>
                         <div className="income-list mt-3">
                             <div className="card-income-list mb-3">
                                 <div className="card-body m-3">
-                                    <small>28/02/2022</small>
+
                                     {listofData}
 
                                 </div>

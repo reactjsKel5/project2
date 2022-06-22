@@ -299,7 +299,7 @@ class Outcome extends Component {
         var persenEducation = Math.round(TotalEducation / TotalOutcome * 100);
         var persenEtc = Math.round(TotalEtc / TotalOutcome * 100);
 
-        
+
 
         var listofData = this.state.allData.map((val, i) => {
             var image = '';
@@ -308,19 +308,19 @@ class Outcome extends Component {
             var outcome = val.outcome
             var title = val.title
             var id = val.id
-            switch (category){
-                case 'Food' : image = require('../../img/Food.png');
+            switch (category) {
+                case 'Food': image = require('../../img/Food.png');
                     break;
-                case 'Education' : image = require('../../img/Education.png');
+                case 'Education': image = require('../../img/Education.png');
                     break;
-                case 'Entertainment' : image = require('../../img/Entertainment.png');
+                case 'Entertainment': image = require('../../img/Entertainment.png');
                     break;
-                default : image = require('../../img/Etc.png');
+                default: image = require('../../img/Etc.png');
             }
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        <img src={image} alt={category} width={30}/>
+                        <img src={image} alt={category} width={30} />
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
@@ -494,7 +494,7 @@ class Outcome extends Component {
                                 </div>
                             </div>
                         </div>
-                        <h2 className="mt-5 mb-4">Output History.</h2>
+                        <h2 className="mt-5 mb-4">Outcome History.</h2>
                         <div className="income-list mt-3">
                             <div className="card-income-list mb-3">
                                 <div className="card-body mx-4 mb-4">
