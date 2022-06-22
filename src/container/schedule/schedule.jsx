@@ -22,6 +22,7 @@ class Schedule extends Component {
         this.userUid = localStorage.getItem("userUid");
         this.day = moment().format('dddd');
         this.state = {
+            isModal: false,
             isActive: {
                 "Sunday": false,
                 "Monday": false,
@@ -98,26 +99,32 @@ class Schedule extends Component {
     }
 
     onSubmit = async (e) => {
+        
         e.preventDefault();
-        const { day, timeend, timestart, topic } = this.state;
-        const res = await addDoc(collection(db, "schedule", this.userUid, "items"), {
-            "day": day,
-            "timeend": timeend,
-            "timestart": timestart,
-            "topic": topic
-        })
-            .then(
-                this.fetchData()
-            )
-            .then((docRef) => {
-                this.setState({
-                    day: "",
-                    timeend: "",
-                    timestart: "",
-                    topic: ""
-                })
+        const { day, timeend, timestart, topic } = this.state;    
+        if (this.state["day"], this.state["timestart"], this.state["timeend"], this.state["topic"] == "") {
+            alert("harap isi form yang kosong!")
+        } else {
+            const res = await addDoc(collection(db, "schedule", this.userUid, "items"), {
+                "day": day,
+                "timeend": timeend,
+                "timestart": timestart,
+                "topic": topic
             })
-        console.log(res);
+                .then(
+                    this.fetchData()
+                )
+                .then((docRef) => {
+                    this.setState({
+                        day: "",
+                        timeend: "",
+                        timestart: "",
+                        topic: ""
+                    })
+                })
+            console.log(res);
+
+        }    
     }
 
     onChangeSelect = (event, day, sunday, monday, tuesday, wednesday, thursday, friday, saturday) => {

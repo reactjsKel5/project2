@@ -83,19 +83,23 @@ class Todolist extends Component {
         event.preventDefault();
 
         const { todos, status } = this.state;
-        const res = await addDoc(collection(db, "todolist", this.userUid, "items"), {
-            "todos": todos,
-            "status": status
-        })
-            .then(this.fetchData)
-            .then((docRef) => {
-                this.setState({
-                    todos: "",
-                    status: "",
-                })
+        try {
+            const res = await addDoc(collection(db, "todolist", this.userUid, "items"), {
+                "todos": todos,
+                "status": status
             })
-
-        console.log(res);
+                .then(this.fetchData)
+                .then((docRef) => {
+                    this.setState({
+                        todos: "",
+                        status: "",
+                    })
+                })
+    
+            console.log(res);
+        } catch (error) {
+            alert('Your input are Invalid!!!');
+        }
     }
 
     handleStatus = async (id, todos, status) => {
@@ -130,10 +134,10 @@ class Todolist extends Component {
                             }
                         }
                     />
-                    <label className="form-check-label ms-3" for="todolist1">
+                    <label className="form-check-label ms-3 mt-2" for="todolist1">
                         {todos}
                     </label>
-                    <button className="btn-delete float-end"
+                    <button className="btn-delete float-end mt-2"
                         onClick={
                             () => {
                                 this.handleDelete(id)
@@ -151,19 +155,19 @@ class Todolist extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                    <div className="user-information row">
+                        <div className="col name align-self-center">
+                            <h6>{nama_lengkap}</h6>
+                        </div>
+                        <div className="col user">
+                            <img src={prof_img} alt="user-photo" />
+                        </div>
+                    </div>
                 </div>
-                <div className="col user">
-                    <img src={prof_img} alt="user-photo" />
-                </div>
-            </div>
-        </div>
 
                     {/* Tulis content di bawah sini */}
                     <div className="m-md-5">

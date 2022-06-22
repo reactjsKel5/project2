@@ -69,6 +69,7 @@
 import './menubar.css';
 import { UserAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Coller from '../../img/coller.png';
 
 import {
     Link,
@@ -95,9 +96,9 @@ function Sidebar() {
                     <li>
                         <a href="#">
                             <span className="icon">
-                                <ion-icon name="school-outline"></ion-icon>
+                                <img src={Coller} width="40px" alt="coller-logo" />
                             </span>
-                            <span className="title">Brand Name</span>
+                            <span className="title mt-2">College Lifestyle Helper</span>
                         </a>
                     </li>
                     <li>
