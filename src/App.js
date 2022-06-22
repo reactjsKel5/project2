@@ -26,7 +26,7 @@ function App() {
     <div>
       <AuthContextProvider>
         <Routes>
-        <Route path='/' element={<LandingPage />} />
+          <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route
@@ -37,19 +37,18 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path='/CollegeManagement' element={<ProtectedRoute><MenuCM/></ProtectedRoute>}/>
-          <Route path='/MoneyManagement' element={<ProtectedRoute><MenuMM/></ProtectedRoute>}/>
-          <Route path='/CollegeManagement/Notes' element = {<ProtectedRoute><Notes/></ProtectedRoute>}/>
-          <Route path='CollegeManagement/Schedule' element = {<ProtectedRoute><Schedule/></ProtectedRoute>}/>
-          <Route path='CollegeManagement/Task' element = {<ProtectedRoute><Task/></ProtectedRoute>}/>
-          <Route path='CollegeManagement/Todolist' element = {<ProtectedRoute><Todolist/></ProtectedRoute>}/>
-          <Route path='/Pengeluaran' element = {<ProtectedRoute><Outcome/></ProtectedRoute>}/>
-          <Route path='/Pemasukan' element = {<ProtectedRoute><Income/></ProtectedRoute>}/>
-          <Route path='/Profile' element = {<ProtectedRoute><Profil/></ProtectedRoute>}/>
-          <Route path='/editProfile' element = {<ProtectedRoute><ProfilEdit/></ProtectedRoute>}/>
-          <Route path='/editProfile/editPassword' element = {<ProtectedRoute><EditPassword/></ProtectedRoute>}/>
-          <Route path='/Register' element={<Register/>}/>
-          <Route path='/Landing' element={<LandingPage/>}/>
+          <Route path='/CollegeManagement' element={<ProtectedRoute><MenuCM /></ProtectedRoute>} />
+          <Route path='/MoneyManagement' element={<ProtectedRoute><MenuMM /></ProtectedRoute>} />
+          <Route path='/CollegeManagement/Notes' element={<ProtectedRoute><Notes /></ProtectedRoute>} />
+          <Route path='CollegeManagement/Schedule' element={<ProtectedRoute><Schedule /></ProtectedRoute>} />
+          <Route path='CollegeManagement/Task' element={<ProtectedRoute><Task /></ProtectedRoute>} />
+          <Route path='CollegeManagement/Todolist' element={<ProtectedRoute><Todolist /></ProtectedRoute>} />
+          <Route path='/Pengeluaran' element={<ProtectedRoute><Outcome /></ProtectedRoute>} />
+          <Route path='/Pemasukan' element={<ProtectedRoute><Income /></ProtectedRoute>} />
+          <Route path='/Profile' element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+          <Route path='/editProfile' element={<ProtectedRoute><ProfilEdit /></ProtectedRoute>} />
+          <Route path='/editProfile/editPassword' element={<ProtectedRoute><EditPassword /></ProtectedRoute>} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       </AuthContextProvider>
     </div>
