@@ -9,10 +9,6 @@ import {
 import { auth, db } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import DonutChart from "react-donut-chart";
-import Food from '../../img/Food.png';
-import Entertainment from '../../img/Entertainment.png';
-import Education from '../../img/Education.png';
-import Etc from '../../img/Etc.png'
 
 class Outcome extends Component {
     constructor() {
@@ -303,22 +299,40 @@ class Outcome extends Component {
         var persenEducation = Math.round(TotalEducation / TotalOutcome * 100);
         var persenEtc = Math.round(TotalEtc / TotalOutcome * 100);
 
+
+
         var listofData = this.state.allData.map((val, i) => {
+            var image = '';
             var category = val.category
             var date = val.date
             var outcome = val.outcome
             var title = val.title
             var id = val.id
+            switch (category) {
+                case 'Food': image = require('../../img/Food.png');
+                    break;
+                case 'Education': image = require('../../img/Education.png');
+                    break;
+                case 'Entertainment': image = require('../../img/Entertainment.png');
+                    break;
+                default: image = require('../../img/Etc.png');
+            }
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        <img src={Etc} alt={category} width={30}/>
+                        <img src={image} alt={category} width={30} />
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
                     </div>
+                    <div className="col nama-category align-self-center">
+                        <p className="m-0">{category}</p>
+                    </div>
                     <div className="col jumlah align-self-center">
-                        <p className="m-0">{outcome}</p>
+                        <p className="m-0">Rp. {outcome}</p>
+                    </div>
+                    <div className="col tanggal align-self-center">
+                        <p className="m-0">{date}</p>
                     </div>
                     <div className="col-auto delete align-self-center">
                         <button
@@ -328,10 +342,10 @@ class Outcome extends Component {
                                 }
                             }
                         >
-                            <ion-icon name="create-outline"></ion-icon>
+                            <ion-icon name="pencil-outline"></ion-icon>
                         </button>
 
-                        <button className="btn-delete float-end"
+                        <button className="btn-delete float-end ms-3"
                             onClick={
                                 () => {
                                     this.handleDelete(id)
@@ -405,19 +419,17 @@ class Outcome extends Component {
                         </div>
 
                         <div className="card-information-insert mb-5">
-                            <div className="card-body mx-4 my-3">
+                            <div className="card-body mx-5 my-3">
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
-
                                         <h3>Chart</h3>
                                         <h5>Presentase pengeluaran</h5>
                                         <div className="row d-flex mt-4">
-                                            <div className="col-md-auto col-sm" style={{ height: 350 }}>
+                                            <div className="col-md-auto col-sm" style={{ height: 380 }}>
                                                 <DonutChart
                                                     width={550}
-                                                    height={550}
+                                                    height={360}
                                                     strokeColor='#ffffff'
-
                                                     data={[
                                                         {
                                                             label: 'Food',
@@ -461,14 +473,7 @@ class Outcome extends Component {
                                     </div> */}
 
                                     <div className="col add-income ps-5">
-                                        <div className="row mb-3">
-                                            <div className="col">
-                                                <h3>Tambahkan</h3>
-                                            </div>
-                                            <div className="col date-picker text-end">
-                                                <a href="#">Hari ini</a>
-                                            </div>
-                                        </div>
+                                        <h3 className="mb-5 mt-2">Tambahkan</h3>
                                         <form action="submit">
                                             <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category}>
                                                 <option value="0">--</option>
@@ -483,19 +488,16 @@ class Outcome extends Component {
                                             {
                                                 this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}
                                                 >Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
-
-
                                             }
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <h2>Daftar Pengeluaran.</h2>
+                        <h2 className="mt-5 mb-4">Outcome History.</h2>
                         <div className="income-list mt-3">
                             <div className="card-income-list mb-3">
-                                <div className="card-body m-3">
-                                    <small>28/02/2022</small>
+                                <div className="card-body mx-4 mb-4">
                                     {listofData}
                                 </div>
                             </div>

@@ -116,7 +116,7 @@ class Dashboard extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
             .then((docRef) => {
                 this.setState({
                     email : docRef.data()['email'],
