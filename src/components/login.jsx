@@ -22,9 +22,9 @@ const Login = () => {
                 navigate('/dashboard')
             } catch (e) {
                 if (e.code == 'auth/wrong-password') {
-                setError("Password Salah")
+                setError("Password salah")
                 } else if (e.code == 'auth/user-not-found') {
-                    setError("Email Tidak Terdaftar")
+                    setError("Email tidak terdaftar")
                 } else if (e.code == 'auth/invalid-email'){
                     setError ("Masukkan format email yang benar")
                 }
