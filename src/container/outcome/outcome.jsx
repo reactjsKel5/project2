@@ -9,10 +9,7 @@ import {
 import { auth, db } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, query, where, getDoc } from 'firebase/firestore';
 import DonutChart from "react-donut-chart";
-import Food from '../../img/Food.png';
-import Entertainment from '../../img/Entertainment.png';
-import Education from '../../img/Education.png';
-import Etc from '../../img/Etc.png'
+import Point from '../../img/ic_point.png';
 
 class Outcome extends Component {
     constructor() {
@@ -312,13 +309,19 @@ class Outcome extends Component {
             return (
                 <div className="income-item row mt-4">
                     <div className="col-auto">
-                        <img src={Etc} alt={category} width={30}/>
+                        <img src={Point} alt={category} width={10}/>
                     </div>
                     <div className="col nama-pemasukan align-self-center">
                         <p className="m-0">{title}</p>
                     </div>
+                    <div className="col nama-category align-self-center">
+                        <p className="m-0">{category}</p>
+                    </div>
                     <div className="col jumlah align-self-center">
-                        <p className="m-0">{outcome}</p>
+                        <p className="m-0">Rp. {outcome}</p>
+                    </div>
+                    <div className="col tanggal align-self-center">
+                        <p className="m-0">{date}</p>
                     </div>
                     <div className="col-auto delete align-self-center">
                         <button
@@ -328,10 +331,10 @@ class Outcome extends Component {
                                 }
                             }
                         >
-                            <ion-icon name="create-outline"></ion-icon>
+                            <ion-icon name="pencil-outline"></ion-icon>
                         </button>
 
-                        <button className="btn-delete float-end"
+                        <button className="btn-delete float-end ms-3"
                             onClick={
                                 () => {
                                     this.handleDelete(id)
@@ -494,8 +497,7 @@ class Outcome extends Component {
                         <h2>Daftar Pengeluaran.</h2>
                         <div className="income-list mt-3">
                             <div className="card-income-list mb-3">
-                                <div className="card-body m-3">
-                                    <small>28/02/2022</small>
+                                <div className="card-body mx-4 mb-4">
                                     {listofData}
                                 </div>
                             </div>
