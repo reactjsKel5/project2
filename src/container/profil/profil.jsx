@@ -15,7 +15,7 @@ class Profil extends Component {
         // this.userUid = auth.currentUser.uid;
         // this.ref = db.firestore().collection('notes').doc(this.userUid).collection('items');
         // this.ref = db.collection('notes').doc(auth.currentUser.uid).collection('items');
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.state = {
             allData: [],
@@ -29,7 +29,7 @@ class Profil extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
             .then((docRef) => {
                 this.setState({
                     email : docRef.data()['email'],

@@ -16,7 +16,7 @@ class Income extends Component {
     constructor() {
         super();
 
-        this.user = auth.currentUser.uid;
+        this.userUid = localStorage.getItem("userUid");
         this.data = [];
         this.state = {
             totincome: 0,
@@ -38,7 +38,7 @@ class Income extends Component {
     fetchData = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDocs(collection(db, "income", auth.currentUser.uid, "items"));
+            const querySnapshot = await getDocs(collection(db, "income", this.userUid, "items"));
             querySnapshot.forEach((doc) => {
                 list.push({ ...doc.data(), id: doc.id });
             });
@@ -55,7 +55,7 @@ class Income extends Component {
     fetchSalary = async () => {
         var data = 0;
         try {
-            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Salary")));
+            const querySnapshot = await getDocs(query(collection(db, "income", this.userUid, "items"), where("category", "==", "Salary")));
             querySnapshot.forEach((doc) => {
                 data = data + doc.data()["income"];
             })
@@ -69,7 +69,7 @@ class Income extends Component {
     fetchParent = async () => {
         var data = 0;
         try {
-            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Parent")));
+            const querySnapshot = await getDocs(query(collection(db, "income", this.userUid, "items"), where("category", "==", "Parent")));
             querySnapshot.forEach((doc) => {
                 data = data + doc.data()["income"];
             })
@@ -83,7 +83,7 @@ class Income extends Component {
     fetchGift = async () => {
         var data = 0;
         try {
-            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", "Gift")));
+            const querySnapshot = await getDocs(query(collection(db, "income", this.userUid, "items"), where("category", "==", "Gift")));
             querySnapshot.forEach((doc) => {
                 data = data + doc.data()["income"];
             })
@@ -97,7 +97,7 @@ class Income extends Component {
     fetchEtc = async () => {
         var data = 0;
         try {
-            const querySnapshot = await getDocs(query(collection(db, "income", auth.currentUser.uid, "items"), where("category", "==", ".etc")));
+            const querySnapshot = await getDocs(query(collection(db, "income", this.userUid, "items"), where("category", "==", ".etc")));
             querySnapshot.forEach((doc) => {
                 data = data + doc.data()["income"];
             })
@@ -111,7 +111,7 @@ class Income extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
                 .then((docRef) => {
                     this.setState({
                         email: docRef.data()['email'],
@@ -127,7 +127,7 @@ class Income extends Component {
     }
 
     handleDelete = async (id) => {
-        deleteDoc(doc(db, "income", auth.currentUser.uid, "items", id))
+        deleteDoc(doc(db, "income", this.userUid, "items", id))
             .then(
                 this.fetchData()
             )
@@ -156,7 +156,7 @@ class Income extends Component {
         e.preventDefault();
 
         const { category, date, income, title } = this.state;
-        const res = await addDoc(collection(db, "income", auth.currentUser.uid, "items"), {
+        const res = await addDoc(collection(db, "income", this.userUid, "items"), {
             "category": category,
             "date": date,
             "income": Number(income),
@@ -202,7 +202,7 @@ class Income extends Component {
 
         const { category, date, income, title } = this.state;
 
-        const res = await setDoc(doc(db, "income", auth.currentUser.uid, "items", this.state.keyData), {
+        const res = await setDoc(doc(db, "income", this.userUid, "items", this.state.keyData), {
             "category": category,
             "date": date,
             "income": Number(income),
@@ -231,7 +231,7 @@ class Income extends Component {
         var totalIncome = 0;
 
         try {
-            const querySnapshot = await getDocs(collection(db, "income", auth.currentUser.uid, "items"))
+            const querySnapshot = await getDocs(collection(db, "income", this.userUid, "items"))
             querySnapshot.forEach((doc) => {
                 totalIncome = totalIncome + doc.data()["income"];
                 console.log(doc.data()["income"]);
@@ -250,7 +250,7 @@ class Income extends Component {
         var totalOutcome = 0;
 
         try {
-            const querySnapshot = await getDocs(collection(db, "outcome", auth.currentUser.uid, "items"))
+            const querySnapshot = await getDocs(collection(db, "outcome", this.userUid, "items"))
             querySnapshot.forEach((doc) => {
                 totalOutcome = totalOutcome + doc.data()["outcome"];
                 console.log(doc.data()["outcome"]);
