@@ -30,21 +30,32 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await createUser(email, password);
-            console.log("INI UID : " + auth.currentUser.uid);
-            const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
-                "email": email,
-                "nama_lengkap": nama,
-                "password": password,
-                "phone": nohp,
-                "prof_img": "https://firebasestorage.googleapis.com/v0/b/coller-me.appspot.com/o/prof_img%2Fcute-an-astronaut-sits-in-internet-vector-22760432.jpg?alt=media&token=02d1f34d-766b-4f3b-817c-8c1437d96c6c"
-            });
-            console.log(res);
-            navigate('/Dashboard');
-        } catch (e) {
-            setError(e.message);
-            console.log(e.message);
+        if (email == '' && password == '' && nama == '' && nohp == '') {
+            setError("Harap isi data")
+        } else {
+            try {
+                await createUser(email, password);
+                console.log("INI UID : " + auth.currentUser.uid);
+                const res = await setDoc(doc(db, "users", auth.currentUser.uid), {
+                    "email": email,
+                    "nama_lengkap": nama,
+                    "password": password,
+                    "phone": nohp,
+                    "prof_img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlJcY12Mz55YZo_e9PUaOSTCfF6rsmxaadwA&usqp=CAU"
+                });
+                console.log(res);
+                navigate('/Dashboard');
+            } catch (e) {
+                if (e.code == 'auth/email-already-in-use') {
+                    setError("Email telah terdaftar")
+                } else if (e.code == 'auth/weak-password') {
+                    setError("Password harus minimal 6 karakter")
+                } else if (e.code == 'auth/invalid-email') {
+                    setError("Masukkan format email yang benar")
+                }
+                // setError(e.message);
+                console.log(e.message);
+            }
         }
     };
 
@@ -105,13 +116,13 @@ const Register = () => {
 
                                 <form onSubmit={handleSubmit}>
                                     <input type="text" placeholder="Masukkan Nama Lengkap" className="form-control mb-4 mt-5" id="nama_lengkap" name="nama_lengkap" onChange={(e) => setNama(e.target.value)} />
-                                    <input type="text" placeholder="Masukkan Nomor Telephone" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={(e) => setNohp(e.target.value)} />
+                                    <input type="tel" placeholder="Masukkan Nomor Telephone" className="form-control mb-4 " id="no_hp" name="no_hp" onChange={(e) => setNohp(e.target.value)} />
                                     <input type="text" placeholder="Masukkan Email Anda" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={(e) => setEmail(e.target.value)} />
                                     <input type="password" placeholder="Masukkan Password" className="form-control mb-4" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
 
                                     <p className="to-login mt-5">Sudah punya akun? <Link to="/login"><a>Login</a></Link></p>
                                     <button type="Submit" className="btn btn-primary" onClick={handleSubmit}>DAFTAR</button>
-
+                                    <span><p className="text-center mt-5">{error}</p></span>
 
                                 </form>
                             </div>
