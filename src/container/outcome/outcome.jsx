@@ -109,16 +109,16 @@ class Outcome extends Component {
     fetchDataProfile = async () => {
         var list = [];
         try {
-            const querySnapshot = await getDoc(doc(db, "users", this.user))
-                .then((docRef) => {
-                    this.setState({
-                        email: docRef.data()['email'],
-                        nama_lengkap: docRef.data()['nama_lengkap'],
-                        phone: docRef.data()['phone'],
-                        prof_img: docRef.data()['prof_img'],
-                    })
-                    console.log(this.state)
+            const querySnapshot = await getDoc(doc(db, "users", this.userUid))
+            .then((docRef) => {
+                this.setState({
+                    email : docRef.data()['email'],
+                    nama_lengkap : docRef.data()['nama_lengkap'],
+                    phone : docRef.data()['phone'],
+                    prof_img : docRef.data()['prof_img'],
                 })
+                console.log(this.state)
+            })
         } catch (e) {
             console.log(e);
         }
@@ -363,7 +363,7 @@ class Outcome extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                    <div className="topbar">
+                <div className="topbar">
                         <div className="toggle">
                             <ion-icon name="menu-outline"></ion-icon>
                         </div>

@@ -98,6 +98,8 @@ class EditPassword extends Component {
 
 
     render() {
+        const nama_lengkap = this.state.nama_lengkap;
+        const prof_img = this.state.prof_img;
         return (
             <div>
                 <Sidebar />
@@ -109,14 +111,13 @@ class EditPassword extends Component {
                         </div>
                         <div className="user-information row">
                             <div className="col name align-self-center">
-                                <h6>HIHIHI</h6>
+                                <h6>{nama_lengkap}</h6>
                             </div>
                             <div className="col user">
-                                <img src="a" width="200" alt="user-photo" />
+                                <img src={prof_img} width="200" alt="user-photo" />
                             </div>
                         </div>
                     </div>
-
                     <div className="profile-edit m-md-5">
                         <div className="card-profile-edit">
                             <div className="card-body m-4">
