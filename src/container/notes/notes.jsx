@@ -137,11 +137,12 @@ export class Notes extends Component {
 
         event.preventDefault();
 
-        const { title, body } = this.state;
+        const { title, body, date } = this.state;
 
         const res = await setDoc(doc(db, "notes", this.userUid, "items", this.state.keyData), {
             "title": title,
-            "body": body
+            "body": body,
+            "date": date
         })
             .then(this.fetchData)
             .then((docRef) => {
