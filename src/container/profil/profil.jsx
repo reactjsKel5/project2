@@ -60,7 +60,7 @@ class Profil extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                {/* <div className="topbar">
+                <div className="topbar">
                     <div className="toggle">
                         <ion-icon name="menu-outline"></ion-icon>
                     </div>
@@ -72,7 +72,7 @@ class Profil extends Component {
                         <img src={prof_img} width="200" alt="user-photo" />
                         </div>
                     </div>
-                </div> */}
+                </div>
                     <div className="m-md-5 profile">
                         <div className="row">
                             <div className="card-profile">

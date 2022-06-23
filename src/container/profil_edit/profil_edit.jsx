@@ -136,7 +136,7 @@ class ProfilEdit extends Component {
                 <Sidebar />
                 <div className="main">
                     {/* <Topbar /> */}
-                    {/* <div className="topbar">
+                    <div className="topbar">
                         <div className="toggle">
                             <ion-icon name="menu-outline"></ion-icon>
                         </div>
@@ -148,7 +148,7 @@ class ProfilEdit extends Component {
                                 <img src={prof_img} width="200" alt="user-photo" />
                             </div>
                         </div>
-                    </div> */}
+                    </div>
 
                     {/* Tulis content di bawah sini */}
                     <div className="profile-edit m-md-5">
