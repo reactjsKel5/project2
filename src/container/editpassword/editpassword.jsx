@@ -63,11 +63,11 @@ class EditPassword extends Component {
         const user = auth.currentUser;
 
         if (newPass != confPass) {
-            swal("Gagal", "Password Pasword Tidak Sama!", "warning");
+            swal("Gagal", "Pasword Tidak Sama!", "warning");
             return console.log("Password tidak sama")
 
         } else if (oldPass != this.state["password"]) {
-            swal("Gagal", "Password Pasword Salah!", "error");
+            swal("Gagal", "Pasword Salah!", "error");
             return console.log("Password salah!")
         } else {
             try {
