@@ -5,6 +5,8 @@ import Todo from "../../components/todo";
 import './todolist.css';
 import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, doc, getDocs, deleteDoc, setDoc, getDoc} from 'firebase/firestore';
+import swal from 'sweetalert';
+import { Warning } from "postcss";
 
 class Todolist extends Component {
 
@@ -98,7 +100,12 @@ class Todolist extends Component {
     
             console.log(res);
         } catch (error) {
-            alert('Invalid Input!!!');
+            swal({
+                title: 'Invalid Input!',
+                text: 'Please fill the form.',
+                icon: 'warning',
+                dangerMode: true
+            });
         }
     }
 
