@@ -176,10 +176,10 @@ class Todolist extends Component {
                                 <div className="card-body">
                                     <form className="m-2 row">
                                         <div className="col">
-                                            <input type="text" className="form-control px-4" name="todos" id="todos" placeholder="Tambahkan to do list baru di sini ..." onChange={this.onChange} />
+                                            <input type="text" className="form-control px-4" name="todos" id="todos" placeholder="Add to do list in here ..." onChange={this.onChange} />
                                         </div>
                                         <div className="col-md-auto col-sm align-self-center">
-                                            <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}> + Tambah</button>
+                                            <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Add New</button>
                                         </div>
                                     </form>
                                 </div>

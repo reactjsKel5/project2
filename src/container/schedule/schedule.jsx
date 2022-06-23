@@ -275,35 +275,35 @@ class Schedule extends Component {
                                         <div className="row">
                                             <div class="col-md">
                                                 <div class="mb-4">
-                                                    <label for="dey" class="text-secondary">Hari</label>
+                                                    <label for="dey" class="text-secondary">Day</label>
                                                     <select id="day" name="day" class="form-select" onChange={this.onChange} value={day}>
                                                         <option>...</option>
-                                                        <option value="Monday">Senin</option>
-                                                        <option value="Tuesday">Selasa</option>
-                                                        <option value="Wednesday">Rabu</option>
-                                                        <option value="Thursday">Kamis</option>
-                                                        <option value="Friday">Jumat</option>
-                                                        <option value="Saturday">Sabtu</option>
-                                                        <option value="Sunday">Minggu</option>
+                                                        <option value="Monday">Monday</option>
+                                                        <option value="Tuesday">Tuesday</option>
+                                                        <option value="Wednesday">Wednesday</option>
+                                                        <option value="Thursday">Thursday</option>
+                                                        <option value="Friday">Friday</option>
+                                                        <option value="Saturday">Saturday</option>
+                                                        <option value="Sunday">Sunday</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-4">
-                                                    <label for="namaJadwal" class="text-secondary">Nama Jadwal</label>
+                                                    <label for="namaJadwal" class="text-secondary">Topic</label>
                                                     <input type="text" class="form-control" name="topic" id="topic" placeholder="..." onChange={this.onChange} value={topic} />
                                                 </div>
                                             </div>
                                             <div class="col-md">
                                                 <div class="mb-4">
-                                                    <label for="waktuMulai" class="text-secondary">Waktu Mulai</label>
+                                                    <label for="waktuMulai" class="text-secondary">Time Start</label>
                                                     <input type="time" class="form-control" name="timestart" id="timeend" onChange={this.onChange} value={timestart} />
                                                 </div>
                                                 <div class="mb-4">
-                                                    <label for="waktuBerakhir" class="text-secondary">Waktu Berakhir</label>
+                                                    <label for="waktuBerakhir" class="text-secondary">Time End</label>
                                                     <input type="time" class="form-control" name="timeend" id="timeend" onChange={this.onChange} value={timeend} />
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12 text-end" >
-                                                        <button className="btn-tambah" onClick={this.onSubmit}>Tambah</button>
+                                                        <button className="btn-tambah" onClick={this.onSubmit}>Add New</button>
                                                     </div>
                                                 </div>
                                             </div>

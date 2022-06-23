@@ -265,7 +265,7 @@ class Task extends Component {
                             <div className="card-body">
                                 <form className="m-2 row">
                                     <div className="col">
-                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Ketikkan disini ..." onChange={this.handleSearch} />
+                                        <input type="text" className="form-control px-4" name="nama_task" id="nama_task" placeholder="Search in here ..." onChange={this.handleSearch} />
                                     </div>
                                     <div className="col-md-auto col-sm align-self-center">
                                     </div>
@@ -286,7 +286,7 @@ class Task extends Component {
 
                                             <textarea type="text" className="form-control px-4 my-3" placeholder="Detail" name="task" id="task" onChange={this.onChange} />
 
-                                            <button className="btn btn-primary d-inline-block" onClick={this.onSubmit}>Tambah</button>
+                                            <button className="btn btn-primary d-inline-block" onClick={this.onSubmit}>Add New</button>
 
                                         </form>
                                     </div>

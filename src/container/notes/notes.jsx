@@ -307,7 +307,7 @@ export class Notes extends Component {
                                         className="form-control px-4"
                                         name="nama_todo"
                                         id="nama_todo"
-                                        placeholder="Search"
+                                        placeholder="Search in here ..."
                                         onChange={this.handleSearch} />
                                 </div>
                                 {/* <div className="col-md-auto col-sm align-self-center">
@@ -327,13 +327,13 @@ export class Notes extends Component {
                                 <div className="add-notes card-notes">
                                     <div className="card-body my-4 mx-3">
                                         <form action="submit">
-                                            <input type="text" className="form-control px-4 mb-3" name="title" id="name" placeholder="Judul Note" onChange={this.onChange} value={title} />
+                                            <input type="text" className="form-control px-4 mb-3" name="title" id="name" placeholder="Title" onChange={this.onChange} value={title} />
                                             <div className="form-floating">
                                                 <textarea className="form-control px-4 mb-3" name="body" id="body" placeholder="isi_note" onChange={this.onChange} value={body}></textarea>
-                                                <label for="isi_note" className="text-secondary">Deskripsi Note</label>
+                                                <label for="isi_note" className="text-secondary">Detail Note</label>
                                             </div>
                                             {
-                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+                                                this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Save</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
                                             }
                                             {/* <button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button> */}
                                         </form>

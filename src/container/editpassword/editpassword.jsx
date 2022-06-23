@@ -130,17 +130,17 @@ class EditPassword extends Component {
                                         <label htmlFor="new-password" className="form-label">New Password</label>
                                         <input type="password" className="form-control mb-4 " id="newPass" name="newPass" onChange={this.onChange} />
 
-                                        <label htmlFor="conf-new-password" className="form-label ">Konfirmasi Password</label>
+                                        <label htmlFor="conf-new-password" className="form-label ">Confirmation Password</label>
                                         <input type="password" className="form-control mb-4 " id="confPass" name="confPass" onChange={this.onChange} />
 
-                                        <label htmlFor="password" className="form-label ">Password Lama</label>
+                                        <label htmlFor="password" className="form-label ">Old Password</label>
                                         <input type="password" className="form-control mb-4" id="oldPass" name="oldPass" onChange={this.onChange} />
 
                                         <div className="row button-section mt-5">
 
                                             <div className="col text-center">
-                                                <button className="btn btn-danger-profile-edit float-end"
-                                                >Simpan</button></div>
+                                                <button className="btn btn-danger-profile-edit text-center"
+                                                >Save</button></div>
                                         </div>
                                     </form>
                                 </div>

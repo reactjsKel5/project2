@@ -161,20 +161,20 @@ class ProfilEdit extends Component {
                                     <img src={prof_img} alt="login image" />
                                     <div className="d-block mt-4">
                                         <input type="file" onChange={handleChange} />
-                                        <button onClick={handleUpload} className="btn btn-primary ">Ubah Profile</button>
+                                        <button onClick={handleUpload} className="btn btn-primary">Change Profile</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="form-edit">
                             <form action="submit">
-                                <label htmlFor="nama" className="form-label ">Nama Lengkap</label>
+                                <label htmlFor="nama" className="form-label ">Full Name</label>
                                 <input type="text" className="form-control mb-4 " id="nama_lengkap" name="nama_lengkap" onChange={this.onChange} value={nama_lengkap} />
 
-                                <label htmlFor="no-hp" className="form-label ">Nomor Telepon</label>
+                                <label htmlFor="no-hp" className="form-label ">Telephone</label>
                                 <input type="text" className="form-control mb-4 " id="phone" name="phone" onChange={this.onChange} value={phone} />
 
-                                <label htmlFor="email" className="form-label ">Email</label>
+                                <label htmlFor="email" className="form-label ">Email Address</label>
                                 <input type="text" className="form-control mb-4 " id="email" name="email" aria-describedby="emailHelp" onChange={this.onChange} value={email} />
 
                                 <label htmlFor="password" className="form-label ">Password</label>

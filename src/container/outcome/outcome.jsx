@@ -386,8 +386,8 @@ class Outcome extends Component {
                             <div className="col-auto col-sm">
                                 <div className="card-tab-outcome float-end">
                                     <div className="card-body text-center">
-                                        <Link to="/Pemasukan"><a className="link-to-outcome" style={{ color: '#464646' }}>Pemasukan</a></Link>
-                                        <div className="btn btn-tab-outcome ms-3"><a href="#">Pengeluaran</a></div>
+                                        <Link to="/Pemasukan"><a className="link-to-outcome" style={{ color: '#464646' }}>Income</a></Link>
+                                        <div className="btn btn-tab-outcome ms-3"><a href="#">Outcome</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +423,7 @@ class Outcome extends Component {
                                 <div className="row">
                                     <div className="col-md-auto col-sm">
                                         <h3>Chart</h3>
-                                        <h5>Presentase pengeluaran</h5>
+                                        <h5>% Outcome</h5>
                                         <div className="row d-flex mt-4">
                                             <div className="col-md-auto col-sm" style={{ height: 380 }}>
                                                 <DonutChart
@@ -473,7 +473,7 @@ class Outcome extends Component {
                                     </div> */}
 
                                     <div className="col add-income ps-5">
-                                        <h3 className="mb-5 mt-2">Tambahkan</h3>
+                                        <h3 className="mb-5 mt-2">New Outcome</h3>
                                         <form action="submit">
                                             <select className="form-control category-select mb-3" name="category" id="category" onChange={this.onChange} value={category}>
                                                 <option value="0">--</option>
@@ -484,10 +484,10 @@ class Outcome extends Component {
                                             </select>
                                             <input type="date" className="form-control px-4 mb-3" name="date" id="date" onChange={this.onChange} value={date} />
                                             <input type="number" className="form-control px-4 mb-3" name="outcome" id="outcome" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={outcome} />
-                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Catatan" onChange={this.onChange} value={title} />
+                                            <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Title" onChange={this.onChange} value={title} />
                                             {
                                                 this.state.keyData == '' ? (<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}
-                                                >Tambah</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Simpan</button>
+                                                >Add New</button>) : <button className="btn btn-danger d-inline-block" onClick={(event) => this.handleUpdate(event)}>Save</button>
                                             }
                                         </form>
                                     </div>

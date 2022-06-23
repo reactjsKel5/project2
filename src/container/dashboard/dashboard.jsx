@@ -303,10 +303,10 @@ class Dashboard extends Component {
                                         <h3>Today's Schedule</h3>                                        
                                         <div className="row mt-5 title">
                                             <div className="col-md-4 col-sm time">
-                                                <h4>Waktu</h4>
+                                                <h4>Time</h4>
                                             </div>
                                             <div className="col-md-8 col-sm matkul">
-                                                <h4>Mata Kuliah</h4>
+                                                <h4>Topic</h4>
                                             </div>
                                         </div>
                                         {listofDataSchedule}

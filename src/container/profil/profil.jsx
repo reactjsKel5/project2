@@ -84,7 +84,7 @@ class Profil extends Component {
                         <Avatar src={prof_img} size={170}  round={true} alt="profile" />
                     </div>
                     <div class="mb-1">
-                        <p class="profile-title float-start">Nama Lengkap</p>
+                        <p class="profile-title float-start">Full Name</p>
                         <p class="profile-title float-end">
                             {nama_lengkap}
                         </p>
@@ -92,7 +92,7 @@ class Profil extends Component {
 
                     <hr className="mb-4" />
                     <div class="mb-1">
-                        <p class="profile-title float-start">Email</p>
+                        <p class="profile-title float-start">Email Address</p>
                         <p class="profile-value float-sm-end">
                             {email}
 
@@ -100,7 +100,7 @@ class Profil extends Component {
                     </div>
                     <hr className="mb-4" />
                     <div class="mb-4">
-                        <p class="profile-title float-start">Nomor Telepon</p>
+                        <p class="profile-title float-start">Telephone</p>
                         <p class="profile-value float-sm-end">
                             {phone}
                         </p>
