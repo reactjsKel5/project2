@@ -10,6 +10,9 @@ import {
 } from "react-router-dom";
 import { async } from "@firebase/util";
 import DonutChart from "react-donut-chart/dist/DonutChart";
+import swal from 'sweetalert';
+import { Warning } from "postcss";
+
 
 //update untuk category blum muncul
 class Income extends Component {
@@ -128,9 +131,15 @@ class Income extends Component {
 
     handleDelete = async (id) => {
         deleteDoc(doc(db, "income", this.userUid, "items", id))
-            .then(
-                this.fetchData()
-            )
+            .then(() => {
+                this.fetchData();
+                this.fetchDataIncome();
+                this.fetchDataOutcome();
+                this.fetchSalary();
+                this.fetchParent();
+                this.fetchGift();
+                this.fetchEtc();
+            })
     }
 
     componentDidMount() {
@@ -156,32 +165,41 @@ class Income extends Component {
         e.preventDefault();
 
         const { category, date, income, title } = this.state;
-        const res = await addDoc(collection(db, "income", this.userUid, "items"), {
-            "category": category,
-            "date": date,
-            "income": Number(income),
-            "title": title
-        })
-            .then(
-                this.fetchData()
-            )
-            .then((docRef) => {
-                this.fetchData();
-                // this.fetchDataProfile();
-                this.fetchDataIncome();
-                this.fetchDataOutcome();
-                this.fetchSalary();
-                this.fetchParent();
-                this.fetchGift();
-                this.fetchEtc();
-                this.setState({
-                    category: "",
-                    date: "",
-                    income: 0,
-                    title: ""
-                })
+        if (category, date, income, title == "") {
+            swal({
+                title: 'Invalid Input!',
+                text: 'Please fill the form.',
+                icon: 'warning',
+                dangerMode: true
+            });
+        } else {
+            const res = await addDoc(collection(db, "income", this.userUid, "items"), {
+                "category": category,
+                "date": date,
+                "income": Number(income),
+                "title": title
             })
-        console.log(res);
+                .then(
+                    this.fetchData()
+                )
+                .then((docRef) => {
+                    this.fetchData();
+                    // this.fetchDataProfile();
+                    this.fetchDataIncome();
+                    this.fetchDataOutcome();
+                    this.fetchSalary();
+                    this.fetchParent();
+                    this.fetchGift();
+                    this.fetchEtc();
+                    this.setState({
+                        category: "",
+                        date: "",
+                        income: 0,
+                        title: ""
+                    })
+                })
+            console.log(res);
+        }
     }
     // , categoryIncome,
     handleHookUpdate = (keyIncome, categoryIncome, dateIncome, incomeIncome, titleIncome) => {
@@ -261,7 +279,16 @@ class Income extends Component {
         }
         this.setState({ totoutcome: totalOutcome })
         console.log(totalOutcome);
+    }
 
+    formatter = (value) => {
+        const price = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+        }).format(value);
+
+        return price;
+        console.log(price)
     }
 
 
@@ -402,7 +429,7 @@ class Income extends Component {
                             <div className="card-body mx-4 my-3">
                                 <div className="row">
                                     <div className="col date-balance text-center d-flex justify-content-center">
-                                        <h1 className="text-center mt-1 mb-2">Rp {Balance}</h1>
+                                        <h1 className="text-center mt-1 mb-2">{this.formatter(Balance)}</h1>
                                     </div>
                                     <div>
                                         <hr className="mt-2 text-center d-flex justify-content-center text-center" />
@@ -412,11 +439,11 @@ class Income extends Component {
                                 <div className="row  ">
                                     <div className="col pemasukan align-self-center justify-content-center text-center mt-2">
                                         <h5>Income</h5>
-                                        <h3>Rp {TotalIncome}</h3>
+                                        <h3>{this.formatter(TotalIncome)}</h3>
                                     </div>
                                     <div className="col pengeluaran align-self-center justify-content-center text-center mt-3">
                                         <h5>Outcome</h5>
-                                        <h3>Rp {TotalOutcome}</h3>
+                                        <h3>{this.formatter(TotalOutcome)}</h3>
 
                                     </div>
 
@@ -488,6 +515,7 @@ class Income extends Component {
 
                                             </select>
                                             <input type="date" className="form-control px-4 mb-3" name="date" id="date" onChange={this.onChange} value={date} />
+
                                             <input type="number" className="form-control px-4 mb-3" name="income" id="income" placeholder="Jumlah (Rp.)" onChange={this.onChange} value={income} />
                                             <input type="text" className="form-control px-4 mb-5" name="title" id="title" placeholder="Title" onChange={this.onChange} value={title} />
 

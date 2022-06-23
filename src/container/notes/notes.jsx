@@ -7,6 +7,8 @@ import Note from "../../components/note"
 import { auth, db, dbf } from '../../firebase';
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, getDoc } from 'firebase/firestore';
 import { async } from '@firebase/util';
+import swal from 'sweetalert';
+import { Warning } from "postcss";
 
 export class Notes extends Component {
     constructor() {
@@ -48,21 +50,21 @@ export class Notes extends Component {
         var list = [];
         try {
             const querySnapshot = await getDoc(doc(db, "users", this.userUid))
-            .then((docRef) => {
-                this.setState({
-                    email : docRef.data()['email'],
-                    nama_lengkap : docRef.data()['nama_lengkap'],
-                    phone : docRef.data()['phone'],
-                    prof_img : docRef.data()['prof_img'],
+                .then((docRef) => {
+                    this.setState({
+                        email: docRef.data()['email'],
+                        nama_lengkap: docRef.data()['nama_lengkap'],
+                        phone: docRef.data()['phone'],
+                        prof_img: docRef.data()['prof_img'],
+                    })
+                    console.log(this.state)
                 })
-                console.log(this.state)
-            })
         } catch (e) {
             console.log(e);
         }
     }
 
-    
+
     componentDidMount() {
 
         this.fetchData();
@@ -90,23 +92,33 @@ export class Notes extends Component {
         e.preventDefault();
 
         const { title, body, date } = this.state;
-        const res = await addDoc(collection(db, "notes", this.userUid, "items"), {
-            "title": title,
-            "body": body,
-            "date": date
-        })
-            .then(
-                this.fetchData()
-            )
-            .then((docRef) => {
-                this.setState({
-                    title: "",
-                    body: "",
-                    date: ""
-                })
+        try {
+            const res = await addDoc(collection(db, "notes", this.userUid, "items"), {
+                "title": title,
+                "body": body,
+                "date": date
             })
+                .then(
+                    this.fetchData()
+                )
+                .then((docRef) => {
+                    this.setState({
+                        title: "",
+                        body: "",
+                        date: ""
+                    })
+                })
 
-        console.log(res);
+            console.log(res);
+        } catch (error) {
+            swal({
+                title: 'Invalid Input!',
+                text: 'Please fill the form.',
+                icon: 'warning',
+                dangerMode: true
+            });
+
+        }
     }
 
     handleHookUpdate = (keyNote, titleNote, bodyNote) => {
@@ -165,71 +177,6 @@ export class Notes extends Component {
     }
 
 
-    // state = {
-    //     notes: [],
-    //     insertNote : {
-    //         uid: 2,
-    //         id: 1,
-    //         judul_note: "",
-    //         tgl_note: "2022-01-06",
-    //         isi_note: ""
-    //     }
-    // }
-
-    // //get Notes
-    // fetchNotes = () => {
-    //     fetch('http://localhost:3001/notes?_sort=id_note8&_order=desc')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             this.setState({
-    //                 notes: json
-    //             })
-    //         })
-    // }
-
-    // componentDidMount() {
-    //     this.fetchNotes()
-    // }
-
-    // //delete notes by id
-    // deleteNotes = (id) => {
-    //     fetch(`http://localhost:3001/notes/${id}`, {
-    //         method: 'DELETE'
-    //     })
-    //         .then(json => {
-    //             this.fetchNotes()
-    //         })
-    // }
-
-    // //handle value
-    // handleChangeInsert = (event) => {
-    //     let insertNoteData = {...this.state.insertNote}
-    //     let timestamp = new Date().getTime()
-    //     const current = new Date();
-    //     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-    //     insertNoteData['id'] = timestamp
-    //     insertNoteData['tgl_note'] = date
-    //     insertNoteData[event.target.name] = event.target.value
-    //     this.setState({
-    //         insertNote: insertNoteData
-    //     })
-    // }
-
-    // //insert to API
-    // addNote = (event) => {
-    //     event.preventDefault()
-    //     fetch('http://localhost:3001/notes', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept' : 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(this.state.insertNote)
-    //     })
-    //         .then(response => response.json())
-    //         .then(json => this.fetchNotes())
-    // }
-
     render() {
 
         const { title, body } = this.state;
@@ -271,7 +218,7 @@ export class Notes extends Component {
             )
         })
 
-            
+
 
         // var buttonNote = (if (this.state.keyData == '') {
         //     return(<button className="btn btn-danger d-inline-block" onClick={this.onSubmit}>Tambah</button>)
@@ -283,19 +230,19 @@ export class Notes extends Component {
             <div>
                 <Sidebar />
                 <div className="main">
-                <div className="topbar">
-            <div className="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-            <div className="user-information row">
-                <div className="col name align-self-center">
-                    <h6>{nama_lengkap}</h6>
-                </div>
-                <div className="col user">
-                    <img src={prof_img} width="200" alt="user-photo" />
-                </div>
-            </div>
-        </div>
+                    <div className="topbar">
+                        <div className="toggle">
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </div>
+                        <div className="user-information row">
+                            <div className="col name align-self-center">
+                                <h6>{nama_lengkap}</h6>
+                            </div>
+                            <div className="col user">
+                                <img src={prof_img} width="200" alt="user-photo" />
+                            </div>
+                        </div>
+                    </div>
                     <div className="m-md-5 notes">
                         <div className="search-notes">
                             {/* <div className="card">

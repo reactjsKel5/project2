@@ -10,6 +10,8 @@ import { async } from '@firebase/util';
 import moment from "moment";
 import 'moment/locale/en-au';
 import 'moment/min/moment-with-locales';
+import swal from 'sweetalert';
+import { Warning } from "postcss";
 
 class Schedule extends Component {
 
@@ -103,7 +105,12 @@ class Schedule extends Component {
         e.preventDefault();
         const { day, timeend, timestart, topic } = this.state;    
         if (this.state["day"], this.state["timestart"], this.state["timeend"], this.state["topic"] == "") {
-            alert("harap isi form yang kosong!")
+            swal({
+                title: 'Invalid Input!',
+                text: 'Please fill the form.',
+                icon: 'warning',
+                dangerMode: true
+            });
         } else {
             const res = await addDoc(collection(db, "schedule", this.userUid, "items"), {
                 "day": day,

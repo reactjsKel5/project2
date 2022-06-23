@@ -6,6 +6,8 @@ import Topbar from "../../components/menubar/topbar";
 import { auth, db } from '../../firebase';
 import { addDoc, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import "./task.css";
+import swal from 'sweetalert';
+import { Warning } from "postcss";
 
 class Task extends Component {
 
@@ -109,7 +111,12 @@ class Task extends Component {
                 })
             console.log(res);
         } catch (error) {
-            alert ('Harap isi field yang kosong');
+            swal({
+                title: 'Invalid Input!',
+                text: 'Please fill the form.',
+                icon: 'warning',
+                dangerMode: true
+            });
         }
 
     }
